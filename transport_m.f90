@@ -1,5 +1,5 @@
 ﻿! 1D steady-state transport equation:
-! 0 = -q*𝜕c/𝜕x + D*(𝜕^2)c/𝜕(c^2) + r*(c_r-c)
+! 0 = -q*dc/dx + D*(d^2)c/d(c^2) + r*(c_r-c)
 module transport_m
     use diffusion_m
     use transport_properties_heterog_m
