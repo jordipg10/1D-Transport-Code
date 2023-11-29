@@ -7,12 +7,9 @@ module diff_stab_params_m
     implicit none
     save
     type, public, extends(stab_params_c) :: stab_params_diff_c ! diffusion equation stability parameters subclass
-        real(kind=8) :: beta ! dispersion stability parameter (beta=D*Delta_t/phi*Delta_r^2)
+        real(kind=8) :: beta ! dispersion stability parameter (beta=D*Delta_t/phi*Delta_x^2)
     contains
         procedure, public :: compute_stab_params=>compute_stab_params_diff
-        procedure, public :: get_stab_params=>get_stab_params_diff
-        !procedure, public :: get_courant
-        !procedure, public :: get_beta
     end type
     
     contains
@@ -32,38 +29,8 @@ module diff_stab_params_m
             
             select type (props=>props_obj)
             class is (diff_props_heterog_c)
-            !    select type (time_discr_obj)
-            !    type is (time_discr_homog_c)
-                    !select type (spatial_discr_obj)
-                    !type is (spatial_discr_rad_c)
-                        this%beta=maxval(props%dispersion)*time_step/(minval(props%porosity)*mesh_size**2)
-                    !type is (mesh_1D_Euler_homog_c)
-                    !    this%beta=dispersion*Delta_t/(porosity*Delta_x**2)
-                    !end select
-                !end select
+                this%beta=maxval(props%dispersion)*time_step/(minval(props%porosity)*mesh_size**2)
             end select
             if (this%beta>=5d-1) print *, "Unstable diffusion", this%beta
         end subroutine
-        
-        function get_stab_params_diff(this) result(stab_params)
-            implicit none
-            class(stab_params_diff_c) :: this
-            real(kind=8), allocatable :: stab_params(:)
-            allocate(stab_params(1))
-            stab_params=this%beta
-        end function
-        
-        !function get_courant(this) result(courant)
-        !    implicit none
-        !    class(stab_params_homog_c) :: this
-        !    real(kind=8) :: courant
-        !    courant=this%courant
-        !end function
-        
-        !function get_beta(this) result(beta)
-        !    implicit none
-        !    class(stab_params_homog_c) :: this
-        !    real(kind=8) :: beta
-        !    beta=this%beta
-        !end function
 end module

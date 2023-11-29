@@ -5,7 +5,7 @@ module special_fcts_m
     end interface
     
     contains
-        recursive function fact(n)
+        recursive function fact(n) ! factorial
             implicit none
             integer(kind=4), intent(in) :: n
             integer(kind=4) :: fact

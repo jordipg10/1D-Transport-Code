@@ -1,7 +1,8 @@
+! Spatial discretisation module
 module spatial_discr_m
     implicit none
     save
-    type, public, abstract :: spatial_discr_c
+    type, public, abstract :: spatial_discr_c ! spatial discretisation superclass
         integer(kind=4) :: Num_targets      ! number of targets
         logical :: Num_targets_defined      ! TRUE if Num_targets defined, FALSE otherwise
         integer(kind=4) :: targets_flag     ! 0: cells

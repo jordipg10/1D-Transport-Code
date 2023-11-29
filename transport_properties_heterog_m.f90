@@ -16,7 +16,6 @@ module transport_properties_heterog_m
         procedure, public :: compute_flux_nonlin
         !procedure, public :: compute_flux
         procedure, public :: compute_source_term
-        procedure, public :: interpolate_flux
     end type
     
     contains
@@ -52,30 +51,15 @@ module transport_properties_heterog_m
         subroutine set_tpt_props_heterog(this,porosity,dispersion,flux)
             implicit none
             class(tpt_props_heterog_c) :: this
-            !real(kind=8), intent(in) :: source_term,retardo
             real(kind=8), intent(in) :: porosity(:),dispersion(:)
             real(kind=8), intent(in), optional :: flux(:)
             
             integer(kind=4) :: i
             
-            !this%source_term=source_term
-            !this%source_term_flag=1 ! by default
-            !this%retardo=retardo
             this%porosity=porosity
             this%dispersion=dispersion
             if (present(flux)) then
                 this%flux=flux
-            end if
-            if (size(this%porosity)==size(this%flux)) then
-                !this%velocity=this%flux/this%porosity
-            else
-                !allocate(this%velocity(size(this%porosity)))
-                !do i=1,size(this%velocity)
-                !    this%velocity(i)=(this%flux(i)+this%flux(i+1))/(2*this%porosity(i))
-                !end do
-                !allocate(this%velocity(size(this%flux)))
-                !this%velocity(1:size(this%porosity))=this%flux(1:size(this%porosity))/this%porosity
-                !this%velocity(size(this%flux))=this%flux(size(this%flux))/this%porosity(size(this%flux)-1)
             end if
         end subroutine
         
@@ -133,14 +117,7 @@ module transport_properties_heterog_m
         
        
         
-        !subroutine set_flux_in(this,flux_in,spatial_discr_obj)
-        !    implicit none
-        !    class(props_heterog_c) :: this
-        !    real(kind=8), intent(in) :: flux_in
-        !    class(spatial_discr_c), intent(in) :: spatial_discr_obj
-        !    allocate(this%flux(spatial_discr_obj%Num_targets))
-        !    this%flux(1)=flux_in
-        !end subroutine
+       
         
         subroutine compute_flux_lin(this,q_inf,spatial_discr_obj,q_out)
             implicit none
@@ -227,7 +204,7 @@ module transport_properties_heterog_m
                         this%flux(i)=real_poly_1D(flux_coeffs,spatial_discr_obj%Delta_x*(i-1))
                     end do
                 type is (mesh_1D_Euler_heterog_c)
-                    x=-spatial_discr_obj%Delta_x(1) ! inicilaizacion chapucera
+                    x=-spatial_discr_obj%Delta_x(1)
                     do i=1,Num_cells+1
                         x=x+spatial_discr_obj%Delta_x(i)
                         this%flux(i)=real_poly_1D(flux_coeffs,x)
@@ -237,14 +214,12 @@ module transport_properties_heterog_m
             else
                 error stop "subroutine 'compute_flux_nonlin' not implemented yet for this scheme"
             end if
-            !print *, this%flux
         end subroutine
         
         subroutine compute_source_term(this,spatial_discr_obj,flux_coeffs) ! computes sink/source term from flux polynomial
             implicit none
             class(tpt_props_heterog_c) :: this
             class(spatial_discr_c), intent(in) :: spatial_discr_obj
-            !integer(kind=4), intent(in) :: order ! order of approximation for flux in Taylor series
             real(kind=8), intent(in) :: flux_coeffs(:) ! orden decreciente
             
             integer(kind=4) :: i
@@ -276,60 +251,4 @@ module transport_properties_heterog_m
                 end if
             end select
         end subroutine
-        
-        subroutine interpolate_flux(this,filename,spatial_discr_obj)
-            implicit none
-            class(tpt_props_heterog_c) :: this
-            character(len=*), intent(in) :: filename
-            class(spatial_discr_c), intent(in) :: spatial_discr_obj
-            real(kind=8), allocatable :: flux(:)
-            integer(kind=4) :: i
-            allocate(this%flux(spatial_discr_obj%Num_targets-spatial_discr_obj%targets_flag))
-            allocate(flux(size(this%flux)+1))
-            open(unit=5,file=filename,status='old',action='read')
-            do i=1,size(flux)
-                read(5,*) flux(i)
-            end do
-            close(5)
-            print *, flux
-            do i=1,size(this%flux)
-                this%flux(i)=(flux(i)+flux(i+1))/2d0
-            end do
-        end subroutine
-        !function get_porosity_heterog(this) result(porosity)
-        !    implicit none
-        !    class(props_heterog_c) :: this
-        !    real(kind=8), allocatable :: porosity(:)
-        !    porosity=this%porosity
-        !end function
-        
-        !function get_dispersion_heterog(this) result(dispersion)
-        !    implicit none
-        !    class(props_heterog_c) :: this
-        !    real(kind=8), allocatable :: dispersion(:)
-        !    dispersion=this%dispersion
-        !end function
-        
-        !subroutine compute_retardo_heterog(this,filename)
-        !    implicit none
-        !    class(tpt_props_heterog_c) :: this
-        !    character(len=*), intent(in) :: filename
-        !    
-        !    real(kind=8) :: rho_d
-        !    real(kind=8) :: K_d
-        !    
-        !    open(unit=1,file=filename,status='old',action='read')
-        !    read(1,"(/,F10.2)") rho_d
-        !    read(1,*) K_d
-        !    close(1)
-        !    allocate(this%retardo(size(this%porosity)))
-        !    this%retardo=1d0+rho_d*K_d/this%porosity
-        !end subroutine
-        
-        !subroutine compute_flux(this)
-        !    implicit none
-        !    class(tpt_props_heterog_c) :: this
-        !    class(spatial_discr_c), intent(in) :: spatial_discr_obj
-        !    !integer(kind=4), intent(in) :: order ! order of approximation for flux in Taylor series
-        !    real(kind=8), intent(in) :: flux_coeffs(:) ! orden decreciente
 end module

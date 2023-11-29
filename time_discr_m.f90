@@ -123,14 +123,13 @@ module time_discr_m
             implicit none
             class(time_discr_homog_c) :: this
             character(len=*), intent(in) :: filename
-            ! We assume filename contains time step and number of steps
+            ! We assume filename contains final time and number of steps
             open(unit=1,file=filename,status='old',action='read')
-            read(1,"(/,I10)") this%int_method
-            read(1,*) this%Delta_t
+            read(1,*) this%int_method
+            read(1,*) this%Final_time
             read(1,*) this%Num_time
             close(1)
-            !this%Num_time=nint(this%Final_time/this%Delta_t)
-            call this%compute_Final_time()
+            this%Delta_t=this%Final_time/this%Num_time
         end subroutine
         
         subroutine read_time_discr_heterog(this,filename)
