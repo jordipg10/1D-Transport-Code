@@ -5,7 +5,7 @@ subroutine Thomas(A,b,x)
     ! b: independent term
     ! x: solution of linear system
 
-    use vectores_m, only : inf_norm_vec
+    use vectors_m, only : inf_norm_vec
     use matrices_m
     implicit none
     class(tridiag_matrix_c), intent(in) :: A

@@ -8,8 +8,7 @@ module matrices_m
     contains
         procedure, public :: allocate_matrix
         !procedure, public :: set_diag_matrix
-        procedure, public :: compute_eigenvalues
-        procedure, public :: compute_eigenvectors
+        
         procedure, public :: prod_mat_vec
         procedure, public :: prod_mat_mat
         !procedure, public :: write_tridiag_sym_matrix
@@ -20,12 +19,15 @@ module matrices_m
         procedure, public :: compute_norm_1
         !procedure, public :: get_transpose
         !procedure, public :: write_matrix
-        procedure, public :: check_eigenvectors_tridiag_sym_matrix
+        
     end type
     
     type, public, extends(matrix_c) :: sq_matrix_c
         real(kind=8), allocatable :: eigenvalues(:)
-        real(kind=8), allocatable :: eigenvectors(:,:)        
+        real(kind=8), allocatable :: eigenvectors(:,:)
+    contains
+        procedure, public :: compute_eigenvalues
+        procedure, public :: compute_eigenvectors
     end type
 !****************************************************************************************************************************************************
     type, public, extends(sq_matrix_c) :: tridiag_sym_Toeplitz_matrix_c
@@ -48,7 +50,7 @@ module matrices_m
     type, public, extends(diag_matrix_c) :: tridiag_sym_matrix_c
         real(kind=8), allocatable :: sub(:)
     contains
-        !procedure, public :: write_tridiag_sym_matrix
+        procedure, public :: check_eigenvectors_tridiag_sym_matrix
     end type
 
     type, public, extends(tridiag_sym_matrix_c) :: tridiag_matrix_c
@@ -68,15 +70,15 @@ module matrices_m
 !****************************************************************************************************************************************************
     interface
         subroutine compute_eigenvalues(this)
-            import matrix_c
+            import sq_matrix_c
             implicit none
-            class(matrix_c) :: this
+            class(sq_matrix_c) :: this
         end subroutine
         
         subroutine compute_eigenvectors(this)
-            import matrix_c
+            import sq_matrix_c
             implicit none
-            class(matrix_c) :: this
+            class(sq_matrix_c) :: this
         end subroutine
         
         !subroutine write_tridiag_sym_matrix(this,filename)
@@ -181,13 +183,13 @@ module matrices_m
             real(kind=8), allocatable :: AT_A(:,:)
         end function
         
-        subroutine check_eigenvectors_tridiag_sym_matrix(A,tolerance)
-            import matrix_c
+        subroutine check_eigenvectors_tridiag_sym_matrix(this,tolerance)
+            import tridiag_sym_matrix_c
             implicit none
             !real(kind=8), intent(in) :: a(:) ! diagonal
             !real(kind=8), intent(in) :: b(:) ! non-diagonal
             !real(kind=8), intent(in) :: A(:,:)
-            class(matrix_c), intent(in) :: A
+            class(tridiag_sym_matrix_c), intent(in) :: this
             !real(kind=8), intent(in) :: lambda(:)
             !class(matrix_c), intent(in) :: P
             !real(kind=8), intent(in) :: P(:,:)
