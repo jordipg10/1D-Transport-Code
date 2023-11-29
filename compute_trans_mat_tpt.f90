@@ -4,15 +4,12 @@ subroutine compute_trans_mat_tpt(this)
 ! 0=T*c+g
     use transport_m
     use spatial_discr_1D_m
-    !use transport_properties_heterog_m
-    !use transport_properties_homog_m
-    !use properties_viena_m
+    use vectors_m
     implicit none
     
     class(transport_1D_c) :: this
     
-    real(kind=8), allocatable :: sign_flux(:) ! sign of flux
-    !real(kind=8), allocatable :: sub(:),diag(:),super(:),Delta_x(:)
+    real(kind=8) :: sign_flux ! sign of flux
     integer(kind=4) :: i,n
     
     n=this%spatial_discr%Num_targets
@@ -35,10 +32,14 @@ subroutine compute_trans_mat_tpt(this)
                     this%trans_mat%super(i)=this%tpt_props_heterog%dispersion(i)/(mesh%Delta_x**2) - this%tpt_props_heterog%flux(i+1)/(2*mesh%Delta_x)
                 end do
                 this%trans_mat%sub(n-1)=this%tpt_props_heterog%dispersion(n)/(mesh%Delta_x**2) + this%tpt_props_heterog%flux(n)/(2*mesh%Delta_x)
-            else if (mesh%scheme==3) then
-                sign_flux=sign(1d0,this%tpt_props_heterog%flux)
-                this%trans_mat%sub=this%tpt_props_heterog%dispersion/(mesh%Delta_x**2)+((sign_flux+1d0)/2)*this%tpt_props_heterog%flux/mesh%Delta_x
-                this%trans_mat%super=this%tpt_props_heterog%dispersion/(mesh%Delta_x**2)+((sign_flux-1d0)/2)*this%tpt_props_heterog%flux/mesh%Delta_x
+            else if (mesh%scheme==3) then ! upwind
+                if (minval(this%tpt_props_heterog%flux)>=0d0 .or. maxval(this%tpt_props_heterog%flux)<0d0) then
+                    sign_flux=sign(1d0,this%tpt_props_heterog%flux(1))
+                    this%trans_mat%sub=this%tpt_props_heterog%dispersion(2:n)/(mesh%Delta_x**2)+((sign_flux+1d0)/2)*this%tpt_props_heterog%flux(2:n)/mesh%Delta_x
+                    this%trans_mat%super=this%tpt_props_heterog%dispersion(1:n-1)/(mesh%Delta_x**2)+((sign_flux-1d0)/2)*this%tpt_props_heterog%flux(1:n-1)/mesh%Delta_x
+                end if
+            else
+                error stop "Scheme not implemented yet"
             end if
         end if
     end select

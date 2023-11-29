@@ -7,9 +7,6 @@ subroutine compute_trans_mat_diff_trans(this)
     implicit none
     
     class(diffusion_1D_transient_c) :: this
-    !integer(kind=4), intent(in) :: opcion
-    !real(kind=8), intent(out), optional :: T_sub(:),T_diag(:),T_super(:)
-    !integer(kind=4), intent(in), optional :: k
     
     real(kind=8) :: r_i,r_i_12
     integer(kind=4) :: i,n,opcion
