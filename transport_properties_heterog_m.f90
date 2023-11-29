@@ -10,11 +10,8 @@ module transport_properties_heterog_m
     contains
         procedure, public :: set_tpt_props_heterog
         procedure, public :: read_props=>read_tpt_props_heterog
-        !procedure, public :: get_dispersion=>get_dispersion_heterog
-        !procedure, public :: set_flux_in
         procedure, public :: compute_flux_lin
         procedure, public :: compute_flux_nonlin
-        !procedure, public :: compute_flux
         procedure, public :: compute_source_term
     end type
     
