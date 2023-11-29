@@ -5,8 +5,6 @@ subroutine compute_trans_mat_tpt_transient(this)
     use transport_transient_m
     use spatial_discr_1D_m
     use transport_properties_heterog_m
-    !use transport_properties_homog_m
-    !use properties_viena_m
     implicit none
     
     class(transport_1D_transient_c) :: this
@@ -22,29 +20,6 @@ subroutine compute_trans_mat_tpt_transient(this)
         call this%allocate_trans_mat()
     end if
     
-    !call this%allocate_trans_mat()
-    !select type (props=>this%props)
-    !type is (tpt_props_homog_c)
-        !select type (mesh=>this%spatial_discr)
-        !type is (mesh_1D_Euler_homog_c)
-        !    !if (mesh%scheme==1 .or. mesh%scheme==2) then
-        !    !    this%trans_mat%sub=this%tpt_props_homog%dispersion/(mesh%Delta_x**2) + this%tpt_props_homog%flux/(2*mesh%Delta_x)
-        !    !    this%trans_mat%super=this%tpt_props_homog%dispersion/(mesh%Delta_x**2) - this%tpt_props_homog%flux/(2*mesh%Delta_x)
-        !    !else if (mesh%scheme==3) then
-        !    !    allocate(sign_flux(1))
-        !    !    !sign_vel=sign(1d0,props%velocity)
-        !    !    sign_flux=sign(1d0,this%tpt_props_homog%flux)
-        !    !    this%trans_mat%sub=this%tpt_props_homog%dispersion/(mesh%Delta_x**2)+((sign_flux(1)+1d0)/2)*this%tpt_props_homog%flux/mesh%Delta_x
-        !    !    this%trans_mat%super=this%tpt_props_homog%dispersion/(mesh%Delta_x**2)+((sign_flux(1)-1d0)/2)*this%tpt_props_homog%flux/mesh%Delta_x
-        !    !else
-        !    !    error stop "Scheme not implemented yet"
-        !    !end if
-        !end select
-        !this%trans_mat%diag(1)=-this%trans_mat%super(1)
-        !this%trans_mat%diag(2:n-1)=-this%trans_mat%sub(1:n-2)-this%trans_mat%super(2:n-1)
-        !this%trans_mat%diag(n)=-this%trans_mat%sub(n-1)
-        !this%trans_mat%diag=this%trans_mat%diag-this%props%source_term_flag*this%props%source_term
-    !type is (tpt_props_heterog_c)
         select type (mesh=>this%spatial_discr)
         type is (mesh_1D_Euler_homog_c)
             if (mesh%targets_flag==0 .and. this%dimensionless==.true.) then
@@ -82,14 +57,5 @@ subroutine compute_trans_mat_tpt_transient(this)
             end if
         end select
         this%trans_mat%diag=-this%tpt_props_heterog%source_term_flag*this%tpt_props_heterog%source_term
-        !this%trans_mat%diag(1)=-this%trans_mat%super(1)
         this%trans_mat%diag(2:n-1)=this%trans_mat%diag(2:n-1)-this%trans_mat%sub(1:n-2)-this%trans_mat%super(2:n-1)
-        !this%trans_mat%diag(n)=-this%trans_mat%sub(n-1)
-    !type is (props_viena_c)
-    !    !select type (mesh=>this%spatial_discr)
-    !    !type is (mesh_1D_Euler_homog_c)
-    !        this%trans_mat%sub=0d0
-    !        this%trans_mat%super=0d0
-    !        this%trans_mat%diag=-props%caudal/props%volume
-    !end select
 end subroutine 
