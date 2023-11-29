@@ -5,8 +5,6 @@ subroutine compute_trans_mat_tpt_transient(this)
     use transport_transient_m
     use spatial_discr_1D_m
     use transport_properties_heterog_m
-    !use transport_properties_homog_m
-    !use properties_viena_m
     implicit none
     
     class(transport_1D_transient_c) :: this
