@@ -41,7 +41,6 @@ subroutine initialise_transport_1D(this)
     if (my_props_tpt%source_term_order==0) then
         call my_props_tpt%compute_flux_lin(this%BCs%flux_inf,this%spatial_discr,this%BCs%flux_out)
     else
-        ! esto es una chapuza pero bueno
         open(unit=2,file='flux_coeffs.dat',status='old',action='read')
         read(2,*) flux_ord
         allocate(flux_coeffs(flux_ord+1))

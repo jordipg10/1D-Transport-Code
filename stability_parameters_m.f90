@@ -1,7 +1,6 @@
 module stability_parameters_m
     use time_discr_m
     use properties_m
-    !use spatial_discr_m
     implicit none
     save
     type, public, abstract :: stab_params_c ! stability parameters superclass

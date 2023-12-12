@@ -1,20 +1,13 @@
-! Writes data and results of 1D transport model
+! Writes data and results of 1D transport equation
 subroutine write_transport_1D(this,Time_out,output)
     use analytical_solutions_transport_m
     use vectors_m
-    !use spatial_discr_1D_m
-    !use time_discr_m
     implicit none
     ! Variables
-    class(transport_1D_c), intent(in) :: this ! transport object
+    class(transport_1D_c), intent(in) :: this ! 1D transport object
     real(kind=8), intent(in) :: Time_out(:)
     real(kind=8), intent(in) :: output(:,:)
-    !real(kind=8), intent(in) :: Time_out(:)
-    !real(kind=8), intent(in) :: output(:,:)
-    !class(props_c), intent(in), optional :: props
-    !real(kind=8), intent(in), optional :: theta
 
-    !integer(kind=4) :: Num_output ! size(Time_out)
     real(kind=8) :: Delta_x,x,D,c1,c2,c3,c,a,K
     real(kind=8), parameter :: pi=4d0*atan(1d0)
     real(kind=8), allocatable :: anal_sol_yo(:),anal_sol_bis(:),der_anal_sol_yo(:),adv_term(:),adv_term_anal(:)
@@ -23,7 +16,6 @@ subroutine write_transport_1D(this,Time_out,output)
     
     n=this%spatial_discr%Num_targets-this%spatial_discr%targets_flag ! number of cells
     
-    !Num_output=size(Time_out)
     if (this%spatial_discr%scheme==1) then
         if (this%dimensionless==.true.) then
             write(file_out,"('transport_1D_CFDS_adim.out')")
@@ -37,7 +29,7 @@ subroutine write_transport_1D(this,Time_out,output)
             write(file_out,"('transport_1D_IFDS.out')")
         end if
     end if
-    open(unit=1,file=file_out,status='unknown')!,position='append')!,iostat=1,iomsg='error')
+    open(unit=1,file=file_out,status='unknown')
     write(1,"(2x,'Equation:',5x,'0 = T*c + g',/)")
     select type (mesh=>this%spatial_discr)
     type is (mesh_1D_Euler_homog_c)
@@ -46,10 +38,8 @@ subroutine write_transport_1D(this,Time_out,output)
         write(1,"(2x,'Number of cells:',I5/)") this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
         write(1,"(2x,'Mesh size:',F15.5/)") mesh%Delta_x
     end select
-    !write(1,"(2x,'Critical mesh size:',F15.5/)") this%stab_params%Delta_x_crit
     if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
-        !write(1,"(2x,'Boundary conditions:',10x,'Dirichlet',4x,F15.5/)") Dirichlet_BC
-        write(1,"(2x,'Boundary conditions:',10x,'Dirichlet constant',10x,2F15.5)") this%BCs%conc_inf, this%BCs%conc_out
+        write(1,"(2x,'Boundary conditions:',10x,'Dirichlet',10x,2F15.5)") this%BCs%conc_inf, this%BCs%conc_out
         
     else if (this%BCs%BCs_label(1)==2 .and. this%BCs%BCs_label(2)==2) then
         write(1,"(2x,'Boundary conditions:',10x,'Neumann homogeneous',/)")
@@ -64,8 +54,6 @@ subroutine write_transport_1D(this,Time_out,output)
 
     if (this%dimensionless==.false.) then
         write(1,"(2x,'Properties:'/)")
-        !props_mat=props%get_props()
-        !write(1,"(10x,'Porosity:',ES15.5,10x,'Retardo',ES15.5,10x,'Dispersion:',ES15.5,10x,'Flux:',ES15.5/)") props(1,1), props(1,2), props(1,3), props(1,4)
         write(1,"(10x,'Dispersion:',/)")
         do i=1,n
             write(1,"(20x,ES15.5)") this%tpt_props_heterog%dispersion(i)
@@ -88,54 +76,54 @@ subroutine write_transport_1D(this,Time_out,output)
         write(1,"(2x,F15.5)") this%source_term_PDE(i)
     end do
    
-            write(1,"(/,2x,'Cell'/)")
-            do i=1,n
-                write(1,"(2x,I5,ES15.5)") i, this%conc(i)
+    write(1,"(/,2x,'Cell'/)")
+    do i=1,n
+        write(1,"(2x,I5,ES15.5)") i, this%conc(i)
+    end do
+
+    allocate(anal_sol_yo(n),der_anal_sol_yo(n))
+    if (this%tpt_props_heterog%source_term_order==0) then ! Solucion analitica para q(x)=-x, c(0)=1, c(L)=0
+        write(1,"(/,2x,'Analytical solution & derivative:'/)")
+        do i=1,n
+            x=(2*i-1)*Delta_x/2d0
+            anal_sol_yo(i)=anal_sol_tpt_1D_stat_flujo_lin(this,x)
+            der_anal_sol_yo(i)=der_anal_sol_tpt_1D_stat_flujo_lin(this,x)
+            write(1,"(2x,ES15.5,10x,ES15.5,10x,ES15.5)") x, anal_sol_yo(i), der_anal_sol_yo(i)
+        end do
+        write(1,"(/,2x,'L^2 error advection term:'/)")
+        allocate(adv_term_anal(n),adv_term(n))
+        if (this%spatial_discr%scheme==1) then ! CFDS
+            adv_term_anal(1)=-this%tpt_props_heterog%flux(1)*der_anal_sol_yo(1)
+            adv_term(1)=-this%tpt_props_heterog%flux(1)*(this%conc(2)-2d0*this%BCs%conc_inf+this%conc(1))/(2d0*Delta_x)
+            do i=2,n-1
+                adv_term_anal(i)=-this%tpt_props_heterog%flux(i)*der_anal_sol_yo(i)
+                adv_term(i)=-this%tpt_props_heterog%flux(i)*(this%conc(i+1)-this%conc(i-1))/(2d0*Delta_x)
             end do
-        ! Solucion analitica para q(x)=-x, c(0)=1, c(1)=0
-            allocate(anal_sol_yo(n),der_anal_sol_yo(n))
-            if (this%tpt_props_heterog%source_term_order==0) then
-                write(1,"(/,2x,'Analytical solution + derivative:'/)")
-                do i=1,n
-                    x=(2*i-1)*Delta_x/2d0
-                    anal_sol_yo(i)=anal_sol_tpt_1D_stat_flujo_lin(this,x)
-                    der_anal_sol_yo(i)=der_anal_sol_tpt_1D_stat_flujo_lin(this,x)
-                    write(1,"(2x,ES15.5,10x,ES15.5,10x,ES15.5)") x, anal_sol_yo(i), der_anal_sol_yo(i)
-                end do
-                write(1,"(/,2x,'L^2 error advection term:'/)")
-                allocate(adv_term_anal(n),adv_term(n))
-                if (this%spatial_discr%scheme==1) then ! CFDS
-                    adv_term_anal(1)=-this%tpt_props_heterog%flux(1)*der_anal_sol_yo(1)
-                    adv_term(1)=-this%tpt_props_heterog%flux(1)*(this%conc(2)-2d0*this%BCs%conc_inf+this%conc(1))/(2d0*Delta_x)
-                    do i=2,n-1
-                        adv_term_anal(i)=-this%tpt_props_heterog%flux(i)*der_anal_sol_yo(i)
-                        adv_term(i)=-this%tpt_props_heterog%flux(i)*(this%conc(i+1)-this%conc(i-1))/(2d0*Delta_x)
-                    end do
-                    adv_term_anal(n)=-this%tpt_props_heterog%flux(n)*der_anal_sol_yo(n)
-                    adv_term(n)=-this%tpt_props_heterog%flux(n)*(2d0*this%BCs%conc_out-this%conc(n)-this%conc(n-1))/(2d0*Delta_x)
-                else if (this%spatial_discr%scheme==2) then ! IFDS
-                    adv_term(1)=-(this%tpt_props_heterog%flux(2)*(this%conc(2)-this%conc(1))+this%BCs%flux_inf*(2d0*this%conc(1)-2d0*this%BCs%conc_inf))/(2d0*Delta_x)
-                    adv_term_anal(1)=-0.5*(this%tpt_props_heterog%flux(1)+this%tpt_props_heterog%flux(2))*der_anal_sol_yo(1)
-                    do i=2,n-1
-                        adv_term_anal(i)=-0.5*(this%tpt_props_heterog%flux(i)+this%tpt_props_heterog%flux(i+1))*der_anal_sol_yo(i)
-                        adv_term(i)=-0.5*(this%tpt_props_heterog%flux(i+1)*(this%conc(i+1)-this%conc(i))+(this%tpt_props_heterog%flux(i)*(this%conc(i)-this%conc(i-1))))/Delta_x
-                    end do
-                    adv_term_anal(n)=-0.5*(this%tpt_props_heterog%flux(n)+this%tpt_props_heterog%flux(n+1))*der_anal_sol_yo(n)
-                    adv_term(n)=-(this%BCs%flux_out*(2d0*this%BCs%conc_out-2d0*this%conc(n))+this%tpt_props_heterog%flux(n)*(this%conc(n)-this%conc(n-1)))/(2d0*Delta_x)
-                end if
-                write(1,*) p_norm_vec(adv_term_anal-adv_term,2)
-                write(1,"(/,2x,'L^2 error concentrations:'/)")
-                write(1,*) p_norm_vec(this%conc-anal_sol_yo,2)
-                write(1,"(/,2x,'Mean L^2 error concentrations:'/)")
-                write(1,*) p_norm_vec(this%conc-anal_sol_yo,2)/sqrt(n*1d0)
-            else if (this%tpt_props_heterog%source_term_order==1) then
-                write(1,"(/,2x,'Derivative analytical solution:'/)")
-                do i=1,n
-                    x=(2*i-1)*Delta_x/2d0
-                    der_anal_sol_yo(i)=der_anal_sol_tpt_1D_stat_flujo_cuad(this,x)
-                    write(1,"(2x,ES15.5)") der_anal_sol_yo(i)
-                end do
-            end if
+            adv_term_anal(n)=-this%tpt_props_heterog%flux(n)*der_anal_sol_yo(n)
+            adv_term(n)=-this%tpt_props_heterog%flux(n)*(2d0*this%BCs%conc_out-this%conc(n)-this%conc(n-1))/(2d0*Delta_x)
+        else if (this%spatial_discr%scheme==2) then ! IFDS
+            adv_term(1)=-(this%tpt_props_heterog%flux(2)*(this%conc(2)-this%conc(1))+this%BCs%flux_inf*(2d0*this%conc(1)-2d0*this%BCs%conc_inf))/(2d0*Delta_x)
+            adv_term_anal(1)=-0.5*(this%tpt_props_heterog%flux(1)+this%tpt_props_heterog%flux(2))*der_anal_sol_yo(1)
+            do i=2,n-1
+                adv_term_anal(i)=-0.5*(this%tpt_props_heterog%flux(i)+this%tpt_props_heterog%flux(i+1))*der_anal_sol_yo(i)
+                adv_term(i)=-0.5*(this%tpt_props_heterog%flux(i+1)*(this%conc(i+1)-this%conc(i))+(this%tpt_props_heterog%flux(i)*(this%conc(i)-this%conc(i-1))))/Delta_x
+            end do
+            adv_term_anal(n)=-0.5*(this%tpt_props_heterog%flux(n)+this%tpt_props_heterog%flux(n+1))*der_anal_sol_yo(n)
+            adv_term(n)=-(this%BCs%flux_out*(2d0*this%BCs%conc_out-2d0*this%conc(n))+this%tpt_props_heterog%flux(n)*(this%conc(n)-this%conc(n-1)))/(2d0*Delta_x)
+        end if
+        write(1,*) p_norm_vec(adv_term_anal-adv_term,2)
+        write(1,"(/,2x,'L^2 error concentrations:'/)")
+        write(1,*) p_norm_vec(this%conc-anal_sol_yo,2)
+        write(1,"(/,2x,'Mean L^2 error concentrations:'/)")
+        write(1,*) p_norm_vec(this%conc-anal_sol_yo,2)/sqrt(n*1d0)
+    else if (this%tpt_props_heterog%source_term_order==1) then
+        write(1,"(/,2x,'Derivative analytical solution:'/)")
+        do i=1,n
+            x=(2*i-1)*Delta_x/2d0
+            der_anal_sol_yo(i)=der_anal_sol_tpt_1D_stat_flujo_cuad(this,x)
+            write(1,"(2x,ES15.5)") der_anal_sol_yo(i)
+        end do
+    end if
     rewind(1)
     close(1)
 end subroutine

@@ -13,7 +13,7 @@
     
     allocate(k(size(conc_RK4),6))
     
-    k(:,1)=prod_mat_vec(this%trans_mat,conc_RK4)/this%F_mat%diag + this%source_term_PDE/this%F_mat%diag ! F^(-1)*T*c_RK4 + F^(-1)*g
+    k(:,1)=prod_mat_vec(this%trans_mat,conc_RK4)/this%F_mat%diag + this%source_term_PDE/this%F_mat%diag
     k(:,2)=prod_mat_vec(this%trans_mat,conc_RK4+Delta_t*k(:,1)/4)/this%F_mat%diag + this%source_term_PDE/this%F_mat%diag
     k(:,3)=prod_mat_vec(this%trans_mat,conc_RK4+Delta_t*(3*k(:,1)+9*k(:,2))/32)/this%F_mat%diag + this%source_term_PDE/this%F_mat%diag
     k(:,4)=prod_mat_vec(this%trans_mat,conc_RK4+Delta_t*(1932*k(:,1)-7200*k(:,2)+7296*k(:,3))/2197)/this%F_mat%diag + this%source_term_PDE/this%F_mat%diag

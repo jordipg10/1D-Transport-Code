@@ -5,11 +5,7 @@ subroutine compute_b_conc_mob(this,theta,Delta_t,conc_mob_old,conc_imm_old,b)
     implicit none
     class(MRMT_c), intent(in) :: this
     real(kind=8), intent(in) :: theta ! time weighting factor
-    !real(kind=8), intent(in) :: alpha(:) ! exchange rates
-    !real(kind=8), intent(in) :: prob(:) ! probabilities
     real(kind=8), intent(in) :: Delta_t ! time step
-    !real(kind=8), intent(in) :: phi_mob ! mobile porosity
-    !real(kind=8), intent(in) :: phi_imm ! immmobile porosity
     real(kind=8), intent(in) :: conc_mob_old(:) ! c_mob^k
     real(kind=8), intent(in) :: conc_imm_old(:) ! c_imm^k
     real(kind=8), intent(out) :: b(:) 
@@ -19,7 +15,6 @@ subroutine compute_b_conc_mob(this,theta,Delta_t,conc_mob_old,conc_imm_old,b)
     type(tridiag_matrix_c) :: B_mat
     real(kind=8), allocatable :: f(:),sum2(:)
     
-    !n_imm=size(alpha) ! number of immobile zones
     if (theta<0d0 .or. theta>1d0) error stop "Theta must be between 0 and 1"
     B_mat%sub=((1d0-theta)*Delta_t/this%mob_zone%mob_por)*this%PDE%trans_mat%sub
     B_mat%super=((1d0-theta)*Delta_t/this%mob_zone%mob_por)*this%PDE%trans_mat%super

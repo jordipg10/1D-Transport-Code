@@ -1,9 +1,9 @@
 function prod_mat_mat(this,B_mat) result(C_mat) ! AB=C
     use matrices_m
     implicit none
-    class(matrix_c), intent(in) :: this ! nxn
-    real(kind=8), intent(in) :: B_mat(:,:) ! nxm
-    real(kind=8), allocatable :: C_mat(:,:) ! nxm
+    class(matrix_c), intent(in) :: this ! n x n
+    real(kind=8), intent(in) :: B_mat(:,:) ! n x m
+    real(kind=8), allocatable :: C_mat(:,:) ! n x m
     
     integer(kind=4) :: i,j,n,m
     

@@ -15,7 +15,6 @@ subroutine Gauss_Jordan(A,b,x,error)
     integer(kind=4) :: n,icol,jcol,irow,jrow,ipeak
     n=size(A,1)
     if (n/=size(b)) error stop "Dimension error in Gauss-Jordan"
-    !allocate(A_aux(n,n))
     A_aux=A
     x=b
     ! Process n times to get all equations

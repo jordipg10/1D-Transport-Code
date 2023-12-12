@@ -93,8 +93,6 @@
 		<File RelativePath=".\LU_lin_syst.f90"/>
 		<File RelativePath=".\main.f90"/>
 		<File RelativePath=".\main_PDE.f90"/>
-		<File RelativePath=".\main_transport.f90"/>
-		<File RelativePath=".\main_transport_1D_transient.f90"/>
 		<File RelativePath=".\mass_balance_error_ADE_stat_Dirichlet_discharge.f90"/>
 		<File RelativePath=".\mass_balance_error_ADE_trans_Dirichlet_discharge.f90"/>
 		<File RelativePath=".\mass_balance_error_ADE_trans_Dirichlet_evap.f90"/>
@@ -121,7 +119,6 @@
 		<File RelativePath=".\refine_mesh_heterog.f90"/>
 		<File RelativePath=".\refine_mesh_homog.f90"/>
 		<File RelativePath=".\refine_mesh_rad.f90"/>
-		<File RelativePath=".\set_stab_params.f90"/>
 		<File RelativePath=".\solve_PDE_1D.f90"/>
 		<File RelativePath=".\solve_PDE_1D_stat.f90"/>
 		<File RelativePath=".\solve_PDE_EE_Delta_t_heterog.f90"/>

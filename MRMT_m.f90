@@ -11,17 +11,8 @@ module MRMT_m
         type(mob_zone_c) :: mob_zone ! mobile zone
         integer(kind=4) :: n_imm ! number of immobile zones
         class(imm_zone_c), allocatable :: imm_zones(:) ! immobile zones
-        !real(kind=8) :: mob_por ! mobile porosity
-        !real(kind=8) :: imm_por ! immobile porosity
-        !real(kind=8), allocatable :: exchange_rates(:) ! (alpha)
-        !real(kind=8), allocatable :: res_times(:) ! residence times (tau)
-        !real(kind=8), allocatable :: probs(:) ! probabilities
-        !real(kind=8), allocatable :: flux(:) ! flux of immobile zones
     contains
-        !procedure, public :: set_PDE
-        !procedure, public :: set_mob_zone
         procedure, public :: set_n_imm
-        !procedure, public :: set_imm_zones
         procedure, public :: allocate_imm_zones
         procedure, public :: compute_A_mat_conc_mob
         procedure, public :: compute_b_conc_mob
@@ -45,11 +36,7 @@ module MRMT_m
             implicit none
             class(MRMT_c), intent(in) :: this
             real(kind=8), intent(in) :: theta ! time weighting factor
-            !real(kind=8), intent(in) :: alpha(:) ! exchange rates
-            !real(kind=8), intent(in) :: prob(:) ! probabilities
             real(kind=8), intent(in) :: Delta_t ! time step
-            !real(kind=8), intent(in) :: phi_mob ! mobile porosity
-            !real(kind=8), intent(in) :: phi_imm ! immmobile porosity
             class(tridiag_matrix_c), intent(out) :: A_mat ! A*c_mob^(k+1)=b
         end subroutine
         
@@ -58,11 +45,7 @@ module MRMT_m
             implicit none
             class(MRMT_c), intent(in) :: this
             real(kind=8), intent(in) :: theta ! time weighting factor
-            !real(kind=8), intent(in) :: alpha(:) ! exchange rates
-            !real(kind=8), intent(in) :: prob(:) ! probabilities
             real(kind=8), intent(in) :: Delta_t ! time step
-            !real(kind=8), intent(in) :: phi_mob ! mobile porosity
-            !real(kind=8), intent(in) :: phi_imm ! immmobile porosity
             real(kind=8), intent(in) :: conc_mob_old(:) ! c_mob^k
             real(kind=8), intent(in) :: conc_imm_old(:) ! c_imm^k
             real(kind=8), intent(out) :: b(:) ! A*c_mob^(k+1)=b
@@ -76,7 +59,6 @@ module MRMT_m
             real(kind=8), intent(in) :: conc_imm_old(:) ! c_imm^k
             real(kind=8), intent(in) :: conc_mob_old(:) ! c_m^k
             real(kind=8), intent(in) :: conc_mob_new(:) ! c_m^(k+1)
-            !real(kind=8), intent(in) :: alpha(:) ! exchange rates
             real(kind=8), intent(in) :: Delta_t ! time step
             real(kind=8), intent(out) :: conc_imm_new(:) ! c_imm^(k+1)
         end subroutine
@@ -84,12 +66,6 @@ module MRMT_m
     end interface
     
     contains
-        !subroutine set_PDE(this,PDE)
-        !    implicit none
-        !    class(MRMT_c) :: this
-        !    class(diffusion_1D_transient_c), intent(in), target :: PDE
-        !    this%PDE=>PDE
-        !end subroutine
         
         subroutine set_n_imm(this,n_imm)
             implicit none

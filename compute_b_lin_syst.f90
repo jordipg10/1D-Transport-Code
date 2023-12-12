@@ -1,4 +1,4 @@
-subroutine compute_b_lin_syst(this,theta,conc_old,b,k,anal_sol)
+subroutine compute_b_lin_syst(this,theta,conc_old,b,k)
 ! A*c^(k+1)=b
 ! A=Id-theta*E
 ! B=(Id+(1-theta)*E) (tridiagonal, negative semi-definite)
@@ -7,13 +7,10 @@ subroutine compute_b_lin_syst(this,theta,conc_old,b,k,anal_sol)
     implicit none
     
     class(PDE_1D_transient_c), intent(in) :: this
-    !class(tridiag_matrix_c), intent(in) :: B_mat
     real(kind=8), intent(in) :: theta
     real(kind=8), intent(in) :: conc_old(:)
     real(kind=8), intent(out) :: b(:)
     integer(kind=4), intent(in), optional :: k
-    real(kind=8), external, optional :: anal_sol
-    !real(kind=8), allocatable :: b(:)
     
     integer(kind=4) :: i,n
     type(tridiag_matrix_c) :: B_mat

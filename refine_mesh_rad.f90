@@ -5,5 +5,4 @@ subroutine refine_mesh_rad(this,conc,conc_ext,rel_tol)
     real(kind=8), intent(inout) :: conc(:,:) ! Num_columns=Num_targets
     real(kind=8), intent(inout) :: conc_ext(:,:) ! Num_columns=Num_targets
     real(kind=8), intent(in) :: rel_tol ! relative tolerance
-    !integer(kind=4), intent(out) :: n_new
 end subroutine

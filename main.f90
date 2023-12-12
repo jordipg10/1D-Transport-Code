@@ -19,9 +19,9 @@ program main
     real(kind=8) :: res
     real(kind=8), allocatable :: MRMT_output(:,:),prueba(:)
 !****************************************************************************************************************************************************
-    eqn_flag=4 ! 1: dif estac, 2: dif trans, 3: tpt estac, 4: tpt trans
-    model=1 ! 1: tradicional, 2: MRMT
-    method=1 ! 1: numerico en espacio y/o tiempo, 2: autovalores y autovectores
+    eqn_flag=4 ! 1: dif stat, 2: dif trans, 3: tpt stat, 4: tpt trans
+    model=1 ! 1: traditional, 2: MRMT
+    method=1 ! 1: numerical in space & time, 2: eigendecomposition
     if (eqn_flag==1) then
         my_PDE=>my_diff
     else if (eqn_flag==2) then

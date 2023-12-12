@@ -9,18 +9,13 @@ module diff_props_heterog_m
     contains
         procedure, public :: set_props_diff_heterog
         procedure, public :: read_props=>read_props_diff_heterog
-        !procedure, public :: compute_retardo=>compute_retardo_heterog
-        !procedure, public :: get_dispersion
     end type
     
     contains
         subroutine set_props_diff_heterog(this,porosity,dispersion)
             implicit none
             class(diff_props_heterog_c) :: this
-            !real(kind=8), intent(in) :: source_term,retardo
             real(kind=8), intent(in) :: porosity(:),dispersion(:)
-            !this%source_term=source_term
-            !this%retardo=retardo
             if (size(porosity)/=size(dispersion)) error stop "Dimensions of porosity and dispersion must be the same"
             this%porosity=porosity
             this%dispersion=dispersion

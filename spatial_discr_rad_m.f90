@@ -1,3 +1,4 @@
+! Radial spatial discretisation module
 module spatial_discr_rad_m
     use spatial_discr_m
     implicit none
@@ -27,9 +28,9 @@ module spatial_discr_rad_m
             real(kind=8), intent(inout), allocatable :: conc(:,:) ! Num_columns=Num_targets
             real(kind=8), intent(inout), allocatable :: conc_ext(:,:) ! Num_columns=Num_targets
             real(kind=8), intent(in) :: rel_tol ! relative tolerance
-            !integer(kind=4), intent(out) :: n_new
         end subroutine
     end interface
+    
     contains
         subroutine set_dim(this,dim)
             implicit none
@@ -88,7 +89,6 @@ module spatial_discr_rad_m
         subroutine compute_radius(this)
             implicit none
             class(spatial_discr_rad_c) :: this
-            !this%radius=(this%Num_targets-this%targets_flag)*this%Delta_r
             this%radius=sum(this%Delta_r)
         end subroutine
         

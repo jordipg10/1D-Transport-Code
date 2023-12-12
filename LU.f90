@@ -16,9 +16,4 @@ subroutine LU(A,L,U)
             U(i,1:n)=U(i,1:n)-factor*U(j,1:n)
         end do
     end do
-    !do i=2,n
-    !    do j=1,i-1
-    !        if (U(i,j)/=0d0) error stop "U is not upper triangular"
-    !    end do
-    !end do
-end subroutine LU
+end subroutine

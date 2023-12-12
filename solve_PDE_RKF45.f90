@@ -5,8 +5,6 @@ subroutine solve_PDE_RKF45(this,Delta_t_init,tolerance)
     class(PDE_1D_transient_c) :: this
     real(kind=8), intent(in) :: Delta_t_init
     real(kind=8), intent(in) :: tolerance
-    !real(kind=8), intent(in) :: Time_out(:)
-    !real(kind=8), intent(out) :: output(:,:)
     
     integer(kind=4) :: n,i,j,icol,Num_time,counter
     real(kind=8) :: Delta_t_old,Delta_t_new,Time,Delta_t_max

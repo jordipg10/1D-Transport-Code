@@ -5,7 +5,7 @@ module transport_stab_params_m
     
     implicit none
     save
-    type, public, extends(stab_params_diff_c) :: stab_params_tpt_c ! homogeneous transport stability parameters subclass
+    type, public, extends(stab_params_diff_c) :: stab_params_tpt_c ! transport stability parameters subclass
         real(kind=8) :: alpha ! advection stability parameter (alpha=q*Delta_t/(2*phi*Delta_x))
         real(kind=8) :: Peclet ! Pe=|q|*Delta_x/D
     contains

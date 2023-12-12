@@ -37,11 +37,6 @@ module vectors_m
             else
                 p_norm_vec=sum**(1d0/p)
             end if
-            !if (sum<epsilon) then
-            !    p_norm_vec=0d0
-            !else
-            !    p_norm_vec=sum**(1d0/p)
-            !end if
         end function p_norm_vec
         
         function inf_norm_vec(x) ! Computes infinite norm

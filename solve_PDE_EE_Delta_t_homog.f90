@@ -15,7 +15,7 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
     real(kind=8), intent(in) :: Time_out(:)
     real(kind=8), intent(out) :: output(:,:)
 
-    integer(kind=4) :: n,i,icol,k,out_freq,conc_star_flag,source_term_flag,Num_output
+    integer(kind=4) :: n,i,icol,k,out_freq,conc_r_flag,source_term_flag,Num_output
     real(kind=8) :: Time,q_inf,q_out,mass_bal,sq_mass_bal_err,cum_mass_bal_err,cum_sq_mass_bal_err,Delta_x
     real(kind=8), parameter :: epsilon=1d-12
     real(kind=8), allocatable :: conc_old(:),conc_new(:)
@@ -27,16 +27,11 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
     n=this%spatial_discr%Num_targets
     
     select type (this)
-    !class is (diffusion_1D_transient_c)
     type is (transport_1D_transient_c)
         select type (time_discr=>this%time_discr)
         type is (time_discr_homog_c)
             conc_old=this%conc_init
             allocate(conc_new(n))
-            !call this%compute_trans_mat_PDE()
-            !call this%compute_source_term_PDE()
-            !call this%compute_F_mat_PDE()
-            !print *, this%props%get_props()
         ! We impose BCs
             if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
                 call Dirichlet_BCs_PDE(this)

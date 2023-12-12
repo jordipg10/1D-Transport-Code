@@ -4,13 +4,11 @@ module transport_transient_m
     use transport_stab_params_m
     implicit none
     save
-    type, public, extends(diffusion_1D_transient_c) :: transport_1D_transient_c ! 1D transport equation class
-        type(tpt_props_heterog_c) :: tpt_props_heterog
+    type, public, extends(diffusion_1D_transient_c) :: transport_1D_transient_c ! 1D transient transport subclass
+        type(tpt_props_heterog_c) :: tpt_props_heterog      ! properties
         type(stab_params_tpt_c) :: stab_params_tpt          ! stability parameters
-        integer(kind=4), allocatable :: conc_r_flag(:)      ! 1 if r>0
-                                                            ! 0 otherwise
     contains
-        procedure, public :: set_conc_r_flag
+        procedure, public :: set_conc_r_flag=>set_conc_r_flag_tpt
         procedure, public :: compute_F_mat_PDE=>compute_F_mat_tpt
         procedure, public :: compute_trans_mat_PDE=>compute_trans_mat_tpt_transient
         procedure, public :: set_stab_params_tpt
@@ -51,9 +49,6 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this ! transport object
             real(kind=8), intent(in) :: Time_out(:)
             real(kind=8), intent(in) :: output(:,:)
-            !class(props_c), intent(in), optional :: props
-            !integer(kind=4), intent(in), optional :: opcion
-            !real(kind=8), intent(in), optional :: theta
         end subroutine
         
         function mass_balance_error_ADE_trans_Dirichlet_recharge(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
@@ -62,11 +57,8 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this
             real(kind=8), intent(in) :: conc_old(:)
             real(kind=8), intent(in) :: conc_new(:)
-            !real(kind=8), intent(in) :: q_inf
-            !real(kind=8), intent(in) :: q_out
             real(kind=8), intent(in) :: Delta_t
             real(kind=8), intent(in) :: Delta_x
-            !integer(kind=4), intent(in) :: k
             real(kind=8) :: mass_bal_err
         end function
         
@@ -76,11 +68,8 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this
             real(kind=8), intent(in) :: conc_old(:)
             real(kind=8), intent(in) :: conc_new(:)
-            !real(kind=8), intent(in) :: q_inf
-            !real(kind=8), intent(in) :: q_out
             real(kind=8), intent(in) :: Delta_t
             real(kind=8), intent(in) :: Delta_x
-            !integer(kind=4), intent(in) :: k
             real(kind=8) :: mass_bal_err
         end function
         
@@ -90,11 +79,8 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this
             real(kind=8), intent(in) :: conc_old(:)
             real(kind=8), intent(in) :: conc_new(:)
-            !real(kind=8), intent(in) :: q_inf
-            !real(kind=8), intent(in) :: q_out
             real(kind=8), intent(in) :: Delta_t
             real(kind=8), intent(in) :: Delta_x
-            !integer(kind=4), intent(in) :: k
             real(kind=8) :: mass_bal_err
         end function
         
@@ -104,11 +90,8 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this
             real(kind=8), intent(in) :: conc_old(:)
             real(kind=8), intent(in) :: conc_new(:)
-            !real(kind=8), intent(in) :: q_inf
-            !real(kind=8), intent(in) :: q_out
             real(kind=8), intent(in) :: Delta_t
             real(kind=8), intent(in) :: Delta_x
-            !integer(kind=4), intent(in) :: k
             real(kind=8) :: mass_bal_err
         end function
         
@@ -118,11 +101,8 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this
             real(kind=8), intent(in) :: conc_old(:)
             real(kind=8), intent(in) :: conc_new(:)
-            !real(kind=8), intent(in) :: q_inf
-            !real(kind=8), intent(in) :: q_out
             real(kind=8), intent(in) :: Delta_t
             real(kind=8), intent(in) :: Delta_x
-            !integer(kind=4), intent(in) :: k
             real(kind=8) :: mass_bal_err
         end function
         
@@ -132,11 +112,8 @@ module transport_transient_m
             class(transport_1D_transient_c), intent(in) :: this
             real(kind=8), intent(in) :: conc_old(:)
             real(kind=8), intent(in) :: conc_new(:)
-            !real(kind=8), intent(in) :: q_inf
-            !real(kind=8), intent(in) :: q_out
             real(kind=8), intent(in) :: Delta_t
             real(kind=8), intent(in) :: Delta_x
-            !integer(kind=4), intent(in) :: k
             real(kind=8) :: mass_bal_err
         end function
     end interface
@@ -157,7 +134,7 @@ module transport_transient_m
             this%tpt_props_heterog=tpt_props_heterog
         end subroutine
         
-        subroutine set_conc_r_flag(this)
+        subroutine set_conc_r_flag_tpt(this)
             implicit none
             class(transport_1D_transient_c) :: this
             

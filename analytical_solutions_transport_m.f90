@@ -5,15 +5,13 @@ module analytical_solutions_transport_m
     use special_fcts_m
     implicit none
     save
-    contains    
+    contains
         
-        
-    ! Solucion analitica para transporte 1D estacionario con: D=cste, q(x)=-x,  BCs:    c(0)=1, c(L)=0
+    ! Solucion analitica para transporte 1D estacionario con: D=cste, q(x)=-x,  BCs: c(0)=1, c(L)=0
         function anal_sol_tpt_1D_stat_flujo_lin(this,x) result(conc)
             implicit none
             class(transport_1D_c), intent(in) :: this
             real(kind=8), intent(in) :: x
-            !integer(kind=4), intent(in) :: opcion
             real(kind=8) :: conc
             
             real(kind=8) :: D
@@ -28,12 +26,11 @@ module analytical_solutions_transport_m
             end if
         end function
         
-    ! Derivada solucion analitica para transporte 1D estacionario con: D=cste, q(x)=-x,  BCs:    c(0)=1, c(L)=0
+    ! Derivada solucion analitica para transporte 1D estacionario con: D=cste, q(x)=-x,  BCs: c(0)=1, c(L)=0
         function der_anal_sol_tpt_1D_stat_flujo_lin(this,x) result(der_conc)
             implicit none
             class(transport_1D_c), intent(in) :: this
             real(kind=8), intent(in) :: x
-            !integer(kind=4), intent(in) :: opcion
             real(kind=8) :: der_conc
             
             real(kind=8) :: D,L 

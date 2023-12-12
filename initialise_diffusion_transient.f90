@@ -2,11 +2,9 @@
 subroutine initialise_diffusion_transient(this)
     use BCs_subroutines_m
     use diff_stab_params_m
-    !use eigenvalues_eigenvectors_m
-    !use prob_dens_fcts_m
     implicit none
 
-    ! Variables
+! Variables
     class(diffusion_1D_transient_c) :: this
     class(props_c), pointer :: my_props=>null()
     type(diff_props_heterog_c), target :: my_props_diff

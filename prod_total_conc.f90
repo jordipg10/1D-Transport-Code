@@ -4,34 +4,13 @@ subroutine prod_total_conc(this,A_mat,time)
     implicit none
     class(diffusion_1D_transient_c) :: this
     class(tridiag_matrix_c), intent(in) :: A_mat
-    !real(kind=8), intent(in) :: Time_out(:)
-    !real(kind=8), intent(out) :: output(:,:)
     real(kind=8), intent(in), optional :: time
-    !real(kind=8), intent(in) :: y(:)
-    !integer(kind=4), intent(in), optional :: k
     
     real(kind=8), allocatable :: y0(:),b(:),c0(:),g(:)
     real(kind=8) :: sumj,sumk1,sumk2,sumk,t,conc_lim_n
     integer(kind=4) :: k,i,j,n
-    !type(tridiag_matrix_c) :: A_mat
+    
     n=this%spatial_discr%Num_targets
-    
-    !if (present(k)) then
-    !    select type (time=>this%time_discr)
-    !    type is (time_discr_homog_c)
-    !        t=k*time%Delta_t
-    !    type is (time_discr_heterog_c)
-    !        t=sum(time%Delta_t(1:k))
-    !    end select
-    !else
-    !    t=this%time_discr%Final_time
-    !    call this%compute_A_mat_ODE(A_mat)
-    !    y0=sqrt(this%F_mat%diag)*this%conc_init
-    !    b=this%source_term_PDE/sqrt(this%F_mat%diag)
-    !    this%conc=prod_total_sym_mat_bis(A_mat,y0,b,t)/sqrt(this%F_mat%diag)
-    !end if
-    
-    !call this%compute_A_mat_ODE(A_mat)
     
     y0=sqrt(this%F_mat%diag)*this%conc_init
     b=this%source_term_PDE/sqrt(this%F_mat%diag)
@@ -39,11 +18,7 @@ subroutine prod_total_conc(this,A_mat,time)
     if (.not. allocated(this%conc)) then
         allocate(this%conc(n))
     end if
-    !call A_mat%compute_eigenvalues_eigenvectors()
-    !print *, A_mat%eigenvalues
-    !allocate(A_mat%eigenvectors(this%spatial_discr%Num_targets,this%spatial_discr%Num_targets))
-    !call eigenvectors_tridiag_sym_matrix(A_mat%diag,A_mat%sub,A_mat%eigenvalues,A_mat%eigenvectors)
-    !call A_mat%check_eigenvectors_tridiag_sym_matrix(tol)
+    
     if (present(time)) then
         do i=1,n
             sumj=0d0

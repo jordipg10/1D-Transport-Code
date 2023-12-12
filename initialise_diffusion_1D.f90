@@ -1,10 +1,5 @@
 subroutine initialise_diffusion_1D(this)
     use BCs_subroutines_m
-    !use transport_stab_params_homog_m
-    !use stab_params_viena_m
-    !use properties_viena_m
-    !use eigenvalues_eigenvectors_m
-    !use prob_dens_fcts_m
     use diffusion_m
     use diff_props_heterog_m
     use spatial_discr_1D_m
@@ -27,7 +22,6 @@ subroutine initialise_diffusion_1D(this)
     real(kind=8), parameter :: pi=4d0*atan(1d0), epsilon_x=1d-2, epsilon_t=1d-4
     character(len=200) :: filename
     logical :: evap,dimless
-    !external :: dsterf
 !****************************************************************************************************************************************************
 ! Dimensionless form flag
     dimless=.false.

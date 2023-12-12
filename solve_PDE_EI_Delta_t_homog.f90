@@ -18,13 +18,12 @@ subroutine solve_PDE_EI_Delta_t_homog(this,theta,Time_out,output)
     real(kind=8), intent(in) :: Time_out(:)
     real(kind=8), intent(out) :: output(:,:)
 
-    integer(kind=4) :: n,i,icol,k,out_freq,conc_star_flag,source_term_flag,Num_output
+    integer(kind=4) :: n,i,icol,k,out_freq,conc_r_flag,source_term_flag,Num_output
     real(kind=8) :: Time
     real(kind=8), parameter :: epsilon=1d-9
     real(kind=8), allocatable :: conc_old(:),conc_new(:),b(:)
     type(tridiag_matrix_c) :: E_mat,B_mat,A
 
-    !procedure(compute_b_lin_syst), pointer :: p_scheme=>null()
     procedure(Dirichlet_BCs_PDE), pointer :: p_BCs=>null()
     
     n=this%spatial_discr%Num_targets

@@ -64,16 +64,4 @@ module char_params_m
                 end if
             end select
         end subroutine
-        
-        !function get_char_time(this) result(char_time)
-        !    implicit none
-        !    class(char_params_c) :: this
-        !    real(kind=8) :: char_time
-        !    select type (this)
-        !    type is (char_params_diff_c)
-        !        char_time=this%disp_time
-        !    type is (char_params_tpt_c)
-        !        char_time=this%char_time
-        !    end select
-        !end function
 end module

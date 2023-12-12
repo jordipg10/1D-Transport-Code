@@ -9,7 +9,6 @@ subroutine refine_mesh_homog(this,conc,conc_ext,rel_tol)
     
     real(kind=8), allocatable :: conc_ref(:,:)
     real(kind=8), allocatable :: conc_ext_ref(:,:)
-    !integer(kind=4), intent(out) :: n_new
     
     integer(kind=4) :: j,n,ratio
     real(kind=8) :: Delta_x_old,Delta_x_new

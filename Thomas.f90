@@ -16,7 +16,6 @@ subroutine Thomas(A,b,x)
     real(kind=8), parameter :: epsilon=1d-9
     real(kind=8), allocatable :: c_star(:),d_star(:), matrix(:,:)
     n=size(b)
-    !if (n/=size(b) .or. size(a)/=n-1 .or. size(c)/=n-1) error stop "Dimension error"
     allocate(c_star(n-1),d_star(n),matrix(n,n))
     c_star(1)=A%super(1)/A%diag(1)
     d_star(1)=b(1)/A%diag(1)

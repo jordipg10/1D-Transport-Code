@@ -1,8 +1,7 @@
 subroutine compute_F_mat_tpt(this)
+! F_ii=phi_i
     use transport_transient_m
     use transport_properties_heterog_m
-    !use transport_properties_homog_m
-    !use properties_viena_m
     implicit none
     class(transport_1D_transient_c) :: this
     

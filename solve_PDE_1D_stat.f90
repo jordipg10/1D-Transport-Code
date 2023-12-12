@@ -9,11 +9,8 @@ subroutine solve_PDE_1D_stat(this)
     
     ! Variables
     class(PDE_1D_c) :: this
-    !real(kind=8), intent(in) :: Time_out(:)
-    !real(kind=8), intent(out) :: output(:,:)
-    !real(kind=8), external, optional :: anal_sol
 
-    integer(kind=4) :: n,i,icol,k,out_freq,conc_star_flag,source_term_flag,Num_output
+    integer(kind=4) :: n,i,icol,k,out_freq,conc_r_flag,source_term_flag,Num_output
     real(kind=8) :: Time,MBE
     real(kind=8), parameter :: epsilon=1d-12
     real(kind=8), allocatable :: conc_old(:),conc_new(:)

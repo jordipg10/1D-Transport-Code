@@ -1,25 +1,17 @@
 module matrices_m
-    !use metodos_sist_lin
-    !use vectores_m
     implicit none
     save
     
     type, public :: matrix_c
     contains
-        procedure, public :: allocate_matrix
-        !procedure, public :: set_diag_matrix
-        
+        procedure, public :: allocate_matrix        
         procedure, public :: prod_mat_vec
         procedure, public :: prod_mat_mat
-        !procedure, public :: write_tridiag_sym_matrix
         procedure, public :: get_diag
         procedure, public :: get_sub
         procedure, public :: get_super
         procedure, public :: compute_norm_inf
-        procedure, public :: compute_norm_1
-        !procedure, public :: get_transpose
-        !procedure, public :: write_matrix
-        
+        procedure, public :: compute_norm_1   
     end type
     
     type, public, extends(matrix_c) :: sq_matrix_c
@@ -64,10 +56,6 @@ module matrices_m
         real(kind=8), allocatable :: vector(:)
     end type
 !****************************************************************************************************************************************************
-    !type, public, extends(matrix_c) :: square_matrix_c
-    !    real(kind=8), allocatable :: matrix(:,:)
-    !end type
-!****************************************************************************************************************************************************
     interface
         subroutine compute_eigenvalues(this)
             import sq_matrix_c
@@ -80,15 +68,6 @@ module matrices_m
             implicit none
             class(sq_matrix_c) :: this
         end subroutine
-        
-        !subroutine write_tridiag_sym_matrix(this,filename)
-        !    import diag_matrix_c
-        !    implicit none
-        !    class(diag_matrix_c), intent(in) :: this
-        !    character(len=*), intent(in) :: filename
-        !end subroutine
-        
-        
         
         function id_matrix(n)
         ! Identity nxn matrix
@@ -186,13 +165,7 @@ module matrices_m
         subroutine check_eigenvectors_tridiag_sym_matrix(this,tolerance)
             import tridiag_sym_matrix_c
             implicit none
-            !real(kind=8), intent(in) :: a(:) ! diagonal
-            !real(kind=8), intent(in) :: b(:) ! non-diagonal
-            !real(kind=8), intent(in) :: A(:,:)
             class(tridiag_sym_matrix_c), intent(in) :: this
-            !real(kind=8), intent(in) :: lambda(:)
-            !class(matrix_c), intent(in) :: P
-            !real(kind=8), intent(in) :: P(:,:)
             real(kind=8), intent(in) :: tolerance
         end subroutine
         
@@ -268,7 +241,6 @@ module matrices_m
             real(kind=8), allocatable :: diag(:)
             select type (this)
             class is (diag_matrix_c)
-                !allocate(diag(size(this%diag)))
                 diag=this%diag
             end select
         end function
@@ -279,7 +251,6 @@ module matrices_m
             real(kind=8), allocatable :: sub(:)
             select type (this)
             class is (tridiag_sym_matrix_c)
-                !allocate(sub(size(this%sub)))
                 sub=this%sub
             end select
         end function
@@ -350,22 +321,5 @@ module matrices_m
             transpose%diag=this%diag
             transpose%super=this%sub
         end subroutine
-        
-        !function prod_mat_vec(this,vector) result(prod)
-        !    implicit none
-        !    class(matrix_c), intent(in) :: this
-        !    real(kind=8), intent(in) :: vector(:)
-        !    real(kind=8), allocatable :: prod(:)
-        !    integer(kind=4) :: n
-        !    n=size(this%diag)
-        !    allocate(prod(n))
-        !    select type (this)
-        !    type is (tridiag_matrix_c)
-        !        prod(1)=this%diag(1)*vector(1)+this%super(1)*vector(2)
-        !        do i=2,n-1
-        !            prod(i)=this%sub(i-1)*vector(i-1)+this%diag(i)*vector(i)+this%super(i)*vector(i+1)
-        !        end do
-        !        prod(n)=this%sub(n-1)*vector(n-1)+this%diag(n)*vector(n)
-        !    end select
-        !end function
-end module 
+
+end module

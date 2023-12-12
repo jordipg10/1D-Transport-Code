@@ -4,7 +4,7 @@ module time_discr_m
     save
     type, public, abstract :: time_discr_c
         real(kind=8) :: Final_time
-        integer(kind=4) :: Num_time                         ! number of time steps
+        integer(kind=4) :: Num_time                         ! Number of time steps
         integer(kind=4) :: int_method                       ! Time integration method:
                                                                 ! 1: Euler explicit
                                                                 ! 2: Euler semi-implicit
@@ -19,9 +19,6 @@ module time_discr_m
         procedure, public :: compute_Num_time
         procedure(read_time_discr), public, deferred :: read_time_discr
         procedure(get_Delta_t), public, deferred :: get_Delta_t
-        !procedure, public :: set_Delta_t
-        !procedure, public :: read_Delta_t
-        !procedure, public :: get_Delta_t
     end type
 !****************************************************************************************************************************************************
     abstract interface 
@@ -37,7 +34,6 @@ module time_discr_m
             implicit none
             class(time_discr_c) :: this
             integer(kind=4), intent(in), optional :: k
-            !real(kind=8), allocatable :: Delta_t(:)
             real(kind=8) :: Delta_t
         end function
     end interface
@@ -145,10 +141,8 @@ module time_discr_m
             read(2,*) size_t_vec
             allocate(t_vec(size_t_vec))
             read(2,*) t_vec
-            !print *, t_vec
             allocate(n_vec(size_t_vec-1))
             read(2,*) n_vec
-            !print *, n_vec
             allocate(this%Delta_t(sum(n_vec)))
             i=1
             k=1
@@ -173,15 +167,7 @@ module time_discr_m
             class(time_discr_homog_c) :: this
             integer(kind=4), intent(in), optional :: k
             real(kind=8) :: Delta_t
-            !allocate(Delta_t(1))
             Delta_t=this%Delta_t
-            !select type (this)
-            !type is (time_discr_homog_c)
-            !    allocate(get_Delta_t(1))
-            !    get_Delta_t=this%Delta_t
-            !type is (time_discr_heterog_c)
-            !    get_Delta_t=this%Delta_t
-            !end select
         end function
         
         function get_Delta_t_heterog(this,k) result(Delta_t)
@@ -190,17 +176,9 @@ module time_discr_m
             integer(kind=4), intent(in), optional :: k
             real(kind=8) :: Delta_t
             if (present(k)) then
-                !allocate(Delta_t(1))
                 Delta_t=this%Delta_t(k)
             else
                 Delta_t=this%Delta_t(1)
             end if
-            !select type (this)
-            !type is (time_discr_homog_c)
-            !    allocate(get_Delta_t(1))
-            !    get_Delta_t=this%Delta_t
-            !type is (time_discr_heterog_c)
-            !    get_Delta_t=this%Delta_t
-            !end select
         end function
 end module

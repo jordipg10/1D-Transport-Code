@@ -1,12 +1,11 @@
 subroutine compute_F_mat_diff(this) ! diagonal matrix
-! F_ii=phi_i*r_i^(d-1)*Delta_r
-! Dimensionless form: F_ii=r_D,i^(d-1)*Delta_r_D,i
+! F_ii=phi_i*(i-1/2)^(d-1)
     use diffusion_transient_m
     use spatial_discr_rad_m
     implicit none
     class(diffusion_1D_transient_c) :: this
     
-    integer(kind=4) :: i,n,opcion
+    integer(kind=4) :: i,n
     real(kind=8) :: r_i
     
     n=this%spatial_discr%Num_targets
@@ -14,16 +13,14 @@ subroutine compute_F_mat_diff(this) ! diagonal matrix
         deallocate(this%F_mat%diag)
         call this%F_mat%allocate_matrix(n)
     end if
-            select type (mesh=>this%spatial_discr)
-            type is (spatial_discr_rad_c)
-                if (opcion==1) then ! matriz almacenamiento adimensional
-                    if (mesh%dim==1) then
-                        this%F_mat%diag=this%diff_props_heterog%porosity
-                    else
-                        forall (i=1:n)
-                            this%F_mat%diag(i)=this%diff_props_heterog%porosity(i)*(i-5d-1)**(mesh%dim-1)
-                        end forall
-                    end if
-                end if
-            end select
+    select type (mesh=>this%spatial_discr)
+    type is (spatial_discr_rad_c)
+        if (mesh%dim==1) then
+            this%F_mat%diag=this%diff_props_heterog%porosity
+        else
+            forall (i=1:n)
+                this%F_mat%diag(i)=this%diff_props_heterog%porosity(i)*(i-5d-1)**(mesh%dim-1)
+            end forall
+        end if
+    end select
 end subroutine
