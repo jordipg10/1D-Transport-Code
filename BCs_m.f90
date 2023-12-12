@@ -14,10 +14,7 @@ module BCs_m
         real(kind=8) :: flux_out                ! flux at outflow
     contains
         procedure, public :: set_BCs_label
-        !procedure, public :: set_conc_inf
         procedure, public :: set_evap
-        !procedure, public :: set_Dirichlet_BCs
-        !procedure, public :: set_Dirichlet_BC_location
         procedure, public :: read_BCs
         procedure, public :: read_Dirichlet_BCs
         procedure, public :: read_Robin_BC_inflow
@@ -34,14 +31,6 @@ module BCs_m
             this%BCs_label=BCs
         end subroutine
         
-        !subroutine set_option(this,option)
-        !    implicit none
-        !    class(BCs_t) :: this
-        !    integer(kind=4), intent(in) :: option
-        !    if (option>2) error stop "BCs option not implemented yet"
-        !    this%option=option
-        !end subroutine 
-        
         subroutine set_evap(this,evap)
             implicit none
             class(BCs_t) :: this
@@ -56,13 +45,6 @@ module BCs_m
             this%conc_inf=conc_inf
             this%conc_out=conc_out
         end subroutine
-        !
-        !subroutine set_Dirichlet_BC_location(this,Dirichlet_BC_location)
-        !    implicit none
-        !    class(BCs_t) :: this
-        !    integer(kind=4), intent(in) :: Dirichlet_BC_location
-        !    this%Dirichlet_BC_location=Dirichlet_BC_location
-        !end subroutine
         
         subroutine read_BCs(this,filename)
             implicit none
@@ -71,7 +53,6 @@ module BCs_m
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) this%BCs_label
             read(1,*) this%evap
-            !read(1,*) this%option
             close(1)
         end subroutine
         
@@ -79,7 +60,6 @@ module BCs_m
             implicit none
             class(BCs_t) :: this
             character(len=*), intent(in) :: filename
-            !allocate(this%Dirichlet_BCs(2))
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) this%conc_inf
             read(1,*) this%conc_out
@@ -90,7 +70,6 @@ module BCs_m
             implicit none
             class(BCs_t) :: this
             character(len=*), intent(in) :: filename
-            !allocate(this%Dirichlet_BCs(2))
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) this%flux_inf
             read(1,*) this%conc_inf
@@ -101,7 +80,6 @@ module BCs_m
             implicit none
             class(BCs_t) :: this
             character(len=*), intent(in) :: filename
-            !allocate(this%Dirichlet_BCs(2))
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) this%flux_inf
             close(1)
