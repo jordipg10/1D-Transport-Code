@@ -27,9 +27,17 @@ subroutine solve_PDE_EI_Delta_t_homog_MRMT(this,theta,Time_out,output)
     type(tridiag_matrix_c) :: A_mat,A_mat_ODE
     
     !type(MRMT_c) :: MRMT
+
+    !procedure(compute_b_lin_syst), pointer :: p_scheme=>null()
+    !procedure(Dirichlet_cst_BCs_EE_1D), pointer :: p_BCs=>null()
+    !MRMT%PDE=>this
     
     n=this%PDE%spatial_discr%Num_targets
-
+    !select type (props=>this%PDE%props)
+    !type is (diff_props_homog_c)
+    !    D=props%dispersion
+    !    D=5d-2
+    !end select
     open(unit=56,file='dist_flujos.out',status='unknown')
     write(56,*) pot
     select type (PDE=>this%PDE)
@@ -37,12 +45,15 @@ subroutine solve_PDE_EI_Delta_t_homog_MRMT(this,theta,Time_out,output)
         select type (time_discr=>PDE%time_discr)
         type is (time_discr_homog_c)
             conc_mob_old=PDE%conc_init
-            conc_mob_old(n)=PDE%BCs%conc_out
+            !if (PDE%BCs%Dirichlet_BC_location==1) then
+                conc_mob_old(n)=PDE%BCs%conc_out
+            !end if
             call this%set_n_imm(n) ! each target associated to one immobile zone
             this%mob_zone%mob_por=4d-1
             allocate(conc_mob_new(n),conc_imm_init(this%n_imm),conc_imm_old(this%n_imm),conc_imm_new(this%n_imm),b(n))
             conc_imm_init=0d0
             conc_imm_old=conc_imm_init
+            !allocate(alpha(n_imm),prob(n_imm))
             call this%allocate_imm_zones()
             call PDE%compute_A_mat_ODE(A_mat_ODE)
             call A_mat_ODE%compute_eigenvalues()
@@ -52,6 +63,7 @@ subroutine solve_PDE_EI_Delta_t_homog_MRMT(this,theta,Time_out,output)
                 cst=cst+1d0/(A_mat_ODE%eigenvalues(i)**pot)
             end do
             cst=1d0/cst
+            !print *, cst
             do i=1,this%n_imm
                 this%imm_zones(i)%exch_rate=A_mat_ODE%eigenvalues(i)
                 !this%imm_zones(i)%prob=1d0/this%n_imm ! uniform law
@@ -59,12 +71,15 @@ subroutine solve_PDE_EI_Delta_t_homog_MRMT(this,theta,Time_out,output)
                 print *, this%imm_zones(i)%prob
                 this%imm_zones(i)%imm_por=1d0
             end do
+            !this%imm_zones(1)%prob=0.9 ! chapuza
+            !this%imm_zones(2:this%n_imm)%prob=0.025 ! chapuza
             call this%check_imm_zones()
             call this%compute_A_mat_conc_mob(theta,time_discr%Delta_t,A_mat)
             Num_output=size(Time_out)
             open(unit=0,file="conc_binary_EI_MRMT.txt",form="unformatted",access="sequential",status="unknown")
             icol=1
             Time=0
+            !print *, size(conc_out,1)
             if (abs(Time-Time_out(icol))<epsilon) then
                 output(:,icol)=[conc_mob_old,conc_imm_old]
                 icol=icol+1
@@ -78,17 +93,23 @@ subroutine solve_PDE_EI_Delta_t_homog_MRMT(this,theta,Time_out,output)
                 call Thomas(A_mat,b,conc_mob_new)
                 call this%compute_conc_imm_MRMT(theta,conc_imm_old,conc_mob_old,conc_mob_new,time_discr%Delta_t,conc_imm_new)
                 if (abs(Time-Time_out(icol))<epsilon) then
+                !if (mod(k,out_freq)==0) then
+                    !print *, conc_new
                     output(:,icol)=[conc_mob_new,conc_imm_new]
                     icol=icol+1
                     if (icol>Num_output) then
                         write(*,*) "Reached Num_output"
                         exit
                     end if
+                    !Time_out(icol)=Time    
                 end if
                 conc_mob_old=conc_mob_new
                 conc_imm_old=conc_imm_new
                 call PDE%prod_total_conc(A_mat_ODE,Time)
+                !print *, PDE%conc(n)
+                !gk=this%compute_gk_JJ(D,PDE%BCs%Dirichlet_BCs(1),PDE%BCs%Dirichlet_BCs(1),PDE%conc(n),conc_imm_init,Time)
                 sum_gk2=sum_gk2+gk**2
+                !write(56,"(ES10.2)") gk**2
             end do
             write(56,*) sum_gk2
             this%mob_zone%conc=conc_mob_new

@@ -1,10 +1,32 @@
 module BCs_subroutines_m
+    !use analytical_solutions_transport_m
     use spatial_discr_rad_m
     use transport_m
     use transport_transient_m
     implicit none
     save
     contains
+         !subroutine Dirichlet_cst_BCs_1D(this,sub,diag,super,nu,k)
+         !! Imposes constant Dirichlet boundary conditions
+         !   implicit none
+         !   class(PDE_1D_c), intent(in) :: this
+         !   !class(spatial_discr_c), intent(in) :: mesh
+         !   real(kind=8), intent(inout) :: sub(:),diag(:),super(:)
+         !   real(kind=8), intent(in), optional :: nu
+         !   integer(kind=4), intent(in), optional :: k
+         !   
+         !   if (size(sub)/=this%spatial_discr%Num_targets-1) then
+         !       error stop "Dimension error in subdiagonal array"
+         !   else if (size(super)/=size(sub)) then
+         !       error stop "Dimension error in superdiagonal array"
+         !   else if (size(diag)/=size(super)+1) then
+         !       error stop "Dimension error in diagonal array"
+         !   end if
+         !   sub(this%spatial_discr%Num_targets-1)=0d0
+         !   super(1)=0d0
+         !   diag(1)=1d0
+         !   diag(this%spatial_discr%Num_targets)=1d0
+         !end subroutine
          
          subroutine Dirichlet_BCs_PDE(this)
          ! Imposes Dirichlet boundary conditions in transition matrix & source term
@@ -88,6 +110,116 @@ module BCs_subroutines_m
                 end select
             end select
          end subroutine
+         
+         !subroutine Dirichlet_anal_BCs_fund_sol_tpt_1D(this,anal_BCs,k)
+         !! Computes analytical Dirichlet boundary conditions using fundamental solution transport equation 1D
+         !   implicit none
+         !   class(PDE_1D_c), intent(in) :: this
+         !   real(kind=8), intent(out) :: anal_BCs(2)
+         !   integer(kind=4), intent(in), optional :: k
+         !   select type (this)
+         !   type is (transport_1D_transient_c)
+         !       anal_BCs(1)=fund_sol_tpt_eqn_1D(this,1,k)
+         !       anal_BCs(2)=fund_sol_tpt_eqn_1D(this,this%spatial_discr%Num_targets,k)
+         !   end select
+         !end subroutine 
+         
+         !subroutine Neumann_homog_BCs_EE_1D(this,sub,diag,super)
+         !! Imposes Neumann homogeneous boundary conditions for the Euler explicit method
+         !   implicit none
+         !   class(transport_1D_c), intent(in) :: this
+         !   real(kind=8), intent(inout) :: sub(:),diag(:),super(:)
+         !   if (size(sub)/=this%spatial_discr%Num_targets-1) then
+         !       error stop "Dimension error in subdiagonal array"
+         !   else if (size(super)/=size(sub)) then
+         !       error stop "Dimension error in superdiagonal array"
+         !   else if (size(diag)/=size(super)+1) then
+         !       error stop "Dimension error in diagonal array"
+         !   end if
+         !   select type (this)
+         !   type is (transport_1D_transient_c)
+         !       select type (parameters=>this%parameters)
+         !       type is (parameters_homog_transient_c)
+         !           super(1)=2*parameters%beta
+         !           sub(this%spatial_discr%Num_targets-1)=super(1)
+         !           select type (time_discr=>this%time_discr)
+         !           type is (time_discr_homog_c)
+         !               diag(1)=1d0-2*parameters%beta-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term
+         !           !type is (time_discr_heterog_c)
+         !           !    diag(1)=1d0-2*parameters%beta-parameters%source_term_flag*time_discr%Delta_t(k)*parameters%source_term
+         !           end select
+         !           diag(this%spatial_discr%Num_targets)=diag(1)
+         !       end select
+         !   end select
+         !end subroutine 
+        
+        !subroutine Neumann_homog_BCs_EE_1D(this,conc_old,conc_new,k)
+        !! Computes Neumann homogeneous boundary conditions for the Euler Explicit method
+        !    implicit none
+        !    class(transport_1D_transient_c), intent(in) :: this
+        !    real(kind=8), intent(in) :: conc_old(:)
+        !    real(kind=8), intent(inout) :: conc_new(:)
+        !    integer(kind=4), intent(in), optional :: k
+        !    
+        !    !if (this%BCs==1) error stop "This subroutine is for Neumann boundary conditions"
+        !    
+        !
+        !        select type (time_discr=>this%time_discr)
+        !        type is (time_discr_homog_c)
+        !            select type (parameters=>this%parameters)
+        !            type is (parameters_homog_transient_c)
+        !                !print *, parameters%source_term_flag*time_discr%Delta_t*parameters%source_term
+        !                conc_new(1)=conc_old(2)*parameters%beta*2+conc_old(1)*(1-2*parameters%beta-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(1)
+        !                !print *, conc_new(1)
+        !                conc_new(this%spatial_discr%Num_targets)=conc_old(this%spatial_discr%Num_targets-1)*parameters%beta*2+conc_old(this%spatial_discr%Num_targets)*(1-2*parameters%beta-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(this%spatial_discr%Num_targets)
+        !            !type is (parameters_homog_transient_discr_heterog_c)
+        !            !    conc_new(1)=conc_old(2)*parameters%beta(1,k)*2+conc_old(1)*(1-2*parameters%beta(1,k)-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(1)
+        !            !    conc_new(this%spatial_discr%Num_targets)=conc_old(this%spatial_discr%Num_targets-1)*parameters%beta(this%spatial_discr%Num_targets,k)*2+conc_old(this%spatial_discr%Num_targets)*(1-2*parameters%beta(this%spatial_discr%Num_targets,k)-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(this%spatial_discr%Num_targets)
+        !            !type is (parameters_heterog_transient_discr_homog_c)
+        !            !    conc_new(1)=conc_old(2)*parameters%beta(1)*2+conc_old(1)*(1-2*parameters%beta(1)-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(1)
+        !            !    conc_new(this%spatial_discr%Num_targets)=conc_old(this%spatial_discr%Num_targets-1)*parameters%beta(this%spatial_discr%Num_targets)*2+conc_old(this%spatial_discr%Num_targets)*(1-2*parameters%beta(this%spatial_discr%Num_targets)-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(this%spatial_discr%Num_targets)
+        !            !type is (parameters_heterog_transient_c)
+        !            !    conc_new(1)=conc_old(2)*parameters%beta(1,k)*2+conc_old(1)*(1-2*parameters%beta(1,k)-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(1)
+        !            !    conc_new(this%spatial_discr%Num_targets)=conc_old(this%spatial_discr%Num_targets-1)*parameters%beta(this%spatial_discr%Num_targets,k)*2+conc_old(this%spatial_discr%Num_targets)*(1-2*parameters%beta(this%spatial_discr%Num_targets,k)-parameters%source_term_flag*time_discr%Delta_t*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t*parameters%source_term*this%conc_ext(this%spatial_discr%Num_targets)
+        !            end select
+        !        type is (time_discr_heterog_c)
+        !            !select type (parameters=>this%parameters)
+        !            !type is (parameters_homog_transient_discr_heterog_c)
+        !            !    conc_new(1)=conc_old(2)*parameters%beta(1,k)*2+conc_old(1)*(1-2*parameters%beta(1,k)-parameters%source_term_flag*time_discr%Delta_t(k)*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t(k)*parameters%source_term*this%conc_ext(1)
+        !            !    conc_new(this%spatial_discr%Num_targets)=conc_old(this%spatial_discr%Num_targets-1)*parameters%beta(this%spatial_discr%Num_targets,k)*2+conc_old(this%spatial_discr%Num_targets)*(1-2*parameters%beta(this%spatial_discr%Num_targets,k)-parameters%source_term_flag*time_discr%Delta_t(k)*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t(k)*parameters%source_term*this%conc_ext(this%spatial_discr%Num_targets)
+        !            !type is (parameters_heterog_transient_c)
+        !            !    conc_new(1)=conc_old(2)*parameters%beta(1,k)*2+conc_old(1)*(1-2*parameters%beta(1,k)-parameters%source_term_flag*time_discr%Delta_t(k)*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t(k)*parameters%source_term*this%conc_ext(1)
+        !            !    conc_new(this%spatial_discr%Num_targets)=conc_old(this%spatial_discr%Num_targets-1)*parameters%beta(this%spatial_discr%Num_targets,k)*2+conc_old(this%spatial_discr%Num_targets)*(1-2*parameters%beta(this%spatial_discr%Num_targets,k)-parameters%source_term_flag*time_discr%Delta_t(k)*parameters%source_term)+this%conc_star_flag*time_discr%Delta_t(k)*parameters%source_term*this%conc_ext(this%spatial_discr%Num_targets)
+        !            !end select
+        !        end select
+        !end subroutine Neumann_homog_BCs_EE_1D
+        
+        !subroutine Neumann_EE_BCs_1D_var_param(this,conc_old,conc_new,k)
+        !! Computes Neumann homogeneous boundary conditions for the Euler Explicit method with constant parameters
+        !    implicit none
+        !    class(transport_1D_c), intent(in) :: this
+        !    real(kind=8), intent(in) :: conc_old(:)
+        !    real(kind=8), intent(inout) :: conc_new(:)
+        !    integer(kind=4), intent(in), optional :: k
+        !    
+        !    !if (this%BCs==1) error stop "This subroutine is for Neumann boundary conditions"
+        !    
+        !    select type (this)
+        !    type is (transport_1D_transient)
+        !        select type (parameters=>this%parameters)
+        !        type is (var_parameters_transient)
+        !            !if (this%BCs==2 .and. this%int_method/=1) then
+        !            !    error stop "This subroutine is for the Euler Explicit method"
+        !            !else if (this%BCs==2 .and. this%int_method==1) then
+        !                ! Neumann homogeneous
+        !                conc_new(1)=conc_old(2)*parameters%beta(1,k)*2+conc_old(1)*(1-2*parameters%beta(1,k)-parameters%source_term_flag*parameters%Delta_t(k)*parameters%source_term)+this%conc_star_flag*parameters%Delta_t(k)*parameters%source_term*this%conc_ext(1)
+        !                conc_new(this%spatial_discr%Num_targets)=conc_old(this%spatial_discr%Num_targets-1)*parameters%beta(this%spatial_discr%Num_targets,k)*2+conc_old(this%spatial_discr%Num_targets)*(1-2*parameters%beta(this%spatial_discr%Num_targets,k)-parameters%source_term_flag*parameters%Delta_t(k)*parameters%source_term)+this%conc_star_flag*parameters%Delta_t(k)*parameters%source_term*this%conc_ext(this%spatial_discr%Num_targets)
+        !            !else
+        !            !    error stop "Boundary conditions not implemented yet"
+        !            !end if
+        !        end select
+        !    end select
+        !end subroutine Neumann_EE_BCs_1D_var_param
         
          subroutine Neumann_homog_BCs(this)
          ! Imposes Neumann homogeneous boundary conditions in transition matrix
