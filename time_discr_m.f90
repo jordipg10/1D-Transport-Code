@@ -6,9 +6,9 @@ module time_discr_m
         real(kind=8) :: Final_time
         integer(kind=4) :: Num_time                         ! Number of time steps
         integer(kind=4) :: int_method                       ! Time integration method:
-                                                                ! 1: Euler explicit
-                                                                ! 2: Euler semi-implicit
-                                                                ! 3: Euler fully implicit
+                                                                ! 1: Lagr explicit
+                                                                ! 2: Lagr semi-implicit
+                                                                ! 3: Lagr fully implicit
                                                                 ! 4: Crank-Nicolson
                                                                 ! 5: RKF45
     contains

@@ -5,7 +5,7 @@ module transport_stab_params_m
     
     implicit none
     save
-    type, public, extends(stab_params_diff_c) :: stab_params_tpt_c ! transport stability parameters subclass
+    type, public, extends(stab_params_diff_c) :: stab_params_tpt_c ! 1D transport stability parameters subclass
         real(kind=8) :: alpha ! advection stability parameter (alpha=q*Delta_t/(2*phi*Delta_x))
         real(kind=8) :: Peclet ! Pe=|q|*Delta_x/D
     contains
@@ -20,17 +20,29 @@ module transport_stab_params_m
             real(kind=8), intent(in) :: mesh_size
             real(kind=8), intent(in) :: time_step
             
-            real(kind=8) :: Delta_t_crit1,Delta_t_crit2
-            real(kind=8), parameter :: epsilon=1d-9
+            real(kind=8) :: D,phi,q
+            real(kind=8), parameter :: epsilon=1d-12
+            logical :: flag
             
             call compute_stab_params_diff(this,props_obj,mesh_size,time_step)
             
             select type (props_obj)
             type is (tpt_props_heterog_c)
-                this%alpha=inf_norm_vec(props_obj%flux)*time_step/(2d0*minval(props_obj%porosity)*mesh_size)
-                this%Peclet=inf_norm_vec(props_obj%flux)*mesh_size/minval(props_obj%dispersion)
-            end select
-            if (this%alpha>=5d-1) print *, "Unstable advection", this%alpha
-            if (this%Peclet>2d0) print *, "Peclet too large", this%Peclet
+                call are_tpt_props_homog(props_obj)
+                if (props_obj%homog_flag==.true.) then
+                    phi=props_obj%porosity(1)
+                    D=props_obj%dispersion(1)
+                    q=props_obj%flux(1)
+                    this%alpha=q*time_step/(2d0*phi*mesh_size)
+                    this%Peclet=abs(q)*mesh_size/D
+                    if (this%Peclet<=2d0) then
+                        this%Delta_t_crit=phi*mesh_size**2/(2d0*D)
+                    else
+                        error stop "You must reduce mesh size to have stability"
+                    end if
+                else
+                    error stop "Stability parameters for heterogenous properties not implemented yet"
+                end if
+            end select            
         end subroutine
 end module

@@ -19,5 +19,5 @@ subroutine compute_B_mat(this,theta,B_mat,k)
     B_mat%sub=(1d0-theta)*E_mat%sub
     B_mat%diag=1d0+(1d0-theta)*E_mat%diag
     B_mat%super=(1d0-theta)*E_mat%super
-
+    !print *, E_mat%compute_norm_inf()
 end subroutine 

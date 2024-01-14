@@ -4,7 +4,7 @@ module stability_parameters_m
     implicit none
     save
     type, public, abstract :: stab_params_c ! stability parameters superclass
-        real(kind=8) :: Delta_t_crit
+        real(kind=8) :: Delta_t_crit ! critical time step
     contains
         procedure(compute_stab_params), public, deferred :: compute_stab_params
     end type

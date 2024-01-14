@@ -1,7 +1,14 @@
+! Special functions module
 module special_fcts_m
     implicit none
     save
     interface
+        function compute_binomial_coeff(m,n) result(bin_coeff)
+            implicit none
+            integer(kind=4), intent(in) :: m ! up
+            integer(kind=4), intent(in) :: n ! down
+            integer(kind=4) :: bin_coeff
+        end function
     end interface
     
     contains

@@ -1,5 +1,5 @@
 subroutine solve_PDE_EI_Delta_t_homog(this,theta,Time_out,output)
-    ! Solves 1D transient PDE with homogeneous time step using Euler implicit method
+    ! Solves 1D transient PDE with homogeneous time step using Lagr implicit method
     
     ! this: transient PDE object
     ! theta: time weighting factor
@@ -33,19 +33,19 @@ subroutine solve_PDE_EI_Delta_t_homog(this,theta,Time_out,output)
         type is (time_discr_homog_c)
             conc_old=this%conc_init
             allocate(conc_new(n),b(n))
-        ! We impose BCs
+        ! BCs pointer
             if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
-                call Dirichlet_BCs_PDE(this)
+                !call Dirichlet_BCs_PDE(this)
                 p_BCs=>Dirichlet_BCs_PDE
             else if (this%BCs%BCs_label(1)==2 .and. this%BCs%BCs_label(2)==2) then
-                call Neumann_homog_BCs(this)
+                !call Neumann_homog_BCs(this)
                 p_BCs=>Neumann_homog_BCs
             else
                 error stop "Boundary conditions not implemented yet"
             end if
             call this%compute_A_mat_lin_syst(theta,A)
             Num_output=size(Time_out)
-        ! Implicit Euler
+        ! Implicit Lagr
             open(unit=0,file="conc_binary_EI.txt",form="unformatted",access="sequential",status="unknown") 
             icol=1
             Time=0

@@ -1,20 +1,22 @@
 module matrices_m
+    use vectors_m
     implicit none
     save
     
-    type, public :: matrix_c
+    type, public :: matrix_c ! matrix superclass
     contains
-        procedure, public :: allocate_matrix        
+        procedure, public :: allocate_matrix
         procedure, public :: prod_mat_vec
         procedure, public :: prod_mat_mat
         procedure, public :: get_diag
         procedure, public :: get_sub
         procedure, public :: get_super
         procedure, public :: compute_norm_inf
-        procedure, public :: compute_norm_1   
+        procedure, public :: compute_norm_1
     end type
     
     type, public, extends(matrix_c) :: sq_matrix_c
+        integer(kind=4) :: dim
         real(kind=8), allocatable :: eigenvalues(:)
         real(kind=8), allocatable :: eigenvectors(:,:)
     contains
@@ -68,6 +70,10 @@ module matrices_m
             implicit none
             class(sq_matrix_c) :: this
         end subroutine
+        
+
+        
+        
         
         function id_matrix(n)
         ! Identity nxn matrix
@@ -321,5 +327,6 @@ module matrices_m
             transpose%diag=this%diag
             transpose%super=this%sub
         end subroutine
-
-end module
+        
+      
+end module 

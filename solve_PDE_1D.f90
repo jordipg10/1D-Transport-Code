@@ -8,19 +8,25 @@ subroutine solve_PDE_1D(this,Time_out,output)
     real(kind=8), intent(out) :: output(:,:)
     
     integer(kind=4) :: k,n,j,i
-    real(kind=8) :: sum
+    real(kind=8) :: sum,B_norm_inf
     real(kind=8), allocatable :: Delta_r(:)
     real(kind=8), parameter :: tol=1d-12
-    type(tridiag_matrix_c) :: A_mat
+    type(tridiag_matrix_c) :: B_mat,A_mat
     
     n=this%spatial_discr%Num_targets
     
+! We compute arrays
+    call this%allocate_trans_mat()
+    call this%compute_trans_mat_PDE()
+    call this%compute_source_term_PDE()
     select type (this)
     class is (diffusion_1D_c)
         if (this%sol_method==1) then
             call this%solve_PDE_1D_stat()
         end if
     class is (PDE_1D_transient_c)
+        call this%allocate_F_mat()
+        call this%compute_F_mat_PDE()
         if (this%sol_method==1) then
             select type (time_discr=>this%time_discr)
             type is (time_discr_homog_c)

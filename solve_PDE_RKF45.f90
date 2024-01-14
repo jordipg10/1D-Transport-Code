@@ -1,3 +1,4 @@
+! Solves 1D transient PDE using RKF45 method
 subroutine solve_PDE_RKF45(this,Delta_t_init,tolerance)
     use transport_transient_m
     use vectors_m

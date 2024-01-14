@@ -1,5 +1,5 @@
 subroutine compute_source_term_PDE(this)
-! g=r*c_r
+! $g=r c_r$
     use transport_m
     use transport_transient_m
     implicit none

@@ -36,7 +36,7 @@ subroutine write_transport_1D_transient(this,Time_out,output)
         write(1,"(2x,'Mesh size:',F15.5/)") mesh%Delta_x
     end select
     if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
-        write(1,"(2x,'Boundary conditions:',10x,'Dirichlet',10x,2F15.5)") this%BCs%conc_inf, this%BCs%conc_out
+        write(1,"(2x,'Boundary conditions:',10x,'Dirichlet',10x,2F15.5,/)") this%BCs%conc_inf, this%BCs%conc_out
     else if (this%BCs%BCs_label(1)==2 .and. this%BCs%BCs_label(2)==2) then
         write(1,"(2x,'Boundary conditions:',10x,'Neumann homogeneous',/)")
     else if (this%BCs%BCs_label(1)==3 .and. this%BCs%BCs_label(2)==2) then
@@ -53,9 +53,9 @@ subroutine write_transport_1D_transient(this,Time_out,output)
     write(1,"(2x,'Final time:',ES15.5/)") this%time_discr%Final_time
     write(1,"(2x,'Number of time steps:',I10/)") this%time_discr%Num_time
     if (this%time_discr%int_method==1) then
-        write(1,"(2x,'Integration method:',10x,'Euler explicit',/)")
+        write(1,"(2x,'Integration method:',10x,'Lagr explicit',/)")
     else if (this%time_discr%int_method==2) then
-        write(1,"(2x,'Integration method:',10x,'Euler fully implicit',/)")
+        write(1,"(2x,'Integration method:',10x,'Lagr fully implicit',/)")
     else if (this%time_discr%int_method==3) then
         write(1,"(2x,'Integration method:',10x,'Crank-Nicolson',/)")
     else if (this%time_discr%int_method==4) then
@@ -74,7 +74,13 @@ subroutine write_transport_1D_transient(this,Time_out,output)
             write(1,"(20x,ES15.5)") this%tpt_props_heterog%flux(i)
         end do
     end if
-
+    if (this%tpt_props_heterog%homog_flag==.true.) then
+        write(1,"(2x,'Stability parameters:'/)")
+        write(1,"(10x,'Critical time step:',/)")
+        write(1,"(20x,ES15.5)") this%stab_params_tpt%Delta_t_crit
+        write(1,"(/,10x,'Peclet:'/)")
+        write(1,"(20x,ES15.5)") this%stab_params_tpt%Peclet
+    end if
     write(1,"(2x,'F:'/)") 
     do i=1,this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
         write(1,"(2x,F15.5)") this%F_mat%diag(i)

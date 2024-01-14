@@ -93,7 +93,7 @@ module spatial_discr_m
         !    open(unit=1,file=filename,status='old',action='read')
         !    read(1,*) this%Num_targets
         !    select type (this)
-        !    type is (mesh_1D_Euler_heterog_c)
+        !    type is (mesh_1D_Lagr_heterog_c)
         !        allocate(Delta_x(this%Num_targets)) ! size(Delta_x_vec)=Num_targets
         !        read(1,*) Delta_x
         !        allocate(this%Delta_x(this%Num_targets)) 
@@ -109,7 +109,7 @@ module spatial_discr_m
         !    real(kind=8), intent(in) :: Delta_x
         !    integer(kind=4), intent(in), optional :: Num_targets
         !    select type (this)
-        !    type is (mesh_1D_Euler_homog_c)
+        !    type is (mesh_1D_Lagr_homog_c)
         !        this%Delta_x=Delta_x
         !        if (this%Num_targets_defined==.false. .and. present(Num_targets)) then
         !            this%Num_targets=Num_targets
@@ -122,9 +122,9 @@ module spatial_discr_m
         !    end select
         !end subroutine
         !
-        !subroutine set_mesh_1D_Euler_homog(this,Delta_x,Num_targets)
+        !subroutine set_mesh_1D_Lagr_homog(this,Delta_x,Num_targets)
         !    implicit none
-        !    class(mesh_1D_Euler_homog_c) :: this
+        !    class(mesh_1D_Lagr_homog_c) :: this
         !    real(kind=8), intent(in) :: Delta_x
         !    integer(kind=4), intent(in), optional :: Num_targets
         !    this%Delta_x=Delta_x
@@ -138,9 +138,9 @@ module spatial_discr_m
         !    end if
         !end subroutine
         !
-        !subroutine set_mesh_1D_Euler_heterog(this,Delta_x,Num_targets)
+        !subroutine set_mesh_1D_Lagr_heterog(this,Delta_x,Num_targets)
         !    implicit none
-        !    class(mesh_1D_Euler_heterog_c) :: this
+        !    class(mesh_1D_Lagr_heterog_c) :: this
         !    real(kind=8), intent(in) :: Delta_x(:)
         !    integer(kind=4), intent(in), optional :: Num_targets
         !    this%Delta_x=Delta_x
@@ -207,24 +207,24 @@ module spatial_discr_m
         !    class(spatial_discr_c) :: this
         !    real(kind=8), allocatable :: Delta_x(:)
         !    select type (this)
-        !    type is (mesh_1D_Euler_homog_c)
+        !    type is (mesh_1D_Lagr_homog_c)
         !        allocate(Delta_x(1))
         !        Delta_x=get_mesh_size_homog(this)
-        !    type is (mesh_1D_Euler_heterog_c)
+        !    type is (mesh_1D_Lagr_heterog_c)
         !        Delta_x=get_mesh_size_heterog(this)
         !    end select
         !end function
         !
         !function get_mesh_size_homog(this) result(Delta_x)
         !    implicit none
-        !    class(mesh_1D_Euler_homog_c) :: this
+        !    class(mesh_1D_Lagr_homog_c) :: this
         !    real(kind=8) :: Delta_x
         !    Delta_x=this%Delta_x
         !end function
         !
         !function get_mesh_size_heterog(this) result(Delta_x)
         !    implicit none
-        !    class(mesh_1D_Euler_heterog_c) :: this
+        !    class(mesh_1D_Lagr_heterog_c) :: this
         !    real(kind=8), allocatable :: Delta_x(:)
         !    Delta_x=this%Delta_x
         !end function

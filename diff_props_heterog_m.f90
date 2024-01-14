@@ -2,13 +2,14 @@ module diff_props_heterog_m
     use properties_m
     implicit none
     save
-    type, public, extends(props_c) :: diff_props_heterog_c ! heterogeneous diffusion properties subclass
+    type, public, extends(props_c) :: diff_props_heterog_c ! heterogeneous 1D diffusion properties subclass
         ! physical properties
         real(kind=8), allocatable :: porosity(:)   ! phi
         real(kind=8), allocatable :: dispersion(:) ! D
     contains
         procedure, public :: set_props_diff_heterog
         procedure, public :: read_props=>read_props_diff_heterog
+        procedure, public :: are_props_homog=>are_diff_props_homog
     end type
     
     contains
@@ -60,7 +61,21 @@ module diff_props_heterog_m
             close(1)
         end subroutine
         
-      
+      subroutine are_diff_props_homog(this)
+            implicit none
+            class(diff_props_heterog_c) :: this
+            
+            integer(kind=4) :: i
+            real(kind=8), parameter :: eps=1d-12
+            
+            this%homog_flag=.true.
+            do i=2,size(this%porosity) ! we assume porosity & dispersion have the same dimension
+                if (abs(this%dispersion(1)-this%dispersion(i))>eps .or. abs(this%porosity(1)-this%porosity(i))>eps) then
+                    this%homog_flag=.false.
+                    exit
+                end if
+            end do
+        end subroutine
         
         
 end module

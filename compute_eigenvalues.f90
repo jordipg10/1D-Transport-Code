@@ -10,7 +10,7 @@ subroutine compute_eigenvalues(this)
     class is (tridiag_sym_matrix_c)
         d=this%diag
         e=this%sub
-        call dsterf(size(d),d,e,info)
+        !call dsterf(size(d),d,e,info)
         this%eigenvalues=d
     end select
 end subroutine

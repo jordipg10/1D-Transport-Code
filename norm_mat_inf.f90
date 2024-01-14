@@ -1,3 +1,4 @@
+! Computes $L_\infty$ norm of a matrix
 function norm_mat_inf(A) result(norm)
     implicit none
     real(kind=8), intent(in) :: A(:,:) ! m x n matrix

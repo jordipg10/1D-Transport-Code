@@ -3,7 +3,6 @@ program main
     use transport_transient_m
     use transport_m
     implicit none
-
 ! Variables
     class(PDE_1D_c), pointer :: my_PDE=>null()
     type(diffusion_1D_c), target :: my_diff

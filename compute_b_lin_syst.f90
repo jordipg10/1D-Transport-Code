@@ -16,7 +16,7 @@ subroutine compute_b_lin_syst(this,theta,conc_old,b,k)
     type(tridiag_matrix_c) :: B_mat
     
     n=size(conc_old)
-    if (n/=this%spatial_discr%Num_targets) error stop "Dimension error in conc_old"
+    if (n/=this%spatial_discr%Num_targets) error stop "Dimension error in subroutine 'compute_b_lin_syst'"
     
     call B_mat%allocate_matrix(n)
     call this%compute_B_mat(theta,B_mat,k)

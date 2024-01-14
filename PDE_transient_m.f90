@@ -1,5 +1,5 @@
 ! Transient PDE module
-! F*dc/dt=T*c+g
+! $F dc/dt=Tc+g$
 module PDE_transient_m
     use PDE_m
     use time_discr_m
@@ -15,6 +15,8 @@ module PDE_transient_m
     ! Set
         procedure, public :: set_time_discr
         procedure, public :: set_char_params
+    ! Aloocate
+        procedure, public :: allocate_F_mat
     ! Computations
         procedure(compute_F_mat_PDE), public, deferred :: compute_F_mat_PDE
         procedure, public :: compute_E_mat
@@ -29,6 +31,7 @@ module PDE_transient_m
         procedure, public :: solve_PDE_EI_Delta_t_homog
         procedure, public :: solve_PDE_RKF45
         procedure, public :: compute_k_RKF45
+        
     end type
 !*****************************************************************************************************************************
     abstract interface
@@ -169,5 +172,10 @@ module PDE_transient_m
             this%char_params=>char_params_obj
         end subroutine
         
-        
+        subroutine allocate_F_mat(this)
+            implicit none
+            class(PDE_1D_transient_c) :: this
+            call this%F_mat%allocate_matrix(this%spatial_discr%Num_targets-this%spatial_discr%targets_flag)
+        end subroutine
+
 end module

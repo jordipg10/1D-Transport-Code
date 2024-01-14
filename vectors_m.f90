@@ -56,7 +56,7 @@ module vectors_m
             proy_ortog=(dot_product(u,v)/dot_product(v,v))*v
         end function
         
-        function sum_squares(x)
+        function sum_squares(x) ! Computes sum squares elements vector
             implicit none
             real(kind=8), intent(in) :: x(:)
             real(kind=8) :: sum_squares

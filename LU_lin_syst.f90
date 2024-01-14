@@ -1,5 +1,4 @@
 subroutine LU_lin_syst(A,b,x) ! Ax=b
-! Solves linear system using LU decomposition
     use vectors_m
     use matrices_m, only : LU
     use metodos_sist_lin_m, only : forward_substitution,backward_substitution
@@ -18,6 +17,7 @@ subroutine LU_lin_syst(A,b,x) ! Ax=b
     call forward_substitution(L,b,y)
     call backward_substitution(U,y,x)
     if (inf_norm_vec(matmul(A,x)-b)>=tol) then
+        print *, inf_norm_vec(matmul(A,x)-b)
         error stop "Wrong solution in LU_lin_syst"
     end if
 end subroutine

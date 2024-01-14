@@ -1,5 +1,4 @@
 module polynomials_m
-    use vectors_m
     implicit none
     save
     interface
@@ -9,6 +8,7 @@ module polynomials_m
             real(kind=8), intent(in) :: x(:) ! input
             real(kind=8), allocatable :: p(:) ! output
         end function
+        
     end interface
     
     contains

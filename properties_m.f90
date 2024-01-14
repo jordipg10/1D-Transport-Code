@@ -8,12 +8,13 @@ module properties_m
         real(kind=8), allocatable :: source_term(:)             ! (r)
         integer(kind=4), allocatable :: source_term_flag(:)     ! 0 if r<0 & no evaporation
                                                                 ! 1 otherwise
-        logical :: homog_props                                  ! True if all properties are homogenous, False otherwise
+        logical :: homog_flag                                  ! True if all properties are homogenous, False otherwise
     contains
         procedure, public :: set_source_term
         procedure, public :: set_source_term_order
         procedure, public :: set_source_term_flag
         procedure(read_props), public, deferred :: read_props
+        procedure(are_props_homog), public, deferred :: are_props_homog
     end type
     
     abstract interface
@@ -26,6 +27,10 @@ module properties_m
             class(spatial_discr_c), intent(in), optional :: spatial_discr
         end subroutine
         
+        subroutine are_props_homog(this)
+            import props_c
+            class(props_c) :: this
+        end subroutine
             
     end interface
     

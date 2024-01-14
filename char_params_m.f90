@@ -15,7 +15,7 @@ module char_params_m
         procedure, public :: compute_char_params=>compute_char_params_diff
     end type
     
-    type, public, extends(char_params_c) :: char_params_tpt_c
+    type, public, extends(char_params_c) :: char_params_tpt_c ! transport characteristic parameters class
     contains
         procedure, public :: compute_char_params=>compute_char_params_tpt
     end type
@@ -43,7 +43,7 @@ module char_params_m
             type is (diff_props_heterog_c)
                 select type (mesh)
                 type is (spatial_discr_rad_c)
-                    if (props_obj%homog_props==.true.) then
+                    if (props_obj%homog_flag==.true.) then
                         this%char_length=mesh%radius ! r_c=r_ext
                         this%char_time=props_obj%porosity(1)*(this%char_length**2)/props_obj%dispersion(1) ! t_c=phi*r_c^2/D
                     end if
@@ -58,7 +58,7 @@ module char_params_m
             class(spatial_discr_c), intent(in) :: mesh
             select type (props_obj)
             type is (tpt_props_heterog_c)
-                if (props_obj%homog_props==.true.) then
+                if (props_obj%homog_flag==.true.) then
                     this%char_time=props_obj%dispersion(1)*props_obj%porosity(1)/(props_obj%flux(1)**2) ! t_c=D*phi/q^2
                     this%char_length=props_obj%dispersion(1)/props_obj%flux(1) ! L_c=D/q
                 end if

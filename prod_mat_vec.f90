@@ -3,7 +3,7 @@ function prod_mat_vec(A,b) result(x) ! Ab=x
     implicit none
     class(matrix_c), intent(in) :: A
     real(kind=8), intent(in) :: b(:)
-    real(kind=8), allocatable :: x(:)
+    real(kind=8), allocatable :: x(:) 
     
     integer(kind=4) :: i,j,n,m
     real(kind=8) :: sum

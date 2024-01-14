@@ -16,4 +16,5 @@ subroutine LU(A,L,U)
             U(i,1:n)=U(i,1:n)-factor*U(j,1:n)
         end do
     end do
-end subroutine
+
+end subroutine LU

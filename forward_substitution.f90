@@ -14,4 +14,4 @@ subroutine forward_substitution(L,b,x)
         end do
         x(j)=(b(j)-sum)/L(j,j)
     end do
-end subroutine forward_substitution
+end subroutine 

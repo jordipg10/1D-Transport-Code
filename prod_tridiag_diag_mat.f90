@@ -1,7 +1,7 @@
-function prod_tridiag_diag_mat(A,B) result(C)
+function prod_tridiag_diag_mat(A,B) result(C) ! A*B=C
     use matrices_m
-    class(tridiag_matrix_c), intent(in) :: A
-    class(diag_matrix_c), intent(in) :: B
+    class(tridiag_matrix_c), intent(in) :: A ! tridiagonal matrix
+    class(diag_matrix_c), intent(in) :: B ! diagonal matrix
     type(tridiag_matrix_c) :: C
     
     n=size(B%diag)

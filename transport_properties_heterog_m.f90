@@ -2,10 +2,10 @@ module transport_properties_heterog_m
     use diff_props_heterog_m
     use spatial_discr_1D_m
     use polynomials_m
+    use vectors_m
     implicit none
     save
-    type, public, extends(diff_props_heterog_c) :: tpt_props_heterog_c ! heterogeneous transport properties subclass
-        ! physical properties
+    type, public, extends(diff_props_heterog_c) :: tpt_props_heterog_c ! heterogeneous 1D transport properties subclass
         real(kind=8), allocatable :: flux(:) ! q
     contains
         procedure, public :: set_tpt_props_heterog
@@ -13,10 +13,10 @@ module transport_properties_heterog_m
         procedure, public :: compute_flux_lin
         procedure, public :: compute_flux_nonlin
         procedure, public :: compute_source_term
+        procedure, public :: are_props_homog=>are_tpt_props_homog
     end type
     
     contains
-    
         subroutine read_source_term_tpt(this,filename,mesh)
             implicit none
             class(tpt_props_heterog_c) :: this
@@ -26,7 +26,6 @@ module transport_properties_heterog_m
             real(kind=8) :: r
             integer(kind=4) :: r_flag
             logical :: cst_source_term
-            
             
             open(unit=1,file=filename,status='old',action='read')
             read(1,*) cst_source_term
@@ -68,10 +67,10 @@ module transport_properties_heterog_m
             
             real(kind=8), parameter :: epsilon=1d-12
             real(kind=8) :: phi,D,q,r
-            integer(kind=4) :: flag
+            logical :: flag
             
             open(unit=1,file=filename,status='old',action='read')
-            read(1,"(/,F10.2)") flag
+            read(1,"(/,L)") flag
             if (flag==.true.) then
                 backspace(1)
                 read(1,*) flag, r
@@ -103,7 +102,7 @@ module transport_properties_heterog_m
                 error stop "Flux already allocated"
             else if (flag==.true. .and. sum_squares(this%source_term)>epsilon) then
                 error stop "Flux cannot be constant"
-            else
+            else if (flag==.true.) then
                 backspace(1)
                 read(1,*) flag, q
                 allocate(this%flux(spatial_discr%Num_targets-spatial_discr%targets_flag))
@@ -111,10 +110,6 @@ module transport_properties_heterog_m
             end if
             close(1)
         end subroutine
-        
-       
-        
-       
         
         subroutine compute_flux_lin(this,q_inf,spatial_discr_obj,q_out)
             implicit none
@@ -247,5 +242,23 @@ module transport_properties_heterog_m
                     error stop
                 end if
             end select
+        end subroutine
+        
+        subroutine are_tpt_props_homog(this)
+            implicit none
+            class(tpt_props_heterog_c) :: this
+            
+            integer(kind=4) :: i
+            real(kind=8), parameter :: eps=1d-12
+            
+            call are_diff_props_homog(this)
+            if (this%homog_flag==.true.) then
+                do i=2,size(this%flux)
+                    if (abs(this%flux(1)-this%flux(i))>eps) then
+                        this%homog_flag=.false.
+                        exit
+                    end if
+                end do
+            end if
         end subroutine
 end module

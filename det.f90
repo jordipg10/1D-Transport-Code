@@ -8,6 +8,7 @@ function det(A)
     real(kind=8) :: det_L, det_U
     real(kind=8), allocatable :: L(:,:), U(:,:)
     integer(kind=4) :: n,i
+    
     n=size(A,1)
     if (n/=size(A,2)) error stop "Matrix must be square (det)"
     if (n==2) then

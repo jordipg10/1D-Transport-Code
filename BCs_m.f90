@@ -1,7 +1,7 @@
 module BCs_m
     implicit none
     save
-    type, public :: BCs_t ! Boundary conditions
+    type, public :: BCs_t ! Boundary conditions class
         integer(kind=4) :: BCs_label(2)         ! First element: inflow
                                                 ! Second element: outflow
                                                 ! 1: Dirichlet
@@ -15,11 +15,13 @@ module BCs_m
     contains
         procedure, public :: set_BCs_label
         procedure, public :: set_evap
+        !procedure, public :: set_Neumann_homog_BCs
         procedure, public :: read_BCs
         procedure, public :: read_Dirichlet_BCs
         procedure, public :: read_Robin_BC_inflow
         procedure, public :: read_flux_inf
-        procedure :: set_conc_boundary
+        procedure, public :: set_conc_boundary
+        procedure, public :: set_cst_flux_boundary
     end type
     
     contains
@@ -44,6 +46,14 @@ module BCs_m
             real(kind=8), intent(in) :: conc_inf,conc_out
             this%conc_inf=conc_inf
             this%conc_out=conc_out
+        end subroutine
+        
+        subroutine set_cst_flux_boundary(this,flux)
+            implicit none
+            class(BCs_t) :: this
+            real(kind=8), intent(in) :: flux
+            this%flux_inf=flux
+            this%flux_out=this%flux_inf
         end subroutine
         
         subroutine read_BCs(this,filename)

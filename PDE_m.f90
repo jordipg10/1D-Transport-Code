@@ -1,5 +1,5 @@
 ! PDE module
-! T*c+g=0
+! $Tc+g=0$
 module PDE_m
     use properties_m
     use matrices_m

@@ -1,3 +1,4 @@
+! Computes $L_1$ norm of a matrix
 function norm_mat_1(A) result(norm)
     implicit none
     real(kind=8), intent(in) :: A(:,:) ! m x n matrix

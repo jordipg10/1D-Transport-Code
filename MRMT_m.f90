@@ -7,11 +7,18 @@ module MRMT_m
     implicit none
     save
     type, public, extends(PDE_model_c) :: MRMT_c
-        
         type(mob_zone_c) :: mob_zone ! mobile zone
         integer(kind=4) :: n_imm ! number of immobile zones
-        class(imm_zone_c), allocatable :: imm_zones(:) ! immobile zones
+        type(imm_zone_c), allocatable :: imm_zones(:) ! immobile zones
+        !real(kind=8) :: mob_por ! mobile porosity
+        !real(kind=8) :: imm_por ! immobile porosity
+        !real(kind=8), allocatable :: exchange_rates(:) ! (alpha)
+        !real(kind=8), allocatable :: res_times(:) ! residence times (tau)
+        !real(kind=8), allocatable :: probs(:) ! probabilities
+        !real(kind=8), allocatable :: flux(:) ! flux of immobile zones
     contains
+        !procedure, public :: set_PDE
+        !procedure, public :: set_mob_zone
         procedure, public :: set_n_imm
         procedure, public :: allocate_imm_zones
         procedure, public :: compute_A_mat_conc_mob
@@ -19,6 +26,7 @@ module MRMT_m
         procedure, public :: compute_conc_imm_MRMT
         procedure, public :: solve_PDE_EI_Delta_t_homog_MRMT
         procedure, public :: check_imm_zones
+        procedure, public :: run_PDE=>run_PDE_MRMT
     end type
     
     interface
@@ -36,7 +44,11 @@ module MRMT_m
             implicit none
             class(MRMT_c), intent(in) :: this
             real(kind=8), intent(in) :: theta ! time weighting factor
+            !real(kind=8), intent(in) :: alpha(:) ! exchange rates
+            !real(kind=8), intent(in) :: prob(:) ! probabilities
             real(kind=8), intent(in) :: Delta_t ! time step
+            !real(kind=8), intent(in) :: phi_mob ! mobile porosity
+            !real(kind=8), intent(in) :: phi_imm ! immmobile porosity
             class(tridiag_matrix_c), intent(out) :: A_mat ! A*c_mob^(k+1)=b
         end subroutine
         
@@ -45,7 +57,11 @@ module MRMT_m
             implicit none
             class(MRMT_c), intent(in) :: this
             real(kind=8), intent(in) :: theta ! time weighting factor
+            !real(kind=8), intent(in) :: alpha(:) ! exchange rates
+            !real(kind=8), intent(in) :: prob(:) ! probabilities
             real(kind=8), intent(in) :: Delta_t ! time step
+            !real(kind=8), intent(in) :: phi_mob ! mobile porosity
+            !real(kind=8), intent(in) :: phi_imm ! immmobile porosity
             real(kind=8), intent(in) :: conc_mob_old(:) ! c_mob^k
             real(kind=8), intent(in) :: conc_imm_old(:) ! c_imm^k
             real(kind=8), intent(out) :: b(:) ! A*c_mob^(k+1)=b
@@ -59,13 +75,22 @@ module MRMT_m
             real(kind=8), intent(in) :: conc_imm_old(:) ! c_imm^k
             real(kind=8), intent(in) :: conc_mob_old(:) ! c_m^k
             real(kind=8), intent(in) :: conc_mob_new(:) ! c_m^(k+1)
+            !real(kind=8), intent(in) :: alpha(:) ! exchange rates
             real(kind=8), intent(in) :: Delta_t ! time step
             real(kind=8), intent(out) :: conc_imm_new(:) ! c_imm^(k+1)
         end subroutine
+        
+      
 
     end interface
     
     contains
+        !subroutine set_PDE(this,PDE)
+        !    implicit none
+        !    class(MRMT_c) :: this
+        !    class(diffusion_1D_transient_c), intent(in), target :: PDE
+        !    this%PDE=>PDE
+        !end subroutine
         
         subroutine set_n_imm(this,n_imm)
             implicit none
@@ -95,5 +120,46 @@ module MRMT_m
             if (abs(prob_tot-1d0)>=epsilon) error stop "Probabilities must sum 1"
         end subroutine
         
-       
+        subroutine run_PDE_MRMT(this)
+            implicit none
+            class(MRMT_c) :: this
+            
+            integer(kind=4) :: i
+            real(kind=8) :: theta
+            real(kind=8), allocatable :: MRMT_output(:,:)
+            
+            call this%PDE%main_PDE()
+            select type (PDE=>this%PDE)
+            class is (PDE_1D_transient_c)
+                !select type (time_discr=>PDE%time_discr)
+                !type is (time_discr_homog_c)
+                    if (PDE%time_discr%int_method==1) then
+                        theta=0d0
+                        !call this%solve_PDE_EE_Delta_t_homog_MRMT(0d0,Time_out,output)
+                    else if (PDE%time_discr%int_method==3) then
+                        theta=1d0
+                        !call this%solve_PDE_EI_Delta_t_homog_MRMT(1d0,Time_out,MRMT_output)
+                    else if (PDE%time_discr%int_method==4) then
+                        theta=5d-1
+                        !call this%solve_PDE_EI_Delta_t_homog_MRMT(5d-1,Time_out,MRMT_output)
+                    end if
+                !type is (time_discr_heterog_c)
+                    !if (time_discr%int_method==1) then
+                        !call this%solve_PDE_EE_Delta_t_heterog(Time_out,output,anal_sol)
+                    !end if
+                !end select
+                allocate(MRMT_output(PDE%spatial_discr%Num_targets,2))
+                call this%solve_PDE_EI_Delta_t_homog_MRMT(theta,[0d0,PDE%time_discr%Final_time],MRMT_output)
+                open(unit=46,file='MRMT.out',status='unknown')
+                write(46,"(2x,'Mobile concentrations:',/)")
+                do i=1,PDE%spatial_discr%Num_targets
+                    write(46,*) this%mob_zone%conc(i)
+                end do
+                write(46,"(/,2x,'Immobile concentrations:',/)")
+                do i=1,this%n_imm
+                    write(46,*) this%imm_zones(i)%conc
+                end do
+                close(46)
+            end select
+        end subroutine
 end module

@@ -1,3 +1,4 @@
+! This module contains the subroutines that compute BCs
 module BCs_subroutines_m
     use spatial_discr_rad_m
     use transport_m

@@ -21,6 +21,7 @@ module transport_transient_m
         procedure, public :: mass_balance_error_ADE_trans_Dirichlet_recharge
         procedure, public :: mass_balance_error_ADE_trans_PMF_discharge
         procedure, public :: mass_balance_error_ADE_trans_Dirichlet_discharge
+        procedure, public :: check_Delta_t
     end type
     
     interface
@@ -147,5 +148,17 @@ module transport_transient_m
                     this%conc_r_flag(i)=1
                 end if
             end do
+        end subroutine
+        
+        subroutine check_Delta_t(this)
+            implicit none
+            class(transport_1D_transient_c) :: this
+            select type (time=>this%time_discr)
+            type is (time_discr_homog_c)
+                if (time%Delta_t>this%stab_params_tpt%Delta_t_crit) then
+                    print *, "Critical time step: ", this%stab_params_tpt%Delta_t_crit
+                    error stop "You must reduce time step to have stability"
+                end if
+            end select
         end subroutine
 end module

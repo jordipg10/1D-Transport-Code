@@ -1,5 +1,5 @@
 subroutine solve_PDE_EE_Delta_t_heterog(this,Time_out,output)
-    ! Solves 1D transient PDE with heterogeneous time step using Euler explicit method
+    ! Solves 1D transient PDE with heterogeneous time step using Lagr explicit method
     
     ! this: transient PDE object
     ! Time_out: output time values
@@ -31,15 +31,16 @@ subroutine solve_PDE_EE_Delta_t_heterog(this,Time_out,output)
         type is (time_discr_heterog_c)
             conc_old=this%conc_init
             allocate(conc_new(this%spatial_discr%Num_targets))
+        ! BCs pointer
             if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
-                call Dirichlet_BCs_PDE(this)
+                !call Dirichlet_BCs_PDE(this)
             else if (this%BCs%BCs_label(1)==2 .and. this%BCs%BCs_label(2)==2) then
-                call Neumann_homog_BCs(this)
+                !call Neumann_homog_BCs(this)
             else if (this%BCs%BCs_label(1)==3 .and. this%BCs%BCs_label(2)==2) then
-                call Robin_Neumann_homog_BCs(this)
+                !call Robin_Neumann_homog_BCs(this)
                 error stop "Boundary conditions not implemented yet"
             end if
-        ! Explicit Euler
+        ! Explicit Lagr
             open(unit=0,file="conc_binary_EE.txt",form="unformatted",access="sequential",status="unknown")  
             icol=1
             Time=0
