@@ -35,5 +35,4 @@ subroutine compute_E_mat(this,E_mat,k)
         E_mat%diag(j)=E_mat%diag(j)/this%F_mat%diag(j)
     end do
     E_mat%diag(n)=E_mat%diag(n)/this%F_mat%diag(n)
-    !print *, E_mat%compute_norm_inf()
 end subroutine 

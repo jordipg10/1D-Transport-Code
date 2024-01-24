@@ -1,5 +1,6 @@
 ! Transient PDE module
-! $F dc/dt=Tc+g$
+! $F dc/dt=Tc+g$, where $c$ is the state variable
+! $\theta$-method: A_k * c^{k+1}= B_k * c^k + f_k
 module PDE_transient_m
     use PDE_m
     use time_discr_m
@@ -10,20 +11,28 @@ module PDE_transient_m
     type, public, abstract, extends(PDE_1D_c) :: PDE_1D_transient_c ! 1D transient PDE subclass
         class(time_discr_c), pointer :: time_discr ! time discretisation (polymorphic variable)
         class(char_params_c), pointer :: char_params ! characteristic parameters (polymorphic variable)
-        type(diag_matrix_c) :: F_mat ! F
+        type(diag_matrix_c) :: F_mat ! storage matrix
+        type(tridiag_matrix_c) :: B_mat ! mixing ratios previous time step
+        type(tridiag_matrix_c) :: A_mat !  mixing ratios next time step
+        real(kind=8), allocatable :: f_vec(:) ! independent term in linear system
     contains
     ! Set
         procedure, public :: set_time_discr
         procedure, public :: set_char_params
-    ! Aloocate
+    ! Allocate
+        procedure, public :: allocate_arrays_PDE_1D=>allocate_arrays_PDE_1D_trans
         procedure, public :: allocate_F_mat
+        procedure, public :: allocate_B_mat
+        procedure, public :: allocate_A_mat
+        procedure, public :: allocate_f_vec
     ! Computations
         procedure(compute_F_mat_PDE), public, deferred :: compute_F_mat_PDE
         procedure, public :: compute_E_mat
         procedure, public :: compute_B_mat
-        procedure, public :: compute_A_mat_lin_syst
-        procedure, public :: compute_f
-        procedure, public :: compute_b_lin_syst
+        procedure, public :: compute_A_mat
+        procedure, public :: compute_mixing_ratios_Delta_t_homog
+        procedure, public :: compute_f_vec
+        procedure, public :: compute_b_vec_lin_syst
         procedure, public :: compute_A_mat_ODE
         procedure, public :: compute_b_ODE     
         procedure, public :: solve_PDE_EE_Delta_t_homog
@@ -49,40 +58,45 @@ module PDE_transient_m
         subroutine compute_E_mat(this,E_mat,k)
             import PDE_1D_transient_c
             import tridiag_matrix_c
+            implicit none
             class(PDE_1D_transient_c) :: this
             type(tridiag_matrix_c), intent(out) :: E_mat
             integer(kind=4), intent(in), optional :: k
         end subroutine
         
-        subroutine compute_B_mat(this,theta,B_mat,k)
+        subroutine compute_B_mat(this,theta,E_mat)
             import PDE_1D_transient_c
             import tridiag_matrix_c
             implicit none
             class(PDE_1D_transient_c) :: this
             real(kind=8), intent(in) :: theta
-            type(tridiag_matrix_c), intent(out) :: B_mat
-            integer(kind=4), intent(in), optional :: k
+            class(tridiag_matrix_c), intent(in) :: E_mat
         end subroutine
         
-        subroutine compute_A_mat_lin_syst(this,theta,A_mat,k)
+        subroutine compute_A_mat(this,theta,E_mat)
             import PDE_1D_transient_c
             import tridiag_matrix_c
             implicit none
             class(PDE_1D_transient_c), intent(in) :: this
             real(kind=8), intent(in) :: theta
-            type(tridiag_matrix_c), intent(out) :: A_mat
-            integer(kind=4), intent(in), optional :: k
+            class(tridiag_matrix_c), intent(in) :: E_mat
         end subroutine
         
-        function compute_f(this,k) result(f)
+        subroutine compute_mixing_ratios_Delta_t_homog(this,theta)
+            import PDE_1D_transient_c
+            implicit none
+            class(PDE_1D_transient_c) :: this
+            real(kind=8), intent(in) :: theta
+        end subroutine
+        
+        subroutine compute_f_vec(this,k)
             import PDE_1D_transient_c
             implicit none
             class(PDE_1D_transient_c) :: this
             integer(kind=4), intent(in), optional :: k
-            real(kind=8), allocatable :: f(:)
-        end function
+        end subroutine
         
-        subroutine compute_b_lin_syst(this,theta,conc_old,b,k)
+        subroutine compute_b_vec_lin_syst(this,theta,conc_old,b,k)
             import PDE_1D_transient_c
             import tridiag_matrix_c
             implicit none
@@ -176,6 +190,34 @@ module PDE_transient_m
             implicit none
             class(PDE_1D_transient_c) :: this
             call this%F_mat%allocate_matrix(this%spatial_discr%Num_targets-this%spatial_discr%targets_flag)
+        end subroutine
+        
+        subroutine allocate_B_mat(this)
+            implicit none
+            class(PDE_1D_transient_c) :: this
+            call this%B_mat%allocate_matrix(this%spatial_discr%Num_targets)
+        end subroutine
+        
+        subroutine allocate_A_mat(this)
+            implicit none
+            class(PDE_1D_transient_c) :: this
+            call this%A_mat%allocate_matrix(this%spatial_discr%Num_targets)
+        end subroutine
+        
+        subroutine allocate_f_vec(this)
+            implicit none
+            class(PDE_1D_transient_c) :: this
+            allocate(this%f_vec(this%spatial_discr%Num_targets))
+        end subroutine
+        
+        subroutine allocate_arrays_PDE_1D_trans(this)
+            implicit none
+            class(PDE_1D_transient_c) :: this
+            call allocate_arrays_PDE_1D_stat(this)
+            call this%allocate_F_mat()
+            call this%allocate_B_mat()
+            call this%allocate_A_mat()
+            call this%allocate_f_vec()
         end subroutine
 
 end module

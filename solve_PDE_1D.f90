@@ -16,25 +16,26 @@ subroutine solve_PDE_1D(this,Time_out,output)
     n=this%spatial_discr%Num_targets
     
 ! We compute arrays
-    call this%allocate_trans_mat()
-    call this%compute_trans_mat_PDE()
-    call this%compute_source_term_PDE()
+    call this%allocate_arrays_PDE_1D()
     select type (this)
     class is (diffusion_1D_c)
         if (this%sol_method==1) then
+            call this%compute_trans_mat_PDE()
+            call this%compute_source_term_PDE()
             call this%solve_PDE_1D_stat()
         end if
     class is (PDE_1D_transient_c)
-        call this%allocate_F_mat()
-        call this%compute_F_mat_PDE()
         if (this%sol_method==1) then
             select type (time_discr=>this%time_discr)
             type is (time_discr_homog_c)
-                if (time_discr%int_method==1) then
+                if (time_discr%int_method==1 .or. time_discr%int_method==2) then
+                    call this%compute_mixing_ratios_Delta_t_homog(0d0)
                     call this%solve_PDE_EE_Delta_t_homog(Time_out,output)
-                else if (time_discr%int_method==2 .or. time_discr%int_method==3) then
+                else if (time_discr%int_method==3) then
+                    call this%compute_mixing_ratios_Delta_t_homog(1d0)
                     call this%solve_PDE_EI_Delta_t_homog(1d0,Time_out,output)
                 else if (time_discr%int_method==4) then
+                    call this%compute_mixing_ratios_Delta_t_homog(5d-1)
                     call this%solve_PDE_EI_Delta_t_homog(5d-1,Time_out,output)
                 else if (time_discr%int_method==5) then
                     call this%solve_PDE_RKF45(time_discr%Delta_t,tol)

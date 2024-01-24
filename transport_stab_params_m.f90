@@ -6,7 +6,7 @@ module transport_stab_params_m
     implicit none
     save
     type, public, extends(stab_params_diff_c) :: stab_params_tpt_c ! 1D transport stability parameters subclass
-        real(kind=8) :: alpha ! advection stability parameter (alpha=q*Delta_t/(2*phi*Delta_x))
+        real(kind=8) :: Courant ! advection stability parameter (=q*Delta_t/(phi*Delta_x))
         real(kind=8) :: Peclet ! Pe=|q|*Delta_x/D
     contains
         procedure, public :: compute_stab_params=>compute_stab_params_tpt
@@ -33,12 +33,13 @@ module transport_stab_params_m
                     phi=props_obj%porosity(1)
                     D=props_obj%dispersion(1)
                     q=props_obj%flux(1)
-                    this%alpha=q*time_step/(2d0*phi*mesh_size)
+                    this%Courant=q*time_step/(phi*mesh_size)
+                    if (this%Courant>1d0) error stop "Courant condition violated"
                     this%Peclet=abs(q)*mesh_size/D
                     if (this%Peclet<=2d0) then
                         this%Delta_t_crit=phi*mesh_size**2/(2d0*D)
                     else
-                        error stop "You must reduce mesh size to have stability"
+                        error stop "Peclet condition violated"
                     end if
                 else
                     error stop "Stability parameters for heterogenous properties not implemented yet"

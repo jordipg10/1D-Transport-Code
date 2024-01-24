@@ -34,7 +34,7 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
             allocate(conc_new(n))
         ! BCs
             if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
-                call Dirichlet_BCs_PDE(this)
+                !call Dirichlet_BCs_PDE(this)
                 !p_BCs=>Dirichlet_BCs_PDE
                 if (minval(this%tpt_props_heterog%source_term)>=0d0) then ! recharge
                     p_mass_bal_err=>mass_balance_error_ADE_trans_Dirichlet_recharge
@@ -44,9 +44,9 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
                     p_mass_bal_err=>mass_balance_error_ADE_trans_Dirichlet_evap
                 end if
             else if (this%BCs%BCs_label(1)==2 .and. this%BCs%BCs_label(2)==2) then
-                call Neumann_homog_BCs(this)
+                !call Neumann_homog_BCs(this)
             else if (this%BCs%BCs_label(1)==3 .and. this%BCs%BCs_label(2)==2) then
-                call Robin_Neumann_homog_BCs(this)
+                !call Robin_Neumann_homog_BCs(this)
                 !p_BCs=>Robin_Neumann_homog_BCs
                 if (minval(this%tpt_props_heterog%source_term)>=0d0) then
                     p_mass_bal_err=>mass_balance_error_ADE_trans_PMF_recharge
@@ -60,8 +60,8 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
             end if
         ! Mixing ratios
             !call this%compute_mixing_ratios(0d0)
-            call this%compute_B_mat(0d0,B_mat)
-            print *, B_mat%compute_norm_inf()
+            !call this%compute_B_mat(0d0,B_mat)
+            !print *, B_mat%compute_norm_inf()
         ! Explicit Euler
             open(unit=0,file="conc_binary_EE.txt",form="unformatted",access="sequential",status="unknown")
             Num_output=size(Time_out)
@@ -78,7 +78,7 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
                 Time=k*time_discr%Delta_t
                 write(0) Time, conc_old
             ! Spatial discretization
-                call this%compute_b_lin_syst(0d0,conc_old,conc_new)
+                call this%compute_b_vec_lin_syst(0d0,conc_old,conc_new)
             ! Mass balance error
                 !mass_bal_err=p_mass_bal_err(this,conc_old,conc_new,time_discr%Delta_t,Delta_x)
                 cum_mass_bal_err=cum_mass_bal_err + mass_bal_err
@@ -93,7 +93,7 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
                 conc_old=conc_new
             end do
             this%conc=conc_new
-            print *, this%conc
+            !print *, this%conc
             deallocate(conc_old,conc_new)
             close(0)
         end select

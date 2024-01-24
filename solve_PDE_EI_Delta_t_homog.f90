@@ -20,7 +20,7 @@ subroutine solve_PDE_EI_Delta_t_homog(this,theta,Time_out,output)
 
     integer(kind=4) :: n,i,icol,k,out_freq,conc_r_flag,source_term_flag,Num_output
     real(kind=8) :: Time
-    real(kind=8), parameter :: epsilon=1d-9
+    real(kind=8), parameter :: tol_Thomas=1d-9,epsilon=1d-9
     real(kind=8), allocatable :: conc_old(:),conc_new(:),b(:)
     type(tridiag_matrix_c) :: E_mat,B_mat,A
 
@@ -43,7 +43,6 @@ subroutine solve_PDE_EI_Delta_t_homog(this,theta,Time_out,output)
             else
                 error stop "Boundary conditions not implemented yet"
             end if
-            call this%compute_A_mat_lin_syst(theta,A)
             Num_output=size(Time_out)
         ! Implicit Lagr
             open(unit=0,file="conc_binary_EI.txt",form="unformatted",access="sequential",status="unknown") 
@@ -57,8 +56,8 @@ subroutine solve_PDE_EI_Delta_t_homog(this,theta,Time_out,output)
                 Time=k*time_discr%Delta_t
                 write(0) Time, conc_old
             ! Linear system
-                call this%compute_b_lin_syst(theta,conc_old,b,k)
-                call Thomas(A,b,conc_new)
+                call this%compute_b_vec_lin_syst(theta,conc_old,b,k)
+                call Thomas(this%A_mat,b,tol_Thomas,conc_new)
                 if (abs(Time-Time_out(icol))<epsilon) then
                     output(:,icol)=conc_new
                     icol=icol+1

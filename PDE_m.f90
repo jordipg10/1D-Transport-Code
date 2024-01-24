@@ -21,6 +21,7 @@ module PDE_m
     ! Allocate
         procedure, public :: allocate_trans_mat
         procedure, public :: allocate_source_term_PDE
+        procedure, public :: allocate_arrays_PDE_1D=>allocate_arrays_PDE_1D_stat
     ! Update
         procedure, public :: update_trans_mat
     ! Initialise
@@ -115,10 +116,9 @@ module PDE_m
             this%trans_mat=trans_mat
         end subroutine
         
-        subroutine allocate_source_term_PDE(this,source_term_PDE)
+        subroutine allocate_source_term_PDE(this)
             implicit none
             class(PDE_1D_c) :: this
-            real(kind=8), intent(in)  :: source_term_PDE(:)
             allocate(this%source_term_PDE(this%spatial_discr%Num_targets))
         end subroutine
         
@@ -128,5 +128,12 @@ module PDE_m
             integer(kind=4), intent(in) :: method
             if (method<0 .or. method>2) error stop "Solution method not implemented"
             this%sol_method=method
+        end subroutine
+        
+        subroutine allocate_arrays_PDE_1D_stat(this)
+            implicit none
+            class(PDE_1D_c) :: this
+            call this%allocate_trans_mat()
+            call this%allocate_source_term_PDE()
         end subroutine
 end module 

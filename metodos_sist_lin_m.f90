@@ -26,18 +26,20 @@ module metodos_sist_lin_m
             real(kind=8), intent(out) :: x(:)
         end subroutine
         
-        subroutine LU_lin_syst(A,b,x)
+        subroutine LU_lin_syst(A,b,x,tolerance)
             implicit none
             real(kind=8), intent(in) :: A(:,:)
             real(kind=8), intent(in) :: b(:)
             real(kind=8), intent(out) :: x(:)
+            real(kind=8), intent(in), optional :: tolerance
         end subroutine
         
-        subroutine Thomas(A,b,x)
+        subroutine Thomas(A,b,tol,x)
             import tridiag_matrix_c
             implicit none
             class(tridiag_matrix_c), intent(in) :: A
             real(kind=8), intent(in) :: b(:)
+            real(kind=8), intent(in) :: tol
             real(kind=8), intent(out) :: x(:)
         end subroutine
         

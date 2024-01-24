@@ -7,7 +7,7 @@ module matrices_m
     contains
         procedure, public :: allocate_matrix
         procedure, public :: prod_mat_vec
-        procedure, public :: prod_mat_mat
+        !procedure, public :: prod_mat_mat
         procedure, public :: get_diag
         procedure, public :: get_sub
         procedure, public :: get_super
@@ -52,11 +52,13 @@ module matrices_m
     contains
         procedure, public :: set_tridiag_matrix
         procedure, public :: compute_transpose_tridiag_matrix
+        procedure, public :: compute_inverse_tridiag_matrix
+        procedure, public :: prod_tridiag_mat_mat
     end type
 
-    type, public, extends(tridiag_matrix_c) :: tridiag_matrix_vec_c
-        real(kind=8), allocatable :: vector(:)
-    end type
+    !type, public, extends(tridiag_matrix_c) :: tridiag_matrix_vec_c
+    !    real(kind=8), allocatable :: vector(:)
+    !end type
 !****************************************************************************************************************************************************
     interface
         subroutine compute_eigenvalues(this)
@@ -102,10 +104,11 @@ module matrices_m
             real(kind=8) :: det
         end function det
         
-        subroutine inv_matrix(A,inv)
-        ! Inverse of square matrix using LU decomposition
+        subroutine inv_matrix(A,tol,inv)
+        ! Inverse of square matrix using Gauss-Jordan
             implicit none
             real(kind=8), intent(in) :: A(:,:)
+            real(kind=8), intent(in) :: tol
             real(kind=8), intent(out) :: inv(:,:)
         end subroutine inv_matrix
         
@@ -117,10 +120,10 @@ module matrices_m
             real(kind=8), allocatable :: x(:)
         end function
         
-        function prod_mat_mat(this,B_mat) result(C_mat) ! AB=C
-            import matrix_c
+        function prod_tridiag_mat_mat(this,B_mat) result(C_mat) ! AB=C
+            import tridiag_matrix_c
             implicit none
-            class(matrix_c), intent(in) :: this
+            class(tridiag_matrix_c), intent(in) :: this
             real(kind=8), intent(in) :: B_mat(:,:)
             real(kind=8), allocatable :: C_mat(:,:)
         end function 
@@ -190,6 +193,14 @@ module matrices_m
             class(diag_matrix_c), intent(in) :: B
             type(tridiag_matrix_c) :: C
         end function
+        
+        subroutine compute_inverse_tridiag_matrix(this,tol,inv_mat)
+            import tridiag_matrix_c
+            implicit none
+            class(tridiag_matrix_c), intent(in) :: this
+            real(kind=8), intent(in) :: tol
+            real(kind=8), intent(out) :: inv_mat(:,:)
+        end subroutine
     end interface
 !****************************************************************************************************************************************************
     contains
@@ -206,10 +217,10 @@ module matrices_m
                     select type (this)
                     type is (tridiag_matrix_c)
                         allocate(this%super(n-1))
-                        select type (this)
-                        type is (tridiag_matrix_vec_c)
-                            allocate(this%vector(n))
-                        end select
+                        !select type (this)
+                        !type is (tridiag_matrix_vec_c)
+                        !    allocate(this%vector(n))
+                        !end select
                     end select
                 end select
             end select
@@ -328,5 +339,5 @@ module matrices_m
             transpose%super=this%sub
         end subroutine
         
-      
+        
 end module 

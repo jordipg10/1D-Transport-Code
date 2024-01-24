@@ -40,7 +40,7 @@ subroutine solve_PDE_EE_Delta_t_heterog(this,Time_out,output)
                 !call Robin_Neumann_homog_BCs(this)
                 error stop "Boundary conditions not implemented yet"
             end if
-        ! Explicit Lagr
+        ! Explicit Euler
             open(unit=0,file="conc_binary_EE.txt",form="unformatted",access="sequential",status="unknown")  
             icol=1
             Time=0
@@ -53,7 +53,7 @@ subroutine solve_PDE_EE_Delta_t_heterog(this,Time_out,output)
                 Time=Time+time_discr%Delta_t(k)
                 write(0) Time, conc_old
             ! Spatial discretisation
-                call this%compute_b_lin_syst(0d0,conc_old,conc_new,k)
+                call this%compute_b_vec_lin_syst(0d0,conc_old,conc_new,k)
                 if (abs(Time-Time_out(icol))<epsilon) then
                     output(:,icol)=conc_new
                     icol=icol+1

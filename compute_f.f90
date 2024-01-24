@@ -1,16 +1,15 @@
-function compute_f(this,k) result(f)
+subroutine compute_f_vec(this,k)
 ! f=Delta_t(k)*inv(F)*g
-    use transport_transient_m
+    use PDE_transient_m
     implicit none
     class(PDE_1D_transient_c) :: this
     integer(kind=4), intent(in), optional :: k
-    real(kind=8), allocatable :: f(:)
     
-    f=this%source_term_PDE
+    this%f_vec=this%source_term_PDE
     select type (time=>this%time_discr)
     type is (time_discr_homog_c)
-        f=f*time%Delta_t/this%F_mat%diag
+        this%f_vec=this%f_vec*time%Delta_t/this%F_mat%diag
     type is (time_discr_heterog_c)
-        f=f*time%Delta_t(k)/this%F_mat%diag
+        this%f_vec=this%f_vec*time%Delta_t(k)/this%F_mat%diag
     end select
-end function
+end subroutine

@@ -1,20 +1,16 @@
-subroutine compute_A_mat_lin_syst(this,theta,A_mat,k)
-! A*c^(k+1)=b
-! A=Id-theta*E
+subroutine compute_A_mat(this,theta,E_mat)
+! A_k*c^(k+1)=b_k
+! A_k=Id-theta*E_k
     use PDE_transient_m
     implicit none
     
-    class(PDE_1D_transient_c), intent(in) :: this
+    class(PDE_1D_transient_c) :: this
     real(kind=8), intent(in) :: theta
-    type(tridiag_matrix_c), intent(out) :: A_mat
-    integer(kind=4), intent(in), optional :: k
+    class(tridiag_matrix_c), intent(in) :: E_mat
+        
     
-    type(tridiag_matrix_c) :: E_mat
-    
-    call this%compute_E_mat(E_mat,k)
-    
-    A_mat%sub=-theta*E_mat%sub
-    A_mat%diag=1d0-theta*E_mat%diag
-    A_mat%super=-theta*E_mat%super
+    this%A_mat%sub=-theta*E_mat%sub
+    this%A_mat%diag=1d0-theta*E_mat%diag
+    this%A_mat%super=-theta*E_mat%super
 
 end subroutine

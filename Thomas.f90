@@ -1,22 +1,22 @@
-subroutine Thomas(A,b,x)
+subroutine Thomas(A,b,tol,x)
     ! Solves linear system of equations with tridiagonal matrix using Thomas algorithm
     
     ! A: tridiagonal matrix
     ! b: independent term
     ! x: solution of linear system
 
-    use vectors_m, only : inf_norm_vec
     use matrices_m
     implicit none
     class(tridiag_matrix_c), intent(in) :: A
     real(kind=8), intent(in) :: b(:)
+    real(kind=8), intent(in) :: tol ! tolerance
     real(kind=8), intent(out) :: x(:) ! tiene que estar alocatado
     
     integer(kind=4) :: i,n
     real(kind=8), parameter :: epsilon=1d-9
     real(kind=8), allocatable :: c_star(:),d_star(:), matrix(:,:)
+    
     n=size(b)
-    !if (n/=size(b) .or. size(a)/=n-1 .or. size(c)/=n-1) error stop "Dimension error"
     allocate(c_star(n-1),d_star(n),matrix(n,n))
     c_star(1)=A%super(1)/A%diag(1)
     d_star(1)=b(1)/A%diag(1)
@@ -38,5 +38,9 @@ subroutine Thomas(A,b,x)
         matrix(i,i+1)=A%super(i)
     end do
     matrix(n,(n-1):n)=[A%sub(n-1),A%diag(n)]
-    if (inf_norm_vec(matmul(matrix,x)-b)>=epsilon) error stop "Thomas solution not accurate enough"
+    if (inf_norm_vec(matmul(matrix,x)-b)>=tol) then
+        print *, "Thomas solution not accurate enough"
+        !error stop "Thomas solution not accurate enough"
+    end if
+    deallocate(c_star,d_star,matrix)
 end subroutine

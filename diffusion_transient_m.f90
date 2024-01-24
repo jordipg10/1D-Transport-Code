@@ -9,7 +9,7 @@ module diffusion_transient_m
         integer(kind=4), allocatable :: conc_r_flag(:)      ! 1 if r>0
                                                             ! 0 otherwise
         real(kind=8), allocatable :: conc_init(:) ! initial concentration (c_0)
-        type(tridiag_matrix_vec_c) :: mixing_ratios
+        
         type(diff_props_heterog_c) :: diff_props_heterog        ! properties
         type(stab_params_diff_c) :: stab_params_diff            ! stability parameters
     contains
@@ -19,7 +19,6 @@ module diffusion_transient_m
         procedure, public :: compute_trans_mat_PDE=>compute_trans_mat_diff
         procedure, public :: compute_F_mat_PDE=>compute_F_mat_diff
         procedure, public :: initialise_PDE=>initialise_diffusion_transient
-        procedure, public :: compute_mixing_ratios
         procedure, public :: set_stab_params_diff
         procedure, public :: update_conc_ext
         procedure, public :: prod_total_conc
@@ -46,15 +45,7 @@ module diffusion_transient_m
             class(diffusion_1D_transient_c) :: this
         end subroutine
         
-        subroutine compute_mixing_ratios(this,theta,props,k)
-            import diffusion_1D_transient_c
-            import props_c
-            implicit none
-            class(diffusion_1D_transient_c) :: this
-            real(kind=8), intent(in) :: theta
-            class(props_c), intent(in), optional :: props
-            integer(kind=4), intent(in), optional :: k
-        end subroutine
+        
         
         subroutine prod_total_conc(this,A_mat,time)
             import diffusion_1D_transient_c
@@ -83,13 +74,13 @@ module diffusion_transient_m
         
         function compute_c_tilde(this,j,conc,conc_r,mixing_ratios) result(c_tilde)
             import diffusion_1D_transient_c
-            import tridiag_matrix_vec_c
+            import tridiag_matrix_c
             implicit none
             class(diffusion_1D_transient_c), intent(in) :: this
             integer(kind=4), intent(in) :: j
             real(kind=8), intent(in) :: conc(:,:)
             real(kind=8), intent(in) :: conc_r(:)
-            class(tridiag_matrix_vec_c), intent(in) :: mixing_ratios
+            class(tridiag_matrix_c), intent(in) :: mixing_ratios
             real(kind=8), allocatable :: c_tilde(:)
         end function
     end interface

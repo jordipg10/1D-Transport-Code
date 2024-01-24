@@ -74,8 +74,9 @@
 		<File RelativePath=".\compute_f.f90"/>
 		<File RelativePath=".\compute_F_mat_diff.f90"/>
 		<File RelativePath=".\compute_F_mat_tpt.f90"/>
+		<File RelativePath=".\compute_inverse_tridiag_matrix.f90"/>
 		<File RelativePath=".\compute_k_RKF45.f90"/>
-		<File RelativePath=".\compute_mixing_ratios.f90"/>
+		<File RelativePath=".\compute_mixing_ratios_Delta_t_homog.f90"/>
 		<File RelativePath=".\compute_source_term_PDE.f90"/>
 		<File RelativePath=".\compute_trans_mat_diff.f90"/>
 		<File RelativePath=".\compute_trans_mat_diff_trans.f90"/>
@@ -121,6 +122,7 @@
 		<File RelativePath=".\prod_mat_vec.f90"/>
 		<File RelativePath=".\prod_total_conc.f90"/>
 		<File RelativePath=".\prod_tridiag_diag_mat.f90"/>
+		<File RelativePath=".\prod_tridiag_mat_mat.f90"/>
 		<File RelativePath=".\properties_m.f90"/>
 		<File RelativePath=".\refine_mesh_heterog.f90"/>
 		<File RelativePath=".\refine_mesh_homog.f90"/>
