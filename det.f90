@@ -13,8 +13,8 @@ function det(A)
     if (n/=size(A,2)) error stop "Matrix must be square (det)"
     if (n==2) then
         det=A(1,1)*A(2,2)-A(2,1)*A(1,2)
-    else if (n==3) then
-        det=A(1,1)*A(2,2)*A(3,3)+A(2,1)*A(3,2)*A(1,3)+A(1,2)*A(2,3)*A(3,1)-(A(3,1)*A(2,2)*A(1,3)+A(2,1)*A(1,2)*A(3,3)+A(3,2)*A(2,3)*A(1,1))
+    !else if (n==3) then
+    !    det=A(1,1)*A(2,2)*A(3,3)+A(2,1)*A(3,2)*A(1,3)+A(1,2)*A(2,3)*A(3,1)-(A(3,1)*A(2,2)*A(1,3)+A(2,1)*A(1,2)*A(3,3)+A(3,2)*A(2,3)*A(1,1))
     else
         allocate(L(n,n),U(n,n))
         call LU(A,L,U)

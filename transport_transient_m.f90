@@ -156,8 +156,8 @@ module transport_transient_m
             select type (time=>this%time_discr)
             type is (time_discr_homog_c)
                 if (time%Delta_t>this%stab_params_tpt%Delta_t_crit) then
-                    print *, "Critical time step: ", this%stab_params_tpt%Delta_t_crit
-                    error stop "You must reduce time step to have stability"
+                    !print *, "Critical time step: ", this%stab_params_tpt%Delta_t_crit
+                    !error stop "You must reduce time step to have stability"
                 end if
             end select
         end subroutine

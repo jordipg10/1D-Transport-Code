@@ -76,6 +76,7 @@
 		<File RelativePath=".\compute_F_mat_tpt.f90"/>
 		<File RelativePath=".\compute_inverse_tridiag_matrix.f90"/>
 		<File RelativePath=".\compute_k_RKF45.f90"/>
+		<File RelativePath=".\compute_lumped_A_mat.f90"/>
 		<File RelativePath=".\compute_mixing_ratios_Delta_t_homog.f90"/>
 		<File RelativePath=".\compute_source_term_PDE.f90"/>
 		<File RelativePath=".\compute_trans_mat_diff.f90"/>
@@ -91,11 +92,14 @@
 		<File RelativePath=".\eigenvectors_tridiag_sym_matrix.f90"/>
 		<File RelativePath=".\forward_substitution.f90"/>
 		<File RelativePath=".\Gauss-Jordan.f90"/>
+		<File RelativePath=".\Gauss-Seidel.f90"/>
+		<File RelativePath=".\id_matrix.f90"/>
 		<File RelativePath=".\imm_zone_m.f90"/>
 		<File RelativePath=".\initialise_diffusion_1D.f90"/>
 		<File RelativePath=".\initialise_diffusion_1D_transient.f90"/>
 		<File RelativePath=".\initialise_transport_1D.f90"/>
 		<File RelativePath=".\initialise_transport_1D_transient.f90"/>
+		<File RelativePath=".\inv_matrix.f90"/>
 		<File RelativePath=".\LU.f90"/>
 		<File RelativePath=".\LU_lin_syst.f90"/>
 		<File RelativePath=".\main.f90"/>
@@ -120,6 +124,7 @@
 		<File RelativePath=".\prod_diag_tridiag_mat.f90"/>
 		<File RelativePath=".\prod_mat_mat.f90"/>
 		<File RelativePath=".\prod_mat_vec.f90"/>
+		<File RelativePath=".\prod_total.f90"/>
 		<File RelativePath=".\prod_total_conc.f90"/>
 		<File RelativePath=".\prod_tridiag_diag_mat.f90"/>
 		<File RelativePath=".\prod_tridiag_mat_mat.f90"/>

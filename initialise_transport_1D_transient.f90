@@ -43,17 +43,17 @@ subroutine initialise_transport_1D_transient(this)
     Num_cells=this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
 ! Uniform time discretisation
     my_time_discr=>my_homog_time_discr
-    !Delta_t=1d-1*my_homog_mesh%Delta_x**2
+    Delta_t=1d-1*my_homog_mesh%Delta_x**2
     Final_time=5d-1
-    int_method=1                                                ! 1: Lagr explicit
-                                                                ! 2: Lagr semi-implicit
-                                                                ! 3: Lagr fully implicit
+    int_method=3                                                ! 1: Euler explicit
+                                                                ! 2: Euler semi-implicit
+                                                                ! 3: Euler fully implicit
                                                                 ! 4: Crank-Nicolson
                                                                 ! 5: RKF45
-    !call my_homog_time_discr%set_Delta_t_homog(Delta_t)
+    call my_homog_time_discr%set_Delta_t_homog(Delta_t)
     call my_time_discr%set_int_method(int_method)
     call my_time_discr%set_Final_time(Final_time)
-    !call my_time_discr%compute_Num_time()
+    call my_time_discr%compute_Num_time()
     call this%set_time_discr(my_time_discr)
 !****************************************************************************************************************************************************
 ! Transport properties
@@ -80,16 +80,16 @@ subroutine initialise_transport_1D_transient(this)
 ! Stability parameters
     call my_stab_params_tpt%compute_stab_params(this%tpt_props_heterog,my_homog_mesh%Delta_x,my_homog_time_discr%Delta_t)
     call this%set_stab_params_tpt(my_stab_params_tpt)
-    call this%check_Delta_t()
+    !call this%check_Delta_t()
     !print *, this%stab_params_tpt%Delta_t_crit
 !****************************************************************************************************************************************************
 ! Critical time step test
-    select type (time=>this%time_discr)
-    type is (time_discr_homog_c)
-        call time%set_Delta_t_homog(this%stab_params_tpt%Delta_t_crit-epsilon_t)
-        call time%compute_Num_time()
-        call this%stab_params_tpt%compute_stab_params(this%tpt_props_heterog,my_homog_mesh%Delta_x,time%Delta_t)
-    end select
+    !select type (time=>this%time_discr)
+    !type is (time_discr_homog_c)
+    !    call time%set_Delta_t_homog(this%stab_params_tpt%Delta_t_crit-epsilon_t)
+    !    call time%compute_Num_time()
+    !    call this%stab_params_tpt%compute_stab_params(this%tpt_props_heterog,my_homog_mesh%Delta_x,time%Delta_t)
+    !end select
 !****************************************************************************************************************************************************
 ! External concentration
     allocate(c_e(Num_cells))

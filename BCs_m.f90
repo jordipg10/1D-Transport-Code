@@ -1,7 +1,9 @@
+! Boundary conditions type:
+!   contains information of boundary conditions
 module BCs_m
     implicit none
     save
-    type, public :: BCs_t ! Boundary conditions class
+    type, public :: BCs_t 
         integer(kind=4) :: BCs_label(2)         ! First element: inflow
                                                 ! Second element: outflow
                                                 ! 1: Dirichlet

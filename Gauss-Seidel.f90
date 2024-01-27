@@ -27,7 +27,7 @@ subroutine Gauss_Seidel(A,b,x0,x,niter)
     forall (i=1:n)
         L(i,i)=L(i,i)-D(i)
     end forall
-    call inv_matrix(-L,inv)
+    call inv_matrix(-L,tol,inv)
     C_mat=matmul(inv,R)
     c=matmul(inv,b)
     do k=1,n

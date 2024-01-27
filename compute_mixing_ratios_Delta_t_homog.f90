@@ -1,10 +1,11 @@
 ! Computes mixing ratios matrix with uniform time stepping
-subroutine compute_mixing_ratios_Delta_t_homog(this,theta)
+subroutine compute_mixing_ratios_Delta_t_homog(this,theta,A_mat_lumped)
     use BCs_subroutines_m
     implicit none
     
     class(PDE_1D_transient_c) :: this
     real(kind=8), intent(in) :: theta
+    type(diag_matrix_c), intent(out), optional :: A_mat_lumped
     
     integer(kind=4) :: i,n
     real(kind=8) :: lambda
@@ -12,10 +13,13 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,theta)
     
     type(tridiag_matrix_c) :: E_mat
     
+    
+    if (theta<0d0 .or. theta>1d0) error stop "Time weighting factor must be in [0,1]"
+    
     n=this%spatial_discr%Num_targets
     
     !call this%mixing_ratios%allocate_matrix(n)
-    call this%allocate_arrays_PDE_1D()
+    !call this%allocate_arrays_PDE_1D()
 ! We compute PDE arrays
     !call this%allocate_trans_mat()
     call this%compute_trans_mat_PDE()
@@ -39,6 +43,10 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,theta)
     call this%compute_A_mat(theta,E_mat)
     call this%compute_f_vec()
     
-    !print *, this%B_mat%diag
+    if (present(A_mat_lumped)) then
+        call this%compute_lumped_A_mat(A_mat_lumped)
+    end if
     !print *, this%A_mat%diag
+    !print *, this%B_mat%diag
+    !print *, A_mat_lumped%diag
 end subroutine 

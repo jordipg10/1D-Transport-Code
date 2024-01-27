@@ -33,13 +33,14 @@ module transport_stab_params_m
                     phi=props_obj%porosity(1)
                     D=props_obj%dispersion(1)
                     q=props_obj%flux(1)
+                    this%Delta_t_crit=phi*mesh_size**2/(2d0*D)
                     this%Courant=q*time_step/(phi*mesh_size)
-                    if (this%Courant>1d0) error stop "Courant condition violated"
+                    if (this%Courant>1d0) then
+                        print *, "Courant condition violated"
+                    end if
                     this%Peclet=abs(q)*mesh_size/D
-                    if (this%Peclet<=2d0) then
-                        this%Delta_t_crit=phi*mesh_size**2/(2d0*D)
-                    else
-                        error stop "Peclet condition violated"
+                    if (this%Peclet>2d0) then
+                        print *, "Peclet condition violated"
                     end if
                 else
                     error stop "Stability parameters for heterogenous properties not implemented yet"

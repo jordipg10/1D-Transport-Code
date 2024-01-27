@@ -9,7 +9,7 @@ subroutine compute_b_vec_lin_syst(this,theta,conc_old,b_vec,k)
     class(PDE_1D_transient_c), intent(in) :: this
     real(kind=8), intent(in) :: theta
     real(kind=8), intent(in) :: conc_old(:)
-    real(kind=8), intent(out) :: b_vec(:)
+    real(kind=8), intent(out) :: b_vec(:) ! must be allocated
     integer(kind=4), intent(in), optional :: k
     
     integer(kind=4) :: i,n

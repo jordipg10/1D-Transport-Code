@@ -1,3 +1,4 @@
+! This subroutine performs backward substitution in LU decomposition of matrix
 subroutine backward_substitution(U,b,x)
     implicit none
     real(kind=8), intent(in) :: U(:,:) ! upper triangular matrix

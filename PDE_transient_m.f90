@@ -30,6 +30,7 @@ module PDE_transient_m
         procedure, public :: compute_E_mat
         procedure, public :: compute_B_mat
         procedure, public :: compute_A_mat
+        procedure, public :: compute_lumped_A_mat
         procedure, public :: compute_mixing_ratios_Delta_t_homog
         procedure, public :: compute_f_vec
         procedure, public :: compute_b_vec_lin_syst
@@ -82,11 +83,21 @@ module PDE_transient_m
             class(tridiag_matrix_c), intent(in) :: E_mat
         end subroutine
         
-        subroutine compute_mixing_ratios_Delta_t_homog(this,theta)
+        subroutine compute_lumped_A_mat(this,A_mat_lumped)
             import PDE_1D_transient_c
+            import diag_matrix_c
+            implicit none
+            class(PDE_1D_transient_c), intent(in) :: this
+            type(diag_matrix_c), intent(out) :: A_mat_lumped ! must be allocated
+        end subroutine
+        
+        subroutine compute_mixing_ratios_Delta_t_homog(this,theta,A_mat_lumped)
+            import PDE_1D_transient_c
+            import diag_matrix_c
             implicit none
             class(PDE_1D_transient_c) :: this
             real(kind=8), intent(in) :: theta
+            type(diag_matrix_c), intent(out), optional :: A_mat_lumped
         end subroutine
         
         subroutine compute_f_vec(this,k)

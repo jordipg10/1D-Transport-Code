@@ -1,4 +1,4 @@
-! This module contains the subroutines that compute BCs
+! This module contains the subroutines that impose BCs in transition matrix and source term of a PDE
 module BCs_subroutines_m
     use spatial_discr_rad_m
     use transport_m

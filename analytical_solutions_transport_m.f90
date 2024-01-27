@@ -6,13 +6,12 @@ module analytical_solutions_transport_m
     implicit none
     save
     contains
-        
-    ! Analytical solution 1D stationary transport equation with:
-    !   D=cst
-    !   q(x)=-x
-    !   c(0)=1
-    !   c(L)=0
         function anal_sol_tpt_1D_stat_flujo_lin(this,x) result(conc)
+        ! Analytical solution 1D stationary transport equation with:
+        !   D=cst
+        !   q(x)=-x
+        !   c(0)=1
+        !   c(L)=0
             implicit none
             class(transport_1D_c), intent(in) :: this
             real(kind=8), intent(in) :: x
@@ -30,12 +29,13 @@ module analytical_solutions_transport_m
             end if
         end function
         
-    ! Derivative of analytical solution 1D stationary transport equation with:
-    !   D=cst
-    !   q(x)=-x
-    !   c(0)=1
-    !   c(L)=0
+   
         function der_anal_sol_tpt_1D_stat_flujo_lin(this,x) result(der_conc)
+        ! Derivative of analytical solution 1D stationary transport equation with:
+        !   D=cst
+        !   q(x)=-x
+        !   c(0)=1
+        !   c(L)=0
             implicit none
             class(transport_1D_c), intent(in) :: this
             real(kind=8), intent(in) :: x
@@ -50,12 +50,13 @@ module analytical_solutions_transport_m
         end function
 
         
-    ! Derivative of analytical solution 1D stationary transport equation with:
-    !   D=cst
-    !   q(x)=-x^2
-    !   c(0)=1
-    !   c(L)=0
+    
         function der_anal_sol_tpt_1D_stat_flujo_cuad(this,x) result(der_conc)
+        ! Derivative of analytical solution 1D stationary transport equation with:
+        !   D=cst
+        !   q(x)=-x^2
+        !   c(0)=1
+        !   c(L)=0
             implicit none
             class(transport_1D_c), intent(in) :: this
             real(kind=8), intent(in) :: x
