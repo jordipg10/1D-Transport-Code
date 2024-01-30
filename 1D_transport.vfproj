@@ -65,8 +65,11 @@
 		<File RelativePath=".\metodos_numericos\check_eigenvectors_tridiag_sym_matrix.f90"/>
 		<File RelativePath=".\metodos_numericos\Cholesky.f90"/>
 		<File RelativePath=".\MRMT\compute_A_conc_mob.f90"/>
+		<File RelativePath=".\transporte\compute_A_lin_syst.f90"/>
 		<File RelativePath=".\transporte\compute_A_mat_lin_syst.f90"/>
 		<File RelativePath=".\transporte\compute_A_mat_ODE.f90"/>
+		<File RelativePath=".\transporte\compute_A_mat_ODE_diff.f90"/>
+		<File RelativePath=".\transporte\compute_A_mat_ODE_tpt.f90"/>
 		<File RelativePath=".\MRMT\compute_b_conc_mob.f90"/>
 		<File RelativePath=".\transporte\compute_b_lin_syst.f90"/>
 		<File RelativePath=".\transporte\compute_B_mat.f90"/>
@@ -75,6 +78,8 @@
 		<File RelativePath=".\transporte\compute_char_params.f90"/>
 		<File RelativePath=".\MRMT\compute_conc_imm_MRMT.f90"/>
 		<File RelativePath=".\transporte\compute_E_mat.f90"/>
+		<File RelativePath=".\transporte\compute_E_mat_diff.f90"/>
+		<File RelativePath=".\transporte\compute_E_mat_tpt.f90"/>
 		<File RelativePath=".\metodos_numericos\compute_eigenvalues.f90"/>
 		<File RelativePath=".\metodos_numericos\compute_eigenvectors.f90"/>
 		<File RelativePath=".\transporte\compute_F_mat_diff.f90"/>
@@ -86,6 +91,7 @@
 		<File RelativePath=".\transporte\compute_mixing_ratios_Delta_t_homog.f90"/>
 		<File RelativePath=".\transporte\compute_source_term_PDE.f90"/>
 		<File RelativePath=".\transporte\compute_stab_params.f90"/>
+		<File RelativePath=".\transporte\compute_trans_mat.f90"/>
 		<File RelativePath=".\transporte\compute_trans_mat_diff.f90"/>
 		<File RelativePath=".\transporte\compute_trans_mat_diff_trans.f90"/>
 		<File RelativePath=".\transporte\compute_trans_mat_tpt.f90"/>
@@ -110,6 +116,7 @@
 		<File RelativePath=".\metodos_numericos\inf_norm_mat.f90"/>
 		<File RelativePath=".\transporte\initialise_diffusion_1D.f90"/>
 		<File RelativePath=".\transporte\initialise_diffusion_1D_transient.f90"/>
+		<File RelativePath=".\transporte\initialise_transport.f90"/>
 		<File RelativePath=".\transporte\initialise_transport_1D.f90"/>
 		<File RelativePath=".\transporte\initialise_transport_1D_transient.f90"/>
 		<File RelativePath=".\metodos_numericos\inv_matrix.f90"/>
