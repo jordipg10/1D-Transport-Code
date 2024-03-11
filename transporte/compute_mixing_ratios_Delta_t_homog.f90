@@ -19,7 +19,7 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,theta,A_mat_lumped)
     n=this%spatial_discr%Num_targets
     
     !call this%mixing_ratios%allocate_matrix(n)
-    !call this%allocate_arrays_PDE_1D()
+    call this%allocate_arrays_PDE_1D()
 ! We compute PDE arrays
     !call this%allocate_trans_mat()
     call this%compute_trans_mat_PDE()

@@ -65,6 +65,7 @@ module transport_properties_heterog_m
             character(len=*), intent(in) :: filename
             class(spatial_discr_c), intent(in), optional :: spatial_discr
             
+            integer(kind=4) :: n_flux
             real(kind=8), parameter :: epsilon=1d-12
             real(kind=8) :: phi,D,q,r
             logical :: flag
@@ -105,7 +106,12 @@ module transport_properties_heterog_m
             else if (flag==.true.) then
                 backspace(1)
                 read(1,*) flag, q
-                allocate(this%flux(spatial_discr%Num_targets-spatial_discr%targets_flag))
+                if (spatial_discr%scheme==2 .and. spatial_discr%targets_flag==0) then
+                    n_flux=spatial_discr%Num_targets+1
+                else if (spatial_discr%targets_flag==0) then
+                    n_flux=spatial_discr%Num_targets
+                end if
+                allocate(this%flux(n_flux))
                 this%flux=q
             end if
             close(1)

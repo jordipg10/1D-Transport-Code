@@ -11,7 +11,7 @@ module array_ops_m
             integer(kind=4) :: i
             integer(kind=4), allocatable :: aux_array(:)
             
-            print *, size(array)
+            !print *, size(array)
             aux_array=array
             if (allocated(array)) then
                 deallocate(array)

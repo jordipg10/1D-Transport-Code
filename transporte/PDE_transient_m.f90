@@ -15,6 +15,7 @@ module PDE_transient_m
         type(tridiag_matrix_c) :: B_mat ! mixing ratios previous time step
         type(tridiag_matrix_c) :: A_mat !  mixing ratios next time step
         real(kind=8), allocatable :: f_vec(:) ! independent term in linear system
+        real(kind=8), allocatable :: mixing_ratios(:,:) ! mixing ratios WMA
     contains
     ! Set
         procedure, public :: set_time_discr
@@ -25,6 +26,7 @@ module PDE_transient_m
         procedure, public :: allocate_B_mat
         procedure, public :: allocate_A_mat
         procedure, public :: allocate_f_vec
+        procedure, public :: allocate_mixing_ratios
     ! Computations
         procedure(compute_F_mat_PDE), public, deferred :: compute_F_mat_PDE
         procedure, public :: compute_E_mat
@@ -219,6 +221,12 @@ module PDE_transient_m
             implicit none
             class(PDE_1D_transient_c) :: this
             allocate(this%f_vec(this%spatial_discr%Num_targets))
+        end subroutine
+        
+        subroutine allocate_mixing_ratios(this)
+            implicit none
+            class(PDE_1D_transient_c) :: this
+            allocate(this%mixing_ratios(this%spatial_discr%Num_targets,4))
         end subroutine
         
         subroutine allocate_arrays_PDE_1D_trans(this)

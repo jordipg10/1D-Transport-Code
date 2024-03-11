@@ -45,7 +45,7 @@ subroutine initialise_transport_1D_transient(this)
     my_time_discr=>my_homog_time_discr
     Delta_t=1d-1*my_homog_mesh%Delta_x**2
     Final_time=5d-1
-    int_method=3                                                ! 1: Euler explicit
+    int_method=1                                                ! 1: Euler explicit
                                                                 ! 2: Euler semi-implicit
                                                                 ! 3: Euler fully implicit
                                                                 ! 4: Crank-Nicolson
