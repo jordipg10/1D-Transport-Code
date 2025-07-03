@@ -22,7 +22,7 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
     type(tridiag_matrix_c) :: E_mat,B_mat
 
     !procedure(Dirichlet_BCs_PDE), pointer :: p_BCs=>null()
-    procedure(mass_balance_error_ADE_trans_Dirichlet_recharge), pointer :: p_mass_bal_err=>null()    
+    procedure(mass_balance_error_ADE_trans_Dirichlet_revalence), pointer :: p_mass_bal_err=>null()    
     
     n=this%spatial_discr%Num_targets
 
@@ -36,10 +36,10 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
             if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
                 !call Dirichlet_BCs_PDE(this)
                 !p_BCs=>Dirichlet_BCs_PDE
-                if (minval(this%tpt_props_heterog%source_term)>=0d0) then ! recharge
-                    p_mass_bal_err=>mass_balance_error_ADE_trans_Dirichlet_recharge
-                else if (maxval(this%tpt_props_heterog%source_term)<=0d0 .and.  this%BCs%evap==.false.) then ! discharge
-                    p_mass_bal_err=>mass_balance_error_ADE_trans_Dirichlet_discharge
+                if (minval(this%tpt_props_heterog%source_term)>=0d0) then ! revalence
+                    p_mass_bal_err=>mass_balance_error_ADE_trans_Dirichlet_revalence
+                else if (maxval(this%tpt_props_heterog%source_term)<=0d0 .and.  this%BCs%evap==.false.) then ! disvalence
+                    p_mass_bal_err=>mass_balance_error_ADE_trans_Dirichlet_disvalence
                 else ! evaporation
                     p_mass_bal_err=>mass_balance_error_ADE_trans_Dirichlet_evap
                 end if
@@ -49,9 +49,9 @@ subroutine solve_PDE_EE_Delta_t_homog(this,Time_out,output)
                 !call Robin_Neumann_homog_BCs(this)
                 !p_BCs=>Robin_Neumann_homog_BCs
                 if (minval(this%tpt_props_heterog%source_term)>=0d0) then
-                    p_mass_bal_err=>mass_balance_error_ADE_trans_PMF_recharge
+                    p_mass_bal_err=>mass_balance_error_ADE_trans_PMF_revalence
                 else if (maxval(this%tpt_props_heterog%source_term)<=0d0 .and.  this%BCs%evap==.false.) then
-                    p_mass_bal_err=>mass_balance_error_ADE_trans_PMF_discharge
+                    p_mass_bal_err=>mass_balance_error_ADE_trans_PMF_disvalence
                 else
                     p_mass_bal_err=>mass_balance_error_ADE_trans_PMF_evap
                 end if

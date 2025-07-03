@@ -1,5 +1,5 @@
 subroutine compute_trans_mat_diff(this)
-! T: transition matrix (tridiagonal, symmetric, negative semi-definite)
+! T: transition matrix (tridiagonal, symmetric, negative stoich_mat_react_zonemi-definite)
 ! rows sum = 0 if r=0
     use diffusion_m
     use spatial_discr_rad_m

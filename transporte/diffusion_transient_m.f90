@@ -7,7 +7,7 @@ module diffusion_transient_m
         real(kind=8), allocatable :: conc(:) ! concentration (c)
         real(kind=8), allocatable :: conc_ext(:) ! (c_e)
         integer(kind=4), allocatable :: conc_r_flag(:)      ! 1 if r>0
-                                                            ! 0 otherwise
+                                                            ! 0 otherwistoich_mat_react_zone
         real(kind=8), allocatable :: conc_init(:) ! initial concentration (c_0)
         
         type(diff_props_heterog_c) :: diff_props_heterog        ! properties

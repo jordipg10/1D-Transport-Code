@@ -1,5 +1,5 @@
 subroutine compute_trans_mat_tpt_transient(this)
-! T: transition matrix (tridiagonal, negative semi-definite)
+! T: transition matrix (tridiagonal, negative stoich_mat_react_zonemi-definite)
 ! rows sum = 0 if r=0
 ! F*dc/dt=T*c+g
     use transport_transient_m
@@ -41,7 +41,7 @@ subroutine compute_trans_mat_tpt_transient(this)
             else
                 error stop "Scheme not implemented yet"
             end if
-        else if (this%dimensionless==.false.) then
+        else if (mesh%targets_flag==0 .and. this%dimensionless==.false.) then
             if (mesh%scheme==1) then
                 this%trans_mat%sub=this%tpt_props_heterog%dispersion(2:n)/(mesh%Delta_x**2) + this%tpt_props_heterog%flux(2:n)/(2*mesh%Delta_x)
                 this%trans_mat%super=this%tpt_props_heterog%dispersion(1:n-1)/(mesh%Delta_x**2) - this%tpt_props_heterog%flux(1:n-1)/(2*mesh%Delta_x)
@@ -61,6 +61,9 @@ subroutine compute_trans_mat_tpt_transient(this)
             else
                 error stop "Scheme not implemented yet"
             end if
+        else if (mesh%targets_flag==1 .and. this%dimensionless==.false. .and. this%tpt_props_heterog%homog_flag==.true.) then
+            this%trans_mat%sub=this%tpt_props_heterog%dispersion(1)/(mesh%Delta_x**2) + this%tpt_props_heterog%flux(1)/(2*mesh%Delta_x)
+            this%trans_mat%super=this%tpt_props_heterog%dispersion(1)/(mesh%Delta_x**2) - this%tpt_props_heterog%flux(1)/(2*mesh%Delta_x)
         end if
     end select
     this%trans_mat%diag=-this%tpt_props_heterog%source_term_flag*this%tpt_props_heterog%source_term

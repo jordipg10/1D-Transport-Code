@@ -14,7 +14,7 @@ module PDE_m
         integer(kind=4) :: sol_method   ! 1: Numerical
                                         ! 2: Eigendecomposition
     contains
-    ! Set
+    ! set
         procedure, public :: set_spatial_discr
         procedure, public :: set_BCs
         procedure, public :: set_sol_method

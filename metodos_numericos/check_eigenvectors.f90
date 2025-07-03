@@ -19,8 +19,8 @@ subroutine check_eigenvectors(A,lambda,v,tolerance)
     end do
     do i=1,n
         A_lambda_v=matmul(A_lambda(:,:,i),v(:,i))
-        if (inf_norm_vec(A_lambda_v)>=tolerance) then
-            print *, "Error in eigenvector", i, inf_norm_vec(A_lambda_v)
+        if (inf_norm_vec_real(A_lambda_v)>=tolerance) then
+            print *, "Error in eigenvector", i, inf_norm_vec_real(A_lambda_v)
             !error stop
         end if
     end do

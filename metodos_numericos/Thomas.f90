@@ -38,7 +38,7 @@ subroutine Thomas(A,b,tol,x)
         matrix(i,i+1)=A%super(i)
     end do
     matrix(n,(n-1):n)=[A%sub(n-1),A%diag(n)]
-    if (inf_norm_vec(matmul(matrix,x)-b)>=tol) then
+    if (inf_norm_vec_real(matmul(matrix,x)-b)>=tol) then
         print *, "Thomas solution not accurate enough"
         !error stop "Thomas solution not accurate enough"
     end if

@@ -59,7 +59,7 @@ module metodos_sist_lin_m
             integer(kind=4), intent(out) :: niter
         end subroutine
         
-        subroutine Gauss_Seidel(A,b,x0,x,niter)
+        subroutine Gauss_seidel(A,b,x0,x,niter)
             implicit none
             real(kind=8), intent(in) :: A(:,:)
             real(kind=8), intent(in) :: b(:)

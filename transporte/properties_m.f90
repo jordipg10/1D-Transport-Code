@@ -58,7 +58,7 @@ module properties_m
             allocate(this%source_term_flag(size(this%source_term)))
             this%source_term_flag=1
             do i=1,size(this%source_term)
-                if (this%source_term(i)<0 .and. BCs%evap==.false.) then ! discharge
+                if (this%source_term(i)<0 .and. BCs%evap==.false.) then ! disvalence
                     this%source_term_flag(i)=0
                 end if
             end do

@@ -1,4 +1,4 @@
-! Inverse of square matrix using LU decomposition or Gauss-Jordan
+! Inverse of square matrix using Gauss-Jordan
 subroutine inv_matrix(A,tol,inv)
     use matrices_m
     use vectors_m
@@ -8,14 +8,14 @@ subroutine inv_matrix(A,tol,inv)
     real(kind=8), intent(in) :: tol
     real(kind=8), intent(out) :: inv(:,:)
     
-    integer(kind=4) :: n,j,i
+    integer(kind=4) :: n,j,i,err
     real(kind=8), parameter :: epsilon=1d-6
     real(kind=8), allocatable :: id(:,:), prod_A_invA(:,:), id_col(:), inv_col(:)
     logical :: nzdiag
     
     if (size(A,1)/=size(A,2)) error stop "Matrix must be square (inv_matrix)"
     
-    if (det(A)>=tol) error stop "Matrix is not invertible"
+    if (abs(det(A))<tol) error stop "Matrix is not invertible"
     
     n=size(A,1)
     if (n==2) then
@@ -49,14 +49,17 @@ subroutine inv_matrix(A,tol,inv)
         !end if
         do j=1,n
             id_col=id(1:n,j)
-            call Gauss_Jordan(A,id_col,inv_col) ! Gauss-Jordan
+            call Gauss_Jordan(A,id_col,inv_col,err) ! Gauss-Jordan
+            if (err==1) then
+                error stop "Singular equation in Gauss-Jordan"
+            end if
             inv(1:n,j)=inv_col
         end do
         prod_A_invA=matmul(A,inv)
         do i=1,n
-            if (inf_norm_vec(prod_A_invA(i,:)-id(i,:))>=tol) then
-                print *,  "Error in inverse matrix"
-                !error stop "Error in inverse matrix"
+            if (inf_norm_vec_real(prod_A_invA(i,:)-id(i,:))>=tol) then
+                !print *,  "Error in inverse matrix"
+                error stop "Error in inverse matrix"
             end if
         end do
     end if

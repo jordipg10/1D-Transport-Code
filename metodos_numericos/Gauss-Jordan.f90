@@ -14,7 +14,9 @@ subroutine Gauss_Jordan(A,b,x,error)
     real(kind=8), allocatable :: A_aux(:,:)
     integer(kind=4) :: n,icol,jcol,irow,jrow,ipeak
     n=size(A,1)
-    if (n/=size(b)) error stop "Dimension error in Gauss-Jordan"
+    if (n/=size(b)) then
+        error stop "Dimension error in Gauss-Jordan"
+    end if
     A_aux=A
     x=b
     ! Process n times to get all equations
@@ -65,8 +67,8 @@ subroutine Gauss_Jordan(A,b,x,error)
     if (present(error)) then
         error=0
     end if
-    if (inf_norm_vec(matmul(A,x)-b)>=tol) then
-        print *, inf_norm_vec(matmul(A,x)-b)
+    if (inf_norm_vec_real(matmul(A,x)-b)>=tol) then
+        print *, inf_norm_vec_real(matmul(A,x)-b)
         error stop "Wrong solution in Gauss-Jordan"
     end if
 end subroutine

@@ -9,10 +9,10 @@ module diffusion_m
         real(kind=8), allocatable :: conc(:) ! concentrations (c)
         real(kind=8), allocatable :: conc_ext(:) ! (c_e)
         integer(kind=4), allocatable :: conc_r_flag(:)      ! 1 if r>0
-                                                            ! 0 otherwise
+                                                            ! 0 otherwistoich_mat_react_zone
         type(diff_props_heterog_c) :: diff_props_heterog
     contains
-    ! Set
+    ! set
         procedure, public :: set_conc_ext
         procedure, public :: set_diff_props_heterog
         procedure, public :: set_conc_r_flag=>set_conc_r_flag_diff

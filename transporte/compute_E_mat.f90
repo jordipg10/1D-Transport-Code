@@ -1,5 +1,5 @@
 subroutine compute_E_mat(this,E_mat,k)
-! E=Delta_t(k)*inv(F)*T (tridiagonal, negative semi-definite)
+! E=Delta_t(k)*inv(F)*T (tridiagonal, negative stoich_mat_react_zonemi-definite)
 ! rows sum = 0 if r=0
     use PDE_transient_m
     implicit none

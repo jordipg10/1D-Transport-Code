@@ -8,12 +8,12 @@ module transport_m
     type, public, extends(diffusion_1D_c) :: transport_1D_c
         type(tpt_props_heterog_c) :: tpt_props_heterog
     contains
-    ! Set
+    ! set
         procedure, public :: set_tpt_props_heterog_obj
         procedure, public :: set_conc_r_flag=>set_conc_r_flag_tpt
     ! Computations
         procedure, public :: compute_trans_mat_PDE=>compute_trans_mat_tpt
-        procedure, public :: mass_balance_error_ADE_stat_Dirichlet_discharge
+        procedure, public :: mass_balance_error_ADE_stat_Dirichlet_disvalence
     ! Abstract
         procedure, public :: initialise_PDE=>initialise_transport_1D
         procedure, public :: write_PDE_1D=>write_transport_1D
@@ -40,7 +40,7 @@ module transport_m
             real(kind=8), intent(in) :: output(:,:)
         end subroutine
         
-        function mass_balance_error_ADE_stat_Dirichlet_discharge(this) result(mass_bal_err)
+        function mass_balance_error_ADE_stat_Dirichlet_disvalence(this) result(mass_bal_err)
             import transport_1D_c
             implicit none
             class(transport_1D_c), intent(in) :: this

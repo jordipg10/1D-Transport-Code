@@ -1,4 +1,4 @@
-function mass_balance_error_ADE_stat_Dirichlet_discharge(this) result(mass_bal_err)
+function mass_balance_error_ADE_stat_Dirichlet_disvalence(this) result(mass_bal_err)
     use transport_m
     implicit none
     class(transport_1D_c), intent(in) :: this

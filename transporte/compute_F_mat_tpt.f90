@@ -14,8 +14,9 @@ subroutine compute_F_mat_tpt(this) ! diagonal matrix
         call this%F_mat%allocate_matrix(n)
     end if
     
-    
-    this%F_mat%diag=this%tpt_props_heterog%porosity
+    if (this%tpt_props_heterog%homog_flag==.true.) then
+        this%F_mat%diag=this%tpt_props_heterog%porosity(1)
+    end if
     
         
 end subroutine

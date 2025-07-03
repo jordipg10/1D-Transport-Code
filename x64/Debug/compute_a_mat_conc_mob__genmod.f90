@@ -1,10 +1,18 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jan 30 15:12:52 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:08:21 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_A_MAT_CONC_MOB__genmod
           INTERFACE 
             SUBROUTINE COMPUTE_A_MAT_CONC_MOB(THIS,THETA,DELTA_T,A_MAT)
-              USE MRMT_M
+              USE MATRICES_M, ONLY :                                    &
+     &          TRIDIAG_MATRIX_C
+              USE TIME_FCT_M
+              USE BCS_M
+              USE SPATIAL_DISCR_M
+              USE PDE_M
+              USE PDE_MODEL_M
+              USE MRMT_M, ONLY :                                        &
+     &          MRMT_C
               CLASS (MRMT_C), INTENT(IN) :: THIS
               REAL(KIND=8), INTENT(IN) :: THETA
               REAL(KIND=8), INTENT(IN) :: DELTA_T

@@ -84,10 +84,10 @@ subroutine solve_PDE_EI_Delta_t_homog_MRMT(this,theta,Time_out,output)
                 call PDE%prod_total_conc(A_mat_ODE,Time)
                 !sum_gk2=sum_gk2+gk**2
             end do
-            write(56,*) sum_gk2
-            this%mob_zone%conc=conc_mob_new
+            !write(56,*) sum_gk2
+            this%conc_mob=conc_mob_new
             do i=1,this%n_imm
-                this%imm_zones(i)%conc=conc_imm_new(i)
+                this%conc_imm(i)=conc_imm_new(i)
             end do
             deallocate(conc_mob_old,conc_mob_new,conc_imm_old,conc_imm_new)
             close(0)

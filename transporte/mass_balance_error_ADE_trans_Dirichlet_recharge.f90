@@ -1,4 +1,4 @@
-function mass_balance_error_ADE_trans_Dirichlet_recharge(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
+function mass_balance_error_ADE_trans_Dirichlet_revalence(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
     use transport_transient_m
     implicit none
     class(transport_1D_transient_c), intent(in) :: this

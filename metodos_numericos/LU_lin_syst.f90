@@ -18,8 +18,8 @@ subroutine LU_lin_syst(A,b,tol,x) ! Ax=b
     call forward_substitution(L,b,y)
     call backward_substitution(U,y,x)
     
-    if (inf_norm_vec(matmul(A,x)-b)>=tol) then
+    if (inf_norm_vec_real(matmul(A,x)-b)>=tol) then
         print *, "Wrong solution in LU_lin_syst"
-        print *, "Residual: ", inf_norm_vec(matmul(A,x)-b)
+        print *, "Residual: ", inf_norm_vec_real(matmul(A,x)-b)
     end if
 end subroutine

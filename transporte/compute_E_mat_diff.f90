@@ -1,5 +1,5 @@
 !subroutine compute_E_mat_diff(this,E_mat,k)
-!! E=Delta_t(k)*F^(-1)*T (tridiagonal, negative semi-definite)
+!! E=Delta_t(k)*F^(-1)*T (tridiagonal, negative stoich_mat_react_zonemi-definite)
 !! rows sum = 0 if r=0
 !    use diffusion_transient_m
 !    implicit none

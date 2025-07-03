@@ -3,7 +3,8 @@ module matrices_m
     implicit none
     save
     
-    type, public :: matrix_c ! matrix superclass
+    type, public, abstract :: matrix_c ! matrix superclass
+        integer(kind=4) :: num_cols
     contains
         procedure, public :: allocate_matrix
         procedure, public :: prod_mat_vec
@@ -15,8 +16,19 @@ module matrices_m
         procedure, public :: compute_norm_1
     end type
     
+    type, public, extends(matrix_c) :: non_sq_matrix_c
+    end type
+    
+    type, public, extends(non_sq_matrix_c) :: matrix_real_c
+        type(vector_real_c), allocatable :: cols(:)
+    end type
+    
+    type, public, extends(non_sq_matrix_c) :: matrix_int_c
+        type(vector_int_c), allocatable :: cols(:)
+    end type
+    
     type, public, extends(matrix_c) :: sq_matrix_c
-        integer(kind=4) :: dim
+        !integer(kind=4) :: dim
         real(kind=8), allocatable :: eigenvalues(:)
         real(kind=8), allocatable :: eigenvectors(:,:)
     contains
@@ -207,22 +219,29 @@ module matrices_m
         subroutine allocate_matrix(this,n)
             implicit none
             class(matrix_c) :: this
-            integer(kind=4), intent(in) :: n
+            integer(kind=4), intent(in), optional :: n
+            if (present(n)) then
+                this%num_cols=n
+            end if
             select type (this)
             class is (diag_matrix_c)
-                allocate(this%diag(n))
+                allocate(this%diag(this%num_cols))
                 select type (this)
                 class is (tridiag_sym_matrix_c)
-                    allocate(this%sub(n-1))
+                    allocate(this%sub(this%num_cols-1))
                     select type (this)
                     type is (tridiag_matrix_c)
-                        allocate(this%super(n-1))
+                        allocate(this%super(this%num_cols-1))
                         !select type (this)
                         !type is (tridiag_matrix_vec_c)
                         !    allocate(this%vector(n))
                         !end select
                     end select
                 end select
+            type is (matrix_real_c)
+                allocate(this%cols(this%num_cols))
+            type is (matrix_int_c)
+                allocate(this%cols(this%num_cols))
             end select
         end subroutine
         

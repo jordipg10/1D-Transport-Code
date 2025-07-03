@@ -1,11 +1,18 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Tue Jan 30 15:12:39 2024
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:08:26 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_B_VEC_LIN_SYST__genmod
           INTERFACE 
             SUBROUTINE COMPUTE_B_VEC_LIN_SYST(THIS,THETA,CONC_OLD,B_VEC,&
      &K)
-              USE BCS_SUBROUTINES_M
+              USE CHAR_PARAMS_M
+              USE TIME_DISCR_M
+              USE TIME_FCT_M
+              USE BCS_M
+              USE SPATIAL_DISCR_M
+              USE PDE_TRANSIENT_M, ONLY :                               &
+     &          PDE_1D_TRANSIENT_C,                                     &
+     &          DIAG_MATRIX_C
               CLASS (PDE_1D_TRANSIENT_C), INTENT(IN) :: THIS
               REAL(KIND=8), INTENT(IN) :: THETA
               REAL(KIND=8), INTENT(IN) :: CONC_OLD(:)

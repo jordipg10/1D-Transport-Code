@@ -144,7 +144,8 @@ module BCs_subroutines_m
                     else if (mesh%scheme==2 .and. mesh%targets_flag==0) then ! IFDS
                         this%trans_mat%super(1)=-q_32/(2d0*mesh%Delta_x)+D_1/(mesh%Delta_x**2)
                         this%trans_mat%sub(n-1)=this%tpt_props_heterog%flux(n)/(2d0*mesh%Delta_x)+this%tpt_props_heterog%dispersion(n)/(mesh%Delta_x**2)
-                        this%trans_mat%diag(1)=this%trans_mat%diag(1)-(q_inf**2+D_1*(3*q_inf*mesh%Delta_x+2*D_1)/(mesh%Delta_x**2))/(q_inf*mesh%Delta_x+2*D_1) + q_32/(2*mesh%Delta_x)
+                        !this%trans_mat%diag(1)=this%trans_mat%diag(1)-(q_inf**2+D_1*(3*q_inf*mesh%Delta_x+2*D_1)/(mesh%Delta_x**2))/(q_inf*mesh%Delta_x+2*D_1) + q_32/(2*mesh%Delta_x)
+                        this%trans_mat%diag(1)=this%trans_mat%diag(1) - q_inf/mesh%Delta_x + q_32/(2*mesh%Delta_x) - D_1/(mesh%Delta_x**2)
                         this%trans_mat%diag(n)=this%trans_mat%diag(n)-this%trans_mat%sub(n-1)
                         this%source_term_PDE(1)=this%source_term_PDE(1)+q_inf*c_inf/mesh%Delta_x
                     end if

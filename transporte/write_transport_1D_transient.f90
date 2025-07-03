@@ -148,7 +148,7 @@ subroutine write_transport_1D_transient(this,Time_out,output)
         end do
         write(1,"(/,2x,'Immobile zones:'/)")
         do i=1,this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
-            write(1,"(10x,I4,3F20.5)") i,(output(this%spatial_discr%Num_targets-this%spatial_discr%targets_flag+i,k), k=1,Num_output)
+           ! write(1,"(10x,I4,3F20.5)") i,(output(this%spatial_discr%Num_targets-this%spatial_discr%targets_flag+i,k), k=1,Num_output)
         end do
     end if
     rewind(1)

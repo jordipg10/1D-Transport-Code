@@ -15,7 +15,9 @@ module MRMT_m
         !real(kind=8), allocatable :: exchange_rates(:) ! (alpha)
         !real(kind=8), allocatable :: res_times(:) ! residence times (tau)
         !real(kind=8), allocatable :: probs(:) ! probabilities
-        !real(kind=8), allocatable :: flux(:) ! flux of immobile zones
+        real(kind=8), allocatable :: flux_imm(:) ! flux of immobile zones
+        real(kind=8), allocatable :: conc_mob(:)
+        real(kind=8), allocatable :: conc_imm(:)
     contains
         !procedure, public :: set_PDE
         !procedure, public :: set_mob_zone
@@ -153,11 +155,11 @@ module MRMT_m
                 open(unit=46,file='MRMT.out',status='unknown')
                 write(46,"(2x,'Mobile concentrations:',/)")
                 do i=1,PDE%spatial_discr%Num_targets
-                    write(46,*) this%mob_zone%conc(i)
+                    write(46,*) this%conc_mob(i)
                 end do
                 write(46,"(/,2x,'Immobile concentrations:',/)")
                 do i=1,this%n_imm
-                    write(46,*) this%imm_zones(i)%conc
+                    write(46,*) this%conc_imm(i)
                 end do
                 close(46)
             end select

@@ -13,7 +13,7 @@ subroutine refine_mesh_heterog(this,conc,conc_ext,rel_tol)
     n=this%Num_targets
     
     do j=1,n-1
-        if (inf_norm_vec(conc(:,j)-conc(:,j+1))/inf_norm_vec(conc(:,j))>=rel_tol) then
+        if (inf_norm_vec_real(conc(:,j)-conc(:,j+1))/inf_norm_vec_real(conc(:,j))>=rel_tol) then
             Delta_x_new=[Delta_x_new,this%Delta_x(j)/2,this%Delta_x(j)/2]
         else
             Delta_x_new=[Delta_x_new,this%Delta_x(j)]

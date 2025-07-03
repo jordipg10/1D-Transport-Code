@@ -1,5 +1,5 @@
 !subroutine compute_trans_mat(this,T_sub,T_diag,T_super,k)
-!! T: transition matrix (tridiagonal, negative semi-definite)
+!! T: transition matrix (tridiagonal, negative stoich_mat_react_zonemi-definite)
 !! rows sum = 0 if r=0
 !! F*dc/dt=T*c+g
 !    use transport_transient_1_m

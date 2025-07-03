@@ -17,7 +17,7 @@ subroutine refine_mesh_homog(this,conc,conc_ext,rel_tol)
     Delta_x_old=this%Delta_x
     Delta_x_new=Delta_x_old
     do j=1,n-1
-        if (inf_norm_vec(conc(:,j)-conc(:,j+1))/inf_norm_vec(conc(:,j))>=rel_tol) then
+        if (inf_norm_vec_real(conc(:,j)-conc(:,j+1))/inf_norm_vec_real(conc(:,j))>=rel_tol) then
             Delta_x_new=Delta_x_old/2
             Delta_x_old=Delta_x_new
         end if

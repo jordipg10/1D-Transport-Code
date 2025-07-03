@@ -22,8 +22,8 @@ subroutine check_eigenvectors_tridiag_sym_matrix(this,tolerance)
         end do
         do i=1,n
             A_lambda_P=matmul(A_lambda(:,:,i),this%eigenvectors(:,i))
-            if (inf_norm_vec(A_lambda_P)>=tolerance) then
-                print *, "Error in eigenvector", i, inf_norm_vec(A_lambda_P)
+            if (inf_norm_vec_real(A_lambda_P)>=tolerance) then
+                print *, "Error in eigenvector", i, inf_norm_vec_real(A_lambda_P)
                 error stop
             end if
         end do

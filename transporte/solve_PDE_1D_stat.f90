@@ -16,7 +16,7 @@ subroutine solve_PDE_1D_stat(this)
     real(kind=8), allocatable :: conc_old(:),conc_new(:)
     type(tridiag_matrix_c) :: E_mat,B_mat
 
-    procedure(mass_balance_error_ADE_stat_Dirichlet_discharge), pointer :: p_MBE=>null()
+    procedure(mass_balance_error_ADE_stat_Dirichlet_disvalence), pointer :: p_MBE=>null()
     
     n=this%spatial_discr%Num_targets
     
@@ -24,8 +24,8 @@ subroutine solve_PDE_1D_stat(this)
     type is (transport_1D_c)
             allocate(this%conc(n))
             call Thomas(this%trans_mat,-this%source_term_PDE,tol_Thomas,this%conc) ! we solve linear system Tc=-g
-            if (maxval(this%tpt_props_heterog%source_term)<0d0 .and. this%BCs%evap==.false.) then ! discharge
-                p_MBE=>mass_balance_error_ADE_stat_Dirichlet_discharge
+            if (maxval(this%tpt_props_heterog%source_term)<0d0 .and. this%BCs%evap==.false.) then ! disvalence
+                p_MBE=>mass_balance_error_ADE_stat_Dirichlet_disvalence
             else
                 error stop "Mass balance error not implemented yet"
             end if

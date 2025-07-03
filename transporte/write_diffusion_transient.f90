@@ -146,7 +146,7 @@ subroutine write_diffusion_transient(this,Time_out,output)
                 end do
                 F_im(k)=sum_MRMT*this%BCs%conc_inf*4d0*this%diff_props_heterog%dispersion(1)/(this%char_params%char_length*Delta_r(n)**2)
             end do
-            if (inf_norm_vec(F_im-bd_flux)>=tol) error stop "Fluxes are not equal"
+            if (inf_norm_vec_real(F_im-bd_flux)>=tol) error stop "Fluxes are not equal"
             write(1,"(/,2x,'Alphas:'/)")
             do i=1,n
                 write(1,"(ES15.5)") A_mat%eigenvalues(i)/this%char_params%char_time

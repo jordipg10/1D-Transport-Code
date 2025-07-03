@@ -1,5 +1,5 @@
 subroutine compute_trans_mat_tpt(this)
-! T: transition matrix (tridiagonal, negative semi-definite)
+! T: transition matrix (tridiagonal, negative stoich_mat_react_zonemi-definite)
 ! rows sum = 0 if r=0
 ! 0=T*c+g
     use transport_m

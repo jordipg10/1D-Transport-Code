@@ -11,7 +11,7 @@ module array_ops_m
             integer(kind=4) :: i
             integer(kind=4), allocatable :: aux_array(:)
             
-            print *, size(array)
+            !print *, size(array)
             aux_array=array
             if (allocated(array)) then
                 deallocate(array)
@@ -23,5 +23,30 @@ module array_ops_m
             array(size(array))=new_elem
         end subroutine
         
+        subroutine is_int_in_1D_array(int,array,flag,ind)
+            implicit none
+            integer(kind=4), intent(in) :: int
+            integer(kind=4), intent(in) :: array(:)
+            logical, intent(out) :: flag
+            integer(kind=4), intent(out), optional :: ind
+            
+            integer(kind=4) :: i
+            
+            flag=.false.
+            if (present(ind)) then
+                ind=0
+            end if
+            do i=1,size(array)
+                if (array(i)==int) then
+                    flag=.true.
+                    if (present(ind)) then
+                        ind=i
+                    end if
+                    exit
+                else
+                    continue
+                end if
+            end do
+        end subroutine
         
 end module

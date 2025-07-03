@@ -27,7 +27,7 @@ subroutine compute_mixing_ratios_Delta_t_homog(this,theta,A_mat_lumped)
     !call this%allocate_F_mat()
     call this%compute_F_mat_PDE()
     !call this%allocate_B_mat()
-! We impose BCs
+! We impostoich_mat_react_zone BCs
     if (this%BCs%BCs_label(1)==1 .and. this%BCs%BCs_label(2)==1) then
         call Dirichlet_BCs_PDE(this)
     else if (this%BCs%BCs_label(1)==2 .and. this%BCs%BCs_label(2)==2) then

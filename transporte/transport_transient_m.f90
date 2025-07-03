@@ -17,11 +17,13 @@ module transport_transient_m
         procedure, public :: set_tpt_props_heterog_obj
         procedure, public :: mass_balance_error_ADE_trans_PMF_evap
         procedure, public :: mass_balance_error_ADE_trans_Dirichlet_evap
-        procedure, public :: mass_balance_error_ADE_trans_PMF_recharge
-        procedure, public :: mass_balance_error_ADE_trans_Dirichlet_recharge
-        procedure, public :: mass_balance_error_ADE_trans_PMF_discharge
-        procedure, public :: mass_balance_error_ADE_trans_Dirichlet_discharge
+        procedure, public :: mass_balance_error_ADE_trans_PMF_revalence
+        procedure, public :: mass_balance_error_ADE_trans_Dirichlet_revalence
+        procedure, public :: mass_balance_error_ADE_trans_PMF_disvalence
+        procedure, public :: mass_balance_error_ADE_trans_Dirichlet_disvalence
         procedure, public :: check_Delta_t
+        procedure, public :: read_transport_data_WMA
+        !procedure, public :: read_discretisation_WMA
     end type
     
     interface
@@ -52,7 +54,7 @@ module transport_transient_m
             real(kind=8), intent(in) :: output(:,:)
         end subroutine
         
-        function mass_balance_error_ADE_trans_Dirichlet_recharge(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
+        function mass_balance_error_ADE_trans_Dirichlet_revalence(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
             import transport_1D_transient_c
             implicit none
             class(transport_1D_transient_c), intent(in) :: this
@@ -63,7 +65,7 @@ module transport_transient_m
             real(kind=8) :: mass_bal_err
         end function
         
-        function mass_balance_error_ADE_trans_Dirichlet_discharge(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
+        function mass_balance_error_ADE_trans_Dirichlet_disvalence(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
             import transport_1D_transient_c
             implicit none
             class(transport_1D_transient_c), intent(in) :: this
@@ -85,7 +87,7 @@ module transport_transient_m
             real(kind=8) :: mass_bal_err
         end function
         
-        function mass_balance_error_ADE_trans_PMF_recharge(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
+        function mass_balance_error_ADE_trans_PMF_revalence(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
             import transport_1D_transient_c
             implicit none
             class(transport_1D_transient_c), intent(in) :: this
@@ -96,7 +98,7 @@ module transport_transient_m
             real(kind=8) :: mass_bal_err
         end function
         
-        function mass_balance_error_ADE_trans_PMF_discharge(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
+        function mass_balance_error_ADE_trans_PMF_disvalence(this,conc_old,conc_new,Delta_t,Delta_x) result(mass_bal_err)
             import transport_1D_transient_c
             implicit none
             class(transport_1D_transient_c), intent(in) :: this
@@ -117,6 +119,31 @@ module transport_transient_m
             real(kind=8), intent(in) :: Delta_x
             real(kind=8) :: mass_bal_err
         end function
+        
+        subroutine read_transport_data_WMA(this,unit,file_tpt)!,mixing_ratios)!,f_vec)!,tpt_props,BCs,mesh,time_discr)
+            import transport_1D_transient_c
+            !import tpt_props_heterog_c
+            !import BCs_t
+            !import mesh_1D_Euler_homog_c
+            !import time_discr_homog_c
+            class(transport_1D_transient_c) :: this
+            integer(kind=4), intent(in) :: unit
+            character(len=*), intent(in) :: file_tpt
+            !real(kind=8), intent(out), allocatable :: mixing_ratios(:,:)
+            !real(kind=8), intent(out), allocatable :: f_vec(:)
+            !type(tpt_props_heterog_c), intent(out) :: tpt_props
+            !type(BCs_t), intent(out) :: BCs
+            !!real(kind=8), intent(in) :: Delta_x
+            !type(mesh_1D_Euler_homog_c), intent(out) :: mesh ! homogeneous Euler mesh 1D
+            !type(time_discr_homog_c), intent(out) :: time_discr ! homogeneous time discretisation
+        end subroutine
+        
+        subroutine read_discretisation_WMA(this,unit,file_discr)
+            import transport_1D_transient_c
+            class(transport_1D_transient_c) :: this
+            integer(kind=4), intent(in) :: unit
+            character(len=*), intent(in) :: file_discr
+        end subroutine
     end interface
     
     contains
@@ -143,7 +170,7 @@ module transport_transient_m
             
             allocate(this%conc_r_flag(this%spatial_discr%Num_targets))
             this%conc_r_flag=0
-            do i=1,this%spatial_discr%Num_targets
+            do i=1,this%spatial_discr%Num_targets-this%spatial_discr%targets_flag
                 if (this%tpt_props_heterog%source_term(i)>0) then
                     this%conc_r_flag(i)=1
                 end if

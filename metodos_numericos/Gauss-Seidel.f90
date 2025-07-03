@@ -1,5 +1,5 @@
-! Solves linear system Ax=b using Gauss-Seidel iterative method
-subroutine Gauss_Seidel(A,b,x0,x,niter)
+! Solves linear system Ax=b using Gauss-seidel iterative method
+subroutine Gauss_seidel(A,b,x0,x,niter)
     use vectors_m
     use matrices_m
     implicit none
@@ -45,7 +45,7 @@ subroutine Gauss_Seidel(A,b,x0,x,niter)
             end do
             x(i)=(1d0/D(i))*(b(i)-sum)
         end do
-        if (inf_norm_vec(x-x0)<tol) exit
+        if (inf_norm_vec_real(x-x0)<tol) exit
         x0=x
     end do
-end subroutine Gauss_Seidel
+end subroutine Gauss_seidel

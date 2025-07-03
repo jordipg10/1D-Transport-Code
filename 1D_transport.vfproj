@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{9FC11773-233E-4A47-9840-616FC25730A5}">
+	<Platforms>
+		<Platform Name="Win32"/>
+		<Platform Name="x64"/>
+	</Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32" UseCompiler="ifortCompiler">
+			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" WarnInterfaces="true" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebugDLL" UseMkl="mklParallel"/>
+			<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+			<Tool Name="VFResourceCompilerTool"/>
+			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+			<Tool Name="VFCustomBuildTool"/>
+			<Tool Name="VFPreLinkEventTool"/>
+			<Tool Name="VFPreBuildEventTool"/>
+			<Tool Name="VFPostBuildEventTool"/>
+			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		</Configuration>
+		<Configuration Name="Debug|x64" UseCompiler="ifxCompiler">
+			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" WarnInterfaces="true" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebugDLL" UseMkl="mklParallel"/>
+			<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+			<Tool Name="VFResourceCompilerTool"/>
+			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+			<Tool Name="VFCustomBuildTool"/>
+			<Tool Name="VFPreLinkEventTool"/>
+			<Tool Name="VFPreBuildEventTool"/>
+			<Tool Name="VFPostBuildEventTool"/>
+			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		</Configuration>
+		<Configuration Name="Release|Win32" UseCompiler="ifortCompiler">
+			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" RuntimeLibrary="rtMultiThreadedDLL"/>
+			<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
+			<Tool Name="VFResourceCompilerTool"/>
+			<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+			<Tool Name="VFCustomBuildTool"/>
+			<Tool Name="VFPreLinkEventTool"/>
+			<Tool Name="VFPreBuildEventTool"/>
+			<Tool Name="VFPostBuildEventTool"/>
+			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		</Configuration>
+		<Configuration Name="Release|x64" UseCompiler="ifortCompiler">
+			<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" RuntimeLibrary="rtMultiThreadedDLL"/>
+			<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
+			<Tool Name="VFResourceCompilerTool"/>
+			<Tool Name="VFMidlTool" SuppressStartupBanner="true" TargetEnvironment="midlTargetAMD64"/>
+			<Tool Name="VFCustomBuildTool"/>
+			<Tool Name="VFPreLinkEventTool"/>
+			<Tool Name="VFPreBuildEventTool"/>
+			<Tool Name="VFPostBuildEventTool"/>
+			<Tool Name="VFManifestTool" SuppressStartupBanner="true"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath="..\RT_Lagrange\src\BCs_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\BCs_subroutines_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\char_params_diff_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\char_params_flow_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\char_params_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\char_params_tpt_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_A_conc_mob.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_A_lin_syst.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_A_mat.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_A_mat_ODE.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_A_mat_ODE_diff.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_A_mat_ODE_tpt.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_b_conc_mob.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_b_lin_syst.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_B_mat.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_b_ODE.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_char_params.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_conc_imm_MRMT.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_E_mat.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_E_mat_diff.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_E_mat_tpt.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_ext_mat_PDE.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_F_mat_diff.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_F_mat_flow.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_F_mat_tpt.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_f_RKF45_RT_kin.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_f_vec.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_k_RKF45.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_lumped_A_mat.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_mixing_ratios_Delta_t_homog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_stab_params.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_Thomas_coeffs.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_diff.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_diff_trans.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_flow_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_tpt.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_tpt_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\CV_params_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\diff_props_heterog_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\diff_stab_params_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\diffusion_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\diffusion_transient_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\flow_props_heterog_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\flow_transient_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\imm_zone_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_diffusion_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_diffusion_1D_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_flow_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_iterative_method.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_transport.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_transport_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_transport_1D_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\initialise_transport_1D_transient_RT.f90"/>
+		<File RelativePath=".\main.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\main_PDE.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\main_transport.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\main_transport_1D_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mass_balance_error_ADE_stat_Dirichlet_discharge.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mass_balance_error_ADE_trans_Dirichlet_discharge.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mass_balance_error_ADE_trans_Dirichlet_evap.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mass_balance_error_ADE_trans_Dirichlet_recharge.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mass_balance_error_ADE_trans_PMF_discharge.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mass_balance_error_ADE_trans_PMF_evap.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mass_balance_error_ADE_trans_PMF_recharge.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\matrices_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\metodos_sist_lin_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\mob_zone_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\MRMT_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\PDE_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\PDE_model_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\PDE_transient_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\polynomials_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\prod_total_conc.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\properties_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\read_transport_data_WMA.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\refine_mesh_heterog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\refine_mesh_homog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\refine_mesh_rad.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_and_write_PDE_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_diff_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_diff_EE_Delta_t_heterog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_diff_EI_Delta_t_homog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_diff_RKF45.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_diff_trans_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_flow_EE_Delta_t_homog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_flow_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_PDE_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_PDE_1D_stat.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_PDE_EE_Delta_t_heterog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_PDE_EE_Delta_t_homog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_PDE_EI_Delta_t_homog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_PDE_EI_Delta_t_homog_MRMT.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_PDE_RKF45.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_tpt_1D_stat.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_tpt_EE_Delta_t_homog.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\solve_write_PDE_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\spatial_discr_1D_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\spatial_discr_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\spatial_discr_rad_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\special_fcts_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\stab_params_flow_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\stability_parameters_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\time_discr_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\time_fcts_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\transport_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\transport_properties_heterog_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\transport_stab_params_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\transport_transient_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\vectors_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\write_diffusion_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\write_diffusion_transient_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\write_flow_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\write_transport_1D.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\write_transport_1D_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\write_transport_data_WMA.f90"/></Filter>
+		<File RelativePath=".\ReadMe.txt"/>
+	</Files>
+	<Globals/>
+</VisualStudioProject>

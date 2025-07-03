@@ -6,9 +6,9 @@ module time_discr_m
         real(kind=8) :: Final_time
         integer(kind=4) :: Num_time                         ! Number of time steps
         integer(kind=4) :: int_method                       ! Time integration method:
-                                                                ! 1: Lagr explicit
-                                                                ! 2: Lagr semi-implicit
-                                                                ! 3: Lagr fully implicit
+                                                                ! 1: Euler explicit
+                                                                ! 2: Euler semi-implicit
+                                                                ! 3: Euler fully implicit
                                                                 ! 4: Crank-Nicolson
                                                                 ! 5: RKF45
     contains
@@ -73,7 +73,7 @@ module time_discr_m
             implicit none
             class(time_discr_c) :: this
             integer(kind=4), intent(in) :: int_method
-            if (int_method>4 .and. int_method<1) error stop "Method not implemented yet"
+            if (int_method>3 .and. int_method<1) error stop "Method not implemented yet"
             this%int_method=int_method
         end subroutine
         

@@ -42,7 +42,7 @@ subroutine Jacobi(A,b,x0,x,niter)
             end do
             x(i)=(1d0/D(i))*(b(i)-sum)
         end do
-        if (inf_norm_vec(x-x0)<tol) exit
+        if (inf_norm_vec_real(x-x0)<tol) exit
         x0=x
     end do 
 end subroutine Jacobi

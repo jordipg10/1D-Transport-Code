@@ -1,6 +1,20 @@
 module vectors_m
     implicit none
     save
+    type, public, abstract :: vector_c
+        integer(kind=4) :: dim
+    contains
+        !procedure, public :: allocate_vector
+    end type
+    
+    type, public, extends(vector_c) :: vector_real_c
+        real(kind=8), allocatable :: col_1(:)
+    end type
+    
+    type, public, extends(vector_c) :: vector_int_c
+        integer(kind=4), allocatable :: col_1(:)
+    end type
+    
     contains
         function outer_prod_vec(x,y) ! Computes outer product
             implicit none
@@ -39,11 +53,18 @@ module vectors_m
             end if
         end function p_norm_vec
         
-        function inf_norm_vec(x) ! Computes infinite norm
+        function inf_norm_vec_real(x) ! Computes infinite norm
             implicit none
             real(kind=8), intent(in) :: x(:)
-            real(kind=8) :: inf_norm_vec
-            inf_norm_vec=maxval(abs(x))
+            real(kind=8) :: inf_norm_vec_real
+            inf_norm_vec_real=maxval(abs(x))
+        end function
+        
+        function inf_norm_vec_int(x) ! Computes infinite norm
+            implicit none
+            integer(kind=4), intent(in) :: x(:)
+            integer(kind=4) :: inf_norm_vec_int
+            inf_norm_vec_int=maxval(abs(x))
         end function 
         
         function proy_ortog(u,v) ! Computes orthogonal projection
