@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:08:23 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:51 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE SOLVE_TPT_EE_DELTA_T_HOMOG__genmod

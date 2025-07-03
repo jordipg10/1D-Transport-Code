@@ -22,7 +22,7 @@ program main
     eqn_flag=4 ! 1: dif stat, 2: dif trans, 3: tpt stat, 4: tpt trans
     model=1 ! 1: traditional, 2: MRMT
     method=1 ! 1: numerical in space & time, 2: eigendecomposition
-    root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples' !> root of the input files
+    root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\push_pull' !> root of the input files
     if (eqn_flag==1) then
         my_PDE=>my_diff
     else if (eqn_flag==2) then
