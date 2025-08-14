@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:49 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Aug 14 18:29:12 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE SOLVE_DIFF_TRANS_1D__genmod
@@ -8,14 +8,14 @@
               USE DIFF_STAB_PARAMS_M
               USE PROPERTIES_M
               USE DIFF_PROPS_HETEROG_M
-              USE DIFFUSION_M
-              USE CHAR_PARAMS_M
+              USE CONC_M
               USE TIME_DISCR_M, ONLY :                                  &
      &          TIME_DISCR_HOMOG_C,                                     &
      &          TIME_DISCR_C,                                           &
      &          TIME_DISCR_HETEROG_C
               USE TIME_FCT_M
               USE BCS_M
+              USE TARGET_M
               USE SPATIAL_DISCR_M
               USE PDE_M
               USE PDE_TRANSIENT_M

@@ -67,7 +67,7 @@
 		<File RelativePath="..\RT_Lagrange\src\compute_A_mat_ODE_diff.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\compute_A_mat_ODE_tpt.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\compute_b_conc_mob.f90"/>
-		<File RelativePath="..\RT_Lagrange\src\compute_b_lin_syst.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\compute_b_vec_lin_syst.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\compute_B_mat.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\compute_b_ODE.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\compute_char_params.f90"/>
@@ -92,6 +92,7 @@
 		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_flow_transient.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_tpt.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\compute_trans_mat_tpt_transient.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\conc_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\CV_params_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\diff_props_heterog_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\diff_stab_params_m.f90"/>
@@ -133,7 +134,6 @@
 		<File RelativePath="..\RT_Lagrange\src\refine_mesh_heterog.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\refine_mesh_homog.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\refine_mesh_rad.f90"/>
-		<File RelativePath="..\RT_Lagrange\src\solve_and_write_PDE_1D.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\solve_diff_1D.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\solve_diff_EE_Delta_t_heterog.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\solve_diff_EI_Delta_t_homog.f90"/>
@@ -151,18 +151,21 @@
 		<File RelativePath="..\RT_Lagrange\src\solve_tpt_1D_stat.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\solve_tpt_EE_Delta_t_homog.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\solve_write_PDE_1D.f90"/>
+		<File RelativePath=".\solve_flow_EI_Delta_t_homog.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\spatial_discr_1D_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\spatial_discr_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\spatial_discr_rad_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\special_fcts_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\stab_params_flow_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\stability_parameters_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\target_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\time_discr_m.f90"/>
-		<File RelativePath="..\RT_Lagrange\src\time_fcts_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\time_fct_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\transport_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\transport_properties_heterog_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\transport_stab_params_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\transport_transient_m.f90"/>
+		<File RelativePath="..\RT_Lagrange\src\update_mixing_ratios_Delta_t_homog.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\vectors_m.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\write_diffusion_1D.f90"/>
 		<File RelativePath="..\RT_Lagrange\src\write_diffusion_transient_1D.f90"/>

@@ -2,6 +2,7 @@ program main
     use MRMT_m
     use transport_transient_m
     use transport_m
+    use flow_transient_m
     implicit none
 ! Variables
     class(PDE_1D_c), pointer :: my_PDE=>null()
@@ -9,6 +10,7 @@ program main
     type(transport_1D_c), target :: my_tpt
     type(diffusion_1D_transient_c), target :: my_diff_transient
     type(transport_1D_transient_c), target :: my_tpt_transient
+    type(flow_transient_c), target :: my_flow_transient
     
     class(PDE_model_c), pointer :: my_model=>null()
     type(MRMT_c), target :: MRMT
@@ -17,12 +19,15 @@ program main
     integer(kind=4) :: eqn_flag,opcion,info,method,model,i
     real(kind=8) :: res
     real(kind=8), allocatable :: MRMT_output(:,:),prueba(:)
-    character(len=200) :: root
+    character(len=256) :: root !> root of the input files
+    character(len=:), allocatable :: root_trim !> root of the input files, trimmed
 !****************************************************************************************************************************************************
-    eqn_flag=4 ! 1: dif stat, 2: dif trans, 3: tpt stat, 4: tpt trans
+    eqn_flag=5 ! 1: dif stat, 2: dif trans, 3: tpt stat, 4: tpt trans, 5: flow trans
     model=1 ! 1: traditional, 2: MRMT
     method=1 ! 1: numerical in space & time, 2: eigendecomposition
-    root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\push_pull' !> root of the input files
+    root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\push_pull\' !> root of the input files
+    root='C:\Users\user2319\OneDrive\Documentos\IDAEA\fortran\codigo\vscode\examples\push_pull_flow\' !> root of the input files
+    root_trim=trim(root)
     if (eqn_flag==1) then
         my_PDE=>my_diff
     else if (eqn_flag==2) then
@@ -31,6 +36,8 @@ program main
         my_PDE=>my_tpt
     else if (eqn_flag==4) then
         my_PDE=>my_tpt_transient
+    else if (eqn_flag==5) then
+        my_PDE=>my_flow_transient
     end if
     call my_PDE%set_sol_method(method)
     
@@ -40,5 +47,5 @@ program main
         my_model=>MRMT
     end if
     call my_model%set_PDE(my_PDE)
-    call my_model%PDE%main_PDE(root)
+    call my_model%PDE%main_PDE(root_trim)
 end program

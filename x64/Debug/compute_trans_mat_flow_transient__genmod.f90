@@ -1,19 +1,21 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:42 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Aug 14 18:29:17 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE COMPUTE_TRANS_MAT_FLOW_TRANSIENT__genmod
           INTERFACE 
             SUBROUTINE COMPUTE_TRANS_MAT_FLOW_TRANSIENT(THIS)
+              USE CHAR_PARAMS_M
+              USE CHAR_PARAMS_FLOW_M
               USE STABILITY_PARAMETERS_M
               USE STAB_PARAMS_FLOW_M
               USE PROPERTIES_M
               USE FLOW_PROPS_HETEROG_M
-              USE CHAR_PARAMS_M
               USE TIME_DISCR_M
               USE VECTORS_M
               USE MATRICES_M
               USE TIME_FCT_M
               USE BCS_M
+              USE TARGET_M
               USE SPATIAL_DISCR_M
               USE PDE_M
               USE PDE_TRANSIENT_M

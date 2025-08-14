@@ -1,9 +1,11 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:35 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Aug 14 15:55:27 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE REFINE_MESH_RAD__genmod
           INTERFACE 
             SUBROUTINE REFINE_MESH_RAD(THIS,CONC,CONC_EXT,REL_TOL)
+              USE TARGET_M
+              USE SPATIAL_DISCR_M
               USE SPATIAL_DISCR_RAD_M, ONLY :                           &
      &          SPATIAL_DISCR_RAD_C
               CLASS (SPATIAL_DISCR_RAD_C) :: THIS

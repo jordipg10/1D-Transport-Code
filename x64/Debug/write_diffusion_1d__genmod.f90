@@ -1,4 +1,4 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:41 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Aug 14 17:19:47 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE WRITE_DIFFUSION_1D__genmod
@@ -10,7 +10,8 @@
               USE MATRICES_M
               USE TIME_FCT_M
               USE BCS_M
-              USE SPATIAL_DISCR_1D_M
+              USE TARGET_M
+              USE SPATIAL_DISCR_M
               USE PDE_M
               USE DIFFUSION_M, ONLY :                                   &
      &          DIFFUSION_1D_C

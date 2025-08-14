@@ -1,9 +1,13 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:35 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Aug 14 18:29:11 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE INITIALISE_FLOW_TRANSIENT__genmod
           INTERFACE 
             SUBROUTINE INITIALISE_FLOW_TRANSIENT(THIS,ROOT)
+              USE CHAR_PARAMS_M
+              USE CHAR_PARAMS_FLOW_M, ONLY :                            &
+     &          CHAR_PARAMS_FLOW_C,                                     &
+     &          CHAR_PARAMS_C
               USE STABILITY_PARAMETERS_M
               USE STAB_PARAMS_FLOW_M, ONLY :                            &
      &          STAB_PARAMS_FLOW_C,                                     &
@@ -13,16 +17,17 @@
      &          FLOW_PROPS_HETEROG_C,                                   &
      &          PROPS_C,                                                &
      &          FLOW_PROPS_HETEROG_CONF_C
-              USE CHAR_PARAMS_M
               USE TIME_DISCR_M, ONLY :                                  &
      &          TIME_DISCR_HOMOG_C,                                     &
      &          TIME_DISCR_HETEROG_C,                                   &
      &          TIME_DISCR_C
               USE VECTORS_M
-              USE MATRICES_M
+              USE MATRICES_M, ONLY :                                    &
+     &          TRIDIAG_MATRIX_C
               USE TIME_FCT_M
               USE BCS_M, ONLY :                                         &
      &          BCS_T
+              USE TARGET_M
               USE SPATIAL_DISCR_M
               USE PDE_M
               USE PDE_TRANSIENT_M

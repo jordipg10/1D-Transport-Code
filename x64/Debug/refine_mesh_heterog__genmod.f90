@@ -1,9 +1,11 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:50 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Aug 14 15:55:34 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE REFINE_MESH_HETEROG__genmod
           INTERFACE 
             SUBROUTINE REFINE_MESH_HETEROG(THIS,CONC,CONC_EXT,REL_TOL)
+              USE TARGET_M
+              USE SPATIAL_DISCR_M
               USE SPATIAL_DISCR_1D_M, ONLY :                            &
      &          MESH_1D_EULER_HETEROG_C
               CLASS (MESH_1D_EULER_HETEROG_C) :: THIS

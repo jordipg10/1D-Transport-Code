@@ -1,11 +1,14 @@
-        !COMPILER-GENERATED INTERFACE MODULE: Thu Jul  3 16:18:37 2025
+        !COMPILER-GENERATED INTERFACE MODULE: Thu Aug 14 18:43:09 2025
         ! This source file is for reference only and may not completely
         ! represent the generated interface used by the compiler.
         MODULE MAIN_PDE__genmod
           INTERFACE 
             SUBROUTINE MAIN_PDE(THIS,ROOT)
+              USE PDE_TRANSIENT_M, ONLY :                               &
+     &          PDE_1D_TRANSIENT_C
               USE TIME_FCT_M
               USE BCS_M
+              USE TARGET_M
               USE SPATIAL_DISCR_M
               USE PDE_M, ONLY :                                         &
      &          PDE_1D_C
